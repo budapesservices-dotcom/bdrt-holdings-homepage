@@ -375,13 +375,13 @@ body::-webkit-scrollbar,
   overflow: hidden;
   visibility: hidden;
   opacity: 0;
-  transition: opacity 820ms ease, visibility 0s linear 820ms;
+  transition: opacity 1350ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s linear 1350ms;
 }
 
 .businesses-backdrop.is-active {
   visibility: visible;
   opacity: 1;
-  transition: opacity 820ms ease, visibility 0s;
+  transition: opacity 1350ms cubic-bezier(0.4, 0, 0.2, 1), visibility 0s;
 }
 
 .businesses-backdrop::after {
@@ -411,13 +411,18 @@ body::-webkit-scrollbar,
   transform: scale(1);
 }
 
+.businesses-backdrop img {
+  animation: portfolio-background-zoom 7000ms linear both;
+  animation-play-state: paused;
+}
+
 .businesses-backdrop.is-active img {
-  animation: portfolio-background-zoom 7000ms cubic-bezier(0.18, 0.68, 0.28, 1) both;
+  animation-play-state: running;
 }
 
 @keyframes portfolio-background-zoom {
   from { transform: scale(1.015); }
-  to { transform: scale(1.105); }
+  to { transform: scale(1.12); }
 }
 
 .businesses-section:not(.is-active) .businesses-backdrop.is-active img {
@@ -834,10 +839,6 @@ body::-webkit-scrollbar,
   .business-logo::after,
   .business-logo__duration {
     transition: none;
-  }
-
-  .businesses-backdrop.is-active img {
-    animation: none;
   }
 
   .business-logo.is-selected.is-timing .business-logo__duration::before {
