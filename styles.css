@@ -7470,47 +7470,52 @@ body.portal-closing .portal-sheet::before {
 }
 
 
+
 /* VOXA House logo emphasis for Our Brands (section 4). */
+/* Slightly larger than before, with the visual center aligned to the VOXA wordmark. */
 .business-logo[data-brand="voxa-house"] img {
-  width: min(100%, 220px);
-  height: 64px;
-  max-width: min(100%, 220px);
+  width: min(100%, 240px);
+  height: 72px;
+  max-width: min(100%, 240px);
   max-height: none;
+  margin-top: calc(clamp(25px, 3vh, 34px) - 19px);
   object-fit: contain;
   object-position: center;
 }
 
 @media (max-width: 900px) {
   .business-logo[data-brand="voxa-house"] img {
-    width: min(100%, 190px);
-    height: 56px;
-    max-width: min(100%, 190px);
+    width: min(100%, 205px);
+    height: 62px;
+    max-width: min(100%, 205px);
+    margin-top: calc(clamp(25px, 3vh, 34px) - 14px);
   }
 }
 
 @media (max-width: 640px) {
   .businesses-section--brands .business-logo[data-brand="voxa-house"] {
-    flex: 0 0 124px;
-    width: 124px;
+    flex: 0 0 138px;
+    width: 138px;
   }
 
   .businesses-section--brands .business-logo[data-brand="voxa-house"] img {
-    width: min(100%, 122px);
-    height: 46px;
-    max-width: min(100%, 122px);
-    margin-top: 23px;
+    width: min(100%, 126px);
+    height: 50px;
+    max-width: min(100%, 126px);
+    margin-top: 13px;
   }
 }
 
 @media (max-width: 360px) {
   .businesses-section--brands .business-logo[data-brand="voxa-house"] {
-    flex-basis: 116px;
-    width: 116px;
+    flex-basis: 128px;
+    width: 128px;
   }
 
   .businesses-section--brands .business-logo[data-brand="voxa-house"] img {
-    width: min(100%, 114px);
-    height: 43px;
-    max-width: min(100%, 114px);
+    width: min(100%, 116px);
+    height: 46px;
+    max-width: min(100%, 116px);
+    margin-top: 15px;
   }
 }
