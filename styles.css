@@ -27,8 +27,9 @@ html {
   scrollbar-width: none;
   -ms-overflow-style: none;
   background: var(--obsidian);
-  scroll-behavior: smooth;
-  scroll-snap-type: y mandatory;
+  /* Section navigation is controlled by the panel script; native snapping causes fixed panels to jump. */
+  scroll-behavior: auto;
+  scroll-snap-type: none;
   scroll-padding-top: 0;
 }
 
@@ -76,8 +77,6 @@ body::-webkit-scrollbar,
   margin: 0;
   overflow: hidden;
   background: var(--obsidian);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 .hero__video {
@@ -134,8 +133,6 @@ body::-webkit-scrollbar,
   padding: clamp(98px, 12vh, 132px) clamp(24px, 7vw, 112px) clamp(28px, 5vh, 56px);
   background: var(--cream);
   color: var(--obsidian);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 .about-section__inner {
@@ -360,8 +357,6 @@ body::-webkit-scrollbar,
   padding: 0;
   background: var(--obsidian);
   color: var(--cream);
-  scroll-snap-align: start;
-  scroll-snap-stop: always;
 }
 
 .section-panel {
@@ -690,7 +685,7 @@ body.header-over-light .site-nav a:focus-visible {
 @media (prefers-reduced-motion: reduce) {
   html {
     scroll-behavior: auto;
-    scroll-snap-type: y proximity;
+    scroll-snap-type: none;
   }
 
   .site-nav a,
