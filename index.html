@@ -178,9 +178,18 @@
         // Keep the outgoing card's gentle drop and the incoming card's rise in sequence.
         const selectPortfolioBrand = (button) => {
           const brand = portfolioBrandContent[button.dataset.brand];
-          if (!brand || button === activePortfolioButton) return;
+          if (!brand) return;
 
           window.clearTimeout(portfolioSwitchTimer);
+          portfolioSwitchTimer = 0;
+          if (button === activePortfolioButton) {
+            portfolioButtons.forEach((candidate) => {
+              candidate.classList.remove("is-dropping", "is-rising");
+            });
+            if (portfolioCopy) portfolioCopy.classList.remove("is-changing");
+            return;
+          }
+
           portfolioButtons.forEach((candidate) => {
             candidate.classList.remove("is-dropping", "is-rising");
           });
@@ -208,6 +217,7 @@
             button.setAttribute("aria-pressed", "true");
             activePortfolioButton = button;
             updateBrandCopy(brand);
+            portfolioSwitchTimer = 0;
 
             window.requestAnimationFrame(() => {
               if (portfolioCopy) portfolioCopy.classList.remove("is-changing");
@@ -217,7 +227,6 @@
         };
 
         portfolioButtons.forEach((button) => {
-          button.removeEventListener("click", () => activatePortfolioBrand(button));
           button.addEventListener("click", () => selectPortfolioBrand(button));
         });
 
