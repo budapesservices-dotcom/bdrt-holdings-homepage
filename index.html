@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-gap-aware-grayscale-37" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-connected-neighbors-38" />
   </head>
   <body>
     <main class="page">
@@ -348,16 +348,11 @@
             const page = expandedShot.closest(".portfolio-gallery__page");
             if (!page || !target || !pageRect) return;
 
-            const focusRect = expandedShot.getBoundingClientRect();
-            const focusLeft = focusRect.left - pageRect.left;
-            const focusTop = focusRect.top - pageRect.top;
-            const focusRight = focusLeft + focusRect.width;
-            const focusBottom = focusTop + focusRect.height;
-            const focusCenterX = focusLeft + focusRect.width / 2;
-            const focusCenterY = focusTop + focusRect.height / 2;
             const style = window.getComputedStyle(page);
             const columnGap = Number.parseFloat(style.columnGap) || 8;
             const rowGap = Number.parseFloat(style.rowGap) || 8;
+            const targetRight = target.left + target.width;
+            const targetBottom = target.top + target.height;
 
             page.querySelectorAll(".portfolio-shot").forEach((candidate) => {
               candidate.classList.remove("shrink-width", "shrink-height");
@@ -368,50 +363,43 @@
               const rect = candidate.getBoundingClientRect();
               if (!(rect.width > 0 && rect.height > 0)) return;
 
+              // Every tile is measured in the same page coordinate space. This includes
+              // tiles two or three positions away when the expanded image reaches them.
               const left = rect.left - pageRect.left;
               const top = rect.top - pageRect.top;
               const right = left + rect.width;
               const bottom = top + rect.height;
-              const centerX = left + rect.width / 2;
-              const centerY = top + rect.height / 2;
+              const overlapX = Math.min(right, targetRight) - Math.max(left, target.left);
+              const overlapY = Math.min(bottom, targetBottom) - Math.max(top, target.top);
 
-              // Only consider direct neighbors (including corner neighbors) in the original grid.
-              const gapX = Math.max(left - focusRight, focusLeft - right, 0);
-              const gapY = Math.max(top - focusBottom, focusTop - bottom, 0);
-              if (gapX > columnGap + 2 || gapY > rowGap + 2) return;
-
-              // The expanded image must actually overlap this neighbor's original cell.
-              const overlapX = Math.min(right, target.left + target.width) - Math.max(left, target.left);
-              const overlapY = Math.min(bottom, target.top + target.height) - Math.max(top, target.top);
+              // Tiles hidden completely beneath the expanded image need no shrink.
               if (overlapX <= 0 || overlapY <= 0) return;
+              if (left >= target.left && right <= targetRight &&
+                  top >= target.top && bottom <= targetBottom) return;
 
-              // Keep a constant gap equal to the original grid gap. Shrink only the axis
-              // that can leave a visible strip outside the expanded image's final bounds.
               const options = [];
-              const addOption = (axis, remaining, dimension, origin) => {
-                if (!(remaining > 0) || !(remaining < dimension * 0.985)) return;
-                options.push({
-                  axis,
-                  scale: Math.max(0.04, Math.min(0.98, remaining / dimension)),
-                  origin
-                });
+              const addOption = (axis, freeSpace, dimension, origin) => {
+                // Scale is based on the tile's original bounds and the original grid gap,
+                // not on whether the tile happens to be portrait, square, or landscape.
+                const scale = Math.max(0.025, Math.min(0.985, freeSpace / dimension));
+                options.push({ axis, scale, origin });
               };
 
-              if (left < target.left) {
+              if (left < target.left && right > target.left) {
                 addOption("width", target.left - columnGap - left, rect.width, "0% 50%");
               }
-              if (right > target.left + target.width) {
-                addOption("width", right - (target.left + target.width + columnGap), rect.width, "100% 50%");
+              if (right > targetRight && left < targetRight) {
+                addOption("width", right - targetRight - columnGap, rect.width, "100% 50%");
               }
-              if (top < target.top) {
+              if (top < target.top && bottom > target.top) {
                 addOption("height", target.top - rowGap - top, rect.height, "50% 0%");
               }
-              if (bottom > target.top + target.height) {
-                addOption("height", bottom - (target.top + target.height + rowGap), rect.height, "50% 100%");
+              if (bottom > targetBottom && top < targetBottom) {
+                addOption("height", bottom - targetBottom - rowGap, rect.height, "50% 100%");
               }
 
               if (!options.length) return;
-              // Preserve as much of the neighboring image as possible while maintaining the gap.
+              // Choose the axis that preserves the largest visible part of this tile.
               options.sort((a, b) => b.scale - a.scale);
               const chosen = options[0];
               candidate.classList.add(chosen.axis === "width" ? "shrink-width" : "shrink-height");
@@ -545,6 +533,7 @@
             activeFlightAnimation = null;
 
             shot.classList.remove("is-expanded");
+            shot.classList.add("is-closing");
             shot.setAttribute("aria-expanded", "false");
             clearFocusedPageShrink(shot.closest(".portfolio-gallery__page"));
             activeExpandedShot = null;
@@ -556,6 +545,7 @@
               activeFlightImage = null;
               activeFlightAnimation = null;
               if (sourceImage) sourceImage.style.removeProperty("opacity");
+              shot.classList.remove("is-closing");
             };
 
             if (immediate || !targetRect.width || !targetRect.height) {
@@ -567,8 +557,8 @@
               { left: `${fromLeft}px`, top: `${fromTop}px`, width: `${currentRect.width}px`, height: `${currentRect.height}px` },
               { left: `${toLeft}px`, top: `${toTop}px`, width: `${targetRect.width}px`, height: `${targetRect.height}px` }
             ], {
-              duration: 420,
-              easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+              duration: 620,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
               fill: "both"
             });
             activeFlightAnimation.finished.then(finish).catch(() => {});
