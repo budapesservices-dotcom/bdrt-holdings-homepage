@@ -360,8 +360,73 @@ body::-webkit-scrollbar,
   color: var(--cream);
 }
 
+.businesses-section__backdrops {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  overflow: hidden;
+  background: var(--obsidian);
+  pointer-events: none;
+}
+
+.businesses-backdrop {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 820ms ease, visibility 0s linear 820ms;
+}
+
+.businesses-backdrop.is-active {
+  visibility: visible;
+  opacity: 1;
+  transition: opacity 820ms ease, visibility 0s;
+}
+
+.businesses-backdrop::after {
+  position: absolute;
+  z-index: 1;
+  inset: 0;
+  background: rgba(15, 15, 17, var(--portfolio-backdrop-shade, 0.4));
+  content: "";
+}
+
+.businesses-backdrop[data-background="voxa"] { --portfolio-backdrop-shade: 0.44; }
+.businesses-backdrop[data-background="voxa-house"] { --portfolio-backdrop-shade: 0.36; }
+.businesses-backdrop[data-background="imerge"] { --portfolio-backdrop-shade: 0.39; }
+.businesses-backdrop[data-background="involia"] { --portfolio-backdrop-shade: 0.43; }
+.businesses-backdrop[data-background="academic-elements"] { --portfolio-backdrop-shade: 0.42; }
+.businesses-backdrop[data-background="emerging"] { --portfolio-backdrop-shade: 0.49; }
+
+.businesses-backdrop img,
+.businesses-backdrop video {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transform: scale(1);
+}
+
+.businesses-backdrop.is-active img {
+  animation: portfolio-background-zoom 7000ms cubic-bezier(0.18, 0.68, 0.28, 1) both;
+}
+
+@keyframes portfolio-background-zoom {
+  from { transform: scale(1.015); }
+  to { transform: scale(1.105); }
+}
+
+.businesses-section:not(.is-active) .businesses-backdrop.is-active img {
+  animation-play-state: paused;
+}
+
 .businesses-section__intro {
   position: absolute;
+  z-index: 2;
   top: 50%;
   left: 50%;
   display: flex;
@@ -399,7 +464,7 @@ body::-webkit-scrollbar,
 .businesses-section__description {
   max-width: 590px;
   margin: 14px auto 0;
-  color: rgba(244, 241, 234, 0.72);
+  color: rgba(244, 241, 234, 0.84);
   font-family: Arial, Helvetica, sans-serif;
   font-size: clamp(12px, 1.02vw, 14px);
   font-weight: 400;
@@ -428,6 +493,7 @@ body::-webkit-scrollbar,
   font-weight: 700;
   letter-spacing: 0.19em;
   line-height: 1;
+  text-decoration: none;
   cursor: pointer;
   isolation: isolate;
   transition: color 380ms ease, border-color 380ms ease;
@@ -485,6 +551,7 @@ body::-webkit-scrollbar,
 
 .businesses-section__logo-rail {
   position: absolute;
+  z-index: 2;
   right: 0;
   bottom: -9vh;
   left: 0;
@@ -519,7 +586,6 @@ body::-webkit-scrollbar,
   transform: none;
 }
 
-/* The light panel moves independently; the button and logo stay in place. */
 .business-logo::after {
   position: absolute;
   z-index: 0;
@@ -554,7 +620,6 @@ body::-webkit-scrollbar,
   transform: translateY(100%);
 }
 
-/* The timer's track fills the tile, so the white edge travels with the cream fill. */
 .business-logo__duration {
   position: absolute;
   z-index: 3;
@@ -594,19 +659,6 @@ body::-webkit-scrollbar,
 .business-logo.is-dropping .business-logo__duration,
 .business-logo.is-rising .business-logo__duration {
   transform: translateY(100%);
-}
-
-/* Discover animates only the light fill and the timer track, never the logo tile. */
-.business-logo.is-discovered::after,
-.business-logo.is-discovered .business-logo__duration {
-  animation: businessDiscoverFill 720ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes businessDiscoverFill {
-  0% { transform: translateY(0); }
-  38% { transform: translateY(12px); }
-  72% { transform: translateY(-3px); }
-  100% { transform: translateY(0); }
 }
 
 .business-logo:focus {
