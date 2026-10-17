@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-connected-neighbors-38" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-preserve-ratio-grayscale-39" />
   </head>
   <body>
     <main class="page">
@@ -338,9 +338,11 @@
             if (!page) return;
             page.classList.remove("has-focused-shot");
             page.querySelectorAll(".portfolio-shot").forEach((candidate) => {
-              candidate.classList.remove("shrink-width", "shrink-height");
-              candidate.style.removeProperty("transform-origin");
-              candidate.style.removeProperty("--shrink-scale");
+              candidate.classList.remove(
+                "shrink-left", "shrink-right", "shrink-top", "shrink-bottom",
+                "shrink-width", "shrink-height"
+              );
+              candidate.style.removeProperty("clip-path");
             });
           };
 
@@ -355,16 +357,16 @@
             const targetBottom = target.top + target.height;
 
             page.querySelectorAll(".portfolio-shot").forEach((candidate) => {
-              candidate.classList.remove("shrink-width", "shrink-height");
-              candidate.style.removeProperty("transform-origin");
-              candidate.style.removeProperty("--shrink-scale");
+              candidate.classList.remove(
+                "shrink-left", "shrink-right", "shrink-top", "shrink-bottom",
+                "shrink-width", "shrink-height"
+              );
+              candidate.style.removeProperty("clip-path");
               if (candidate === expandedShot) return;
 
               const rect = candidate.getBoundingClientRect();
               if (!(rect.width > 0 && rect.height > 0)) return;
 
-              // Every tile is measured in the same page coordinate space. This includes
-              // tiles two or three positions away when the expanded image reaches them.
               const left = rect.left - pageRect.left;
               const top = rect.top - pageRect.top;
               const right = left + rect.width;
@@ -372,39 +374,59 @@
               const overlapX = Math.min(right, targetRight) - Math.max(left, target.left);
               const overlapY = Math.min(bottom, targetBottom) - Math.max(top, target.top);
 
-              // Tiles hidden completely beneath the expanded image need no shrink.
+              // A tile fully outside the expansion or completely hidden behind it
+              // does not need to be clipped.
               if (overlapX <= 0 || overlapY <= 0) return;
               if (left >= target.left && right <= targetRight &&
                   top >= target.top && bottom <= targetBottom) return;
 
               const options = [];
-              const addOption = (axis, freeSpace, dimension, origin) => {
-                // Scale is based on the tile's original bounds and the original grid gap,
-                // regardless of the tile's aspect ratio.
-                const scale = Math.max(0.025, Math.min(0.985, freeSpace / dimension));
-                options.push({ axis, scale, origin });
+              const addClip = (edge, inset, visibleWidth, visibleHeight) => {
+                if (!(inset >= 0) || !(visibleWidth > 1) || !(visibleHeight > 1)) return;
+                if (inset >= (edge === "left" || edge === "right" ? rect.width : rect.height)) return;
+                options.push({
+                  edge,
+                  inset,
+                  visibleArea: visibleWidth * visibleHeight
+                });
               };
 
+              // Keep the part of the tile outside the expansion, with the exact
+              // original grid gap preserved. Clip the image rather than scaling it:
+              // its pixels and aspect ratio are never squeezed.
               if (left < target.left && right > target.left) {
-                addOption("width", target.left - columnGap - left, rect.width, "0% 50%");
+                const visibleRight = target.left - columnGap;
+                const visibleWidth = visibleRight - left;
+                addClip("right", right - visibleRight, visibleWidth, rect.height);
               }
-              if (right > targetRight && left < targetRight) {
-                addOption("width", right - targetRight - columnGap, rect.width, "100% 50%");
+              if (left < targetRight && right > targetRight) {
+                const visibleLeft = targetRight + columnGap;
+                const visibleWidth = right - visibleLeft;
+                addClip("left", visibleLeft - left, visibleWidth, rect.height);
               }
               if (top < target.top && bottom > target.top) {
-                addOption("height", target.top - rowGap - top, rect.height, "50% 0%");
+                const visibleBottom = target.top - rowGap;
+                const visibleHeight = visibleBottom - top;
+                addClip("bottom", bottom - visibleBottom, rect.width, visibleHeight);
               }
-              if (bottom > targetBottom && top < targetBottom) {
-                addOption("height", bottom - targetBottom - rowGap, rect.height, "50% 100%");
+              if (top < targetBottom && bottom > targetBottom) {
+                const visibleTop = targetBottom + rowGap;
+                const visibleHeight = bottom - visibleTop;
+                addClip("top", visibleTop - top, rect.width, visibleHeight);
               }
 
               if (!options.length) return;
-              // Choose the axis that preserves the largest visible part of this tile.
-              options.sort((a, b) => b.scale - a.scale);
+              // If an oversized tile can remain visible on more than one side,
+              // keep the largest useful section while maintaining the consistent gap.
+              options.sort((a, b) => b.visibleArea - a.visibleArea);
               const chosen = options[0];
-              candidate.classList.add(chosen.axis === "width" ? "shrink-width" : "shrink-height");
-              candidate.style.setProperty("--shrink-scale", String(chosen.scale));
-              candidate.style.transformOrigin = chosen.origin;
+              const insets = { top: 0, right: 0, bottom: 0, left: 0 };
+              insets[chosen.edge] = chosen.inset;
+              candidate.classList.add("shrink-" + chosen.edge);
+              candidate.style.setProperty(
+                "clip-path",
+                `inset(${insets.top}px ${insets.right}px ${insets.bottom}px ${insets.left}px)`
+              );
             });
           };
 
