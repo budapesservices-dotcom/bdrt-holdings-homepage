@@ -10,92 +10,92 @@
   </head>
   <body>
     <main class="page">
-    <div class="magazine-stack">
-      <section class="hero" id="home" aria-label="BDRT Holdings">
-      <header class="site-header">
-        <svg class="wordmark-frame" viewBox="0 0 130 116" preserveAspectRatio="none" aria-hidden="true">
-          <path class="wordmark-frame__stroke" d="M1 0 V31 C1 76 29.654 113 65 113 C100.346 113 129 76 129 31 V0" />
-          <path class="wordmark-frame__fill" d="M1 0 H129 V31 C129 76 100.346 113 65 113 C29.654 113 1 76 1 31 Z" />
-        </svg>
-        <nav class="site-nav site-nav--left" aria-label="Main navigation">
-          <a href="#home" aria-current="page">HOME</a>
-          <a href="#about">ABOUT</a>
-          <a href="#businesses">BUSINESSES</a>
-          <a href="#our-brands">OUR BRANDS</a>
-        </nav>
+      <div class="magazine-stack">
+        <section class="hero" id="home" aria-label="BDRT Holdings">
+          <header class="site-header">
+            <svg class="wordmark-frame" viewBox="0 0 130 116" preserveAspectRatio="none" aria-hidden="true">
+              <path class="wordmark-frame__stroke" d="M1 0 V31 C1 76 29.654 113 65 113 C100.346 113 129 76 129 31 V0" />
+              <path class="wordmark-frame__fill" d="M1 0 H129 V31 C129 76 100.346 113 65 113 C29.654 113 1 76 1 31 Z" />
+            </svg>
 
-        <a class="wordmark" href="#home" aria-label="BDRT Holdings home">
-          <span class="wordmark__main">BDRT</span>
-          <span class="wordmark__sub">HOLDINGS</span>
-        </a>
+            <nav class="site-nav site-nav--left" aria-label="Main navigation">
+              <a href="#home" aria-current="page">HOME</a>
+              <a href="#about">ABOUT</a>
+              <a href="#businesses">BUSINESSES</a>
+              <a href="#our-brands">OUR BRANDS</a>
+            </nav>
 
-        <nav class="site-nav site-nav--right" aria-label="Secondary navigation">
-          <a href="#portfolio">PORTFOLIO</a>
-          <a href="#contact">CONTACT</a>
-          <a href="#client-login">CLIENT LOGIN</a>
-          <a href="#donor-portal">DONOR PORTAL</a>
-        </nav>
-      </header>
+            <a class="wordmark" href="#home" aria-label="BDRT Holdings home">
+              <span class="wordmark__main">BDRT</span>
+              <span class="wordmark__sub">HOLDINGS</span>
+            </a>
 
-      <video
-        class="hero__video"
-        autoplay
-        muted
-        loop
-        playsinline
-        preload="auto"
-        aria-hidden="true"
-      >
-        <source
-          src="https://www.dropbox.com/scl/fi/kdqyesm9g437sj5ll2gob/model-onboarding-hero.mp4?rlkey=5djiv6x231vjlw78dgsfapk24&amp;raw=1"
-          type="video/mp4"
-        />
-      </video>
+            <nav class="site-nav site-nav--right" aria-label="Secondary navigation">
+              <a href="#portfolio">PORTFOLIO</a>
+              <a href="#contact">CONTACT</a>
+              <a href="#client-login">CLIENT LOGIN</a>
+              <a href="#donor-portal">DONOR PORTAL</a>
+            </nav>
+          </header>
 
-    </section>
+          <video
+            class="hero__video"
+            autoplay
+            muted
+            loop
+            playsinline
+            preload="auto"
+            aria-hidden="true"
+          >
+            <source
+              src="https://www.dropbox.com/scl/fi/kdqyesm9g437sj5ll2gob/model-onboarding-hero.mp4?rlkey=5djiv6x231vjlw78dgsfapk24&amp;raw=1"
+              type="video/mp4"
+            />
+          </video>
+        </section>
 
-    <section class="about-section" id="about" aria-labelledby="about-title">
-      <div class="about-section__inner">
-        <p class="about-section__eyebrow">A CLOSER LOOK</p>
-        <h1 id="about-title">Discover BDRT Holdings.</h1>
-        <p class="about-section__copy">Explore the businesses, portfolio, and brands behind the name.</p>
+        <section class="about-section" id="about" aria-labelledby="about-title">
+          <div class="about-section__inner">
+            <p class="about-section__eyebrow">A CLOSER LOOK</p>
+            <h1 id="about-title">Discover BDRT Holdings.</h1>
+            <p class="about-section__copy">Explore the businesses, portfolio, and brands behind the name.</p>
+          </div>
+        </section>
       </div>
-      </section>
-    </div>
-  </main>
+    </main>
 
-  <script>
-    (() => {
-      const page = document.querySelector(".about-section");
-      if (!page) return;
+    <script>
+      (() => {
+        const page = document.querySelector(".about-section");
+        if (!page) return;
 
-      const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-      let framePending = false;
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let framePending = false;
 
-      const updatePageTurn = () => {
-        framePending = false;
-        const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-        const top = page.getBoundingClientRect().top;
-        const progress = Math.min(1, Math.max(0, 1 - top / viewportHeight));
-        const remaining = reduceMotion.matches ? 0 : 1 - progress;
+        const updatePageTurn = () => {
+          framePending = false;
+          const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
+          const top = page.getBoundingClientRect().top;
+          const progress = Math.min(1, Math.max(0, 1 - top / viewportHeight));
+          const remaining = reduceMotion.matches ? 0 : 1 - progress;
 
-        page.style.setProperty("--page-rotation", `${(-5 * remaining).toFixed(2)}deg`);
-        page.style.setProperty("--page-lift", `${(14 * remaining).toFixed(2)}px`);
-      };
+          page.style.setProperty("--page-rotation", `${(-5 * remaining).toFixed(2)}deg`);
+          page.style.setProperty("--page-lift", `${(14 * remaining).toFixed(2)}px`);
+        };
 
-      const requestPageTurnUpdate = () => {
-        if (framePending) return;
-        framePending = true;
-        window.requestAnimationFrame(updatePageTurn);
-      };
+        const requestPageTurnUpdate = () => {
+          if (framePending) return;
+          framePending = true;
+          window.requestAnimationFrame(updatePageTurn);
+        };
 
-      window.addEventListener("scroll", requestPageTurnUpdate, { passive: true });
-      window.addEventListener("resize", requestPageTurnUpdate);
-      if (typeof reduceMotion.addEventListener === "function") {
-        reduceMotion.addEventListener("change", requestPageTurnUpdate);
-      }
-      updatePageTurn();
-    })();
-  </script>
+        window.addEventListener("scroll", requestPageTurnUpdate, { passive: true });
+        window.addEventListener("resize", requestPageTurnUpdate);
+        if (typeof reduceMotion.addEventListener === "function") {
+          reduceMotion.addEventListener("change", requestPageTurnUpdate);
+        }
+        updatePageTurn();
+      })();
+    </script>
   </body>
 </html>
