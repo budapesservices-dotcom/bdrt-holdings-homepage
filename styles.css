@@ -6362,6 +6362,9 @@ body.portal-open .site-header .wordmark {
 }
 
 body.portal-open .portal-sheet__wordmark {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
   visibility: visible;
   opacity: 1;
 }
