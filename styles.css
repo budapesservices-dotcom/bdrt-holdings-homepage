@@ -3177,7 +3177,7 @@ body.header-over-light .site-nav a:focus-visible {
   font-weight: 400;
   letter-spacing: -0.035em;
   line-height: 1.1;
-  text-align: center;
+  text-align: right;
   text-wrap: balance;
 }
 
@@ -3279,7 +3279,7 @@ body.header-over-light .site-nav a:focus-visible {
     grid-row: 2;
     max-width: 100%;
     font-size: clamp(21px, 5.7vw, 28px);
-    text-align: left;
+    text-align: right;
   }
 
   .site-footer__bottom {
