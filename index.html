@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-section-three-blank-1" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-fixed-section-panels-1" />
   </head>
   <body>
     <main class="page">
@@ -37,7 +37,7 @@
       </header>
 
       <div class="magazine-stack">
-        <section class="hero" id="home" aria-label="BDRT Holdings">
+        <section class="hero is-active" id="home" aria-label="BDRT Holdings">
           <video
             class="hero__video"
             autoplay
@@ -70,9 +70,9 @@
             </div>
           </div>
         </section>
-      </div>
 
-      <section class="businesses-section" id="businesses" aria-label="Our businesses and portfolio"></section>
+        <section class="businesses-section" id="businesses" aria-label="Our businesses and portfolio"></section>
+      </div>
     </main>
 
     <script>
@@ -83,16 +83,19 @@
         if (!hero || !about || !businesses) return;
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        const updateHeaderContrast = () => {
-          const scrollY = window.scrollY;
-          const lightSectionTop = window.innerHeight * 0.48;
-          const darkSectionTop = businesses.getBoundingClientRect().top + window.scrollY;
-          const overLightSection = scrollY > lightSectionTop && scrollY < darkSectionTop - window.innerHeight * 0.52;
-          document.body.classList.toggle("header-over-light", overLightSection);
-          document.body.classList.toggle("header-over-dark", !overLightSection);
+        const panels = [hero, about, businesses];
+        const updateActiveSection = () => {
+          const activeIndex = Math.max(0, Math.min(2, Math.round(window.scrollY / Math.max(1, window.innerHeight))));
+          panels.forEach((panel, index) => {
+            panel.classList.toggle("is-active", index === activeIndex);
+            panel.setAttribute("aria-hidden", index === activeIndex ? "false" : "true");
+          });
+          document.body.classList.toggle("header-over-light", activeIndex === 1);
+          document.body.classList.toggle("header-over-dark", activeIndex !== 1);
         };
-        window.addEventListener("scroll", updateHeaderContrast, { passive: true });
-        updateHeaderContrast();
+        window.addEventListener("scroll", updateActiveSection, { passive: true });
+        window.addEventListener("resize", updateActiveSection, { passive: true });
+        updateActiveSection();
 
         let animating = false;
         let animationFrame = 0;
@@ -101,25 +104,11 @@
         let startY = 0;
         let capturedVerticalSwipe = false;
 
-        const sectionTarget = (index) => {
-          if (index <= 0) return 0;
-          const section = index === 1 ? about : businesses;
-          return Math.max(0, section.getBoundingClientRect().top + window.scrollY);
-        };
+        // The page height is a virtual scroll track; each visual section stays pinned to the viewport.
+        const sectionTarget = (index) => Math.max(0, Math.min(2, index)) * window.innerHeight;
 
-        const currentSection = () => {
-          const positions = [0, sectionTarget(1), sectionTarget(2)];
-          let activeIndex = 0;
-          let nearestDistance = Infinity;
-          positions.forEach((position, index) => {
-            const distance = Math.abs(window.scrollY - position);
-            if (distance < nearestDistance) {
-              nearestDistance = distance;
-              activeIndex = index;
-            }
-          });
-          return activeIndex;
-        };
+        const currentSection = () =>
+          Math.max(0, Math.min(2, Math.round(window.scrollY / Math.max(1, window.innerHeight))));
 
         const moveToSection = (index) => {
           if (animating || index < 0 || index > 2) return false;
@@ -133,6 +122,7 @@
 
           if (reduceMotion.matches) {
             window.scrollTo(0, target);
+            updateActiveSection();
             animating = false;
             return true;
           }
@@ -166,6 +156,15 @@
         };
 
         const moveOne = (direction) => moveToSection(currentSection() + direction);
+
+        document.querySelectorAll('.site-header a[href="#home"], .site-header a[href="#about"], .site-header a[href="#businesses"]').forEach((link) => {
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+            const targetId = link.getAttribute("href");
+            const targetIndex = targetId === "#home" ? 0 : targetId === "#about" ? 1 : 2;
+            moveToSection(targetIndex);
+          });
+        });
 
         window.addEventListener("wheel", (event) => {
           if (event.ctrlKey || Math.abs(event.deltaY) < 2.5) return;
