@@ -159,6 +159,7 @@ body {
 }
 
 .wordmark__main {
+  color: #0F0F11;
   font-family: Arial, Helvetica, sans-serif;
   font-size: clamp(27px, 2.25vw, 34px);
   font-weight: 800;
