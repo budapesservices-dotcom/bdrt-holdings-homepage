@@ -4,7 +4,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <meta name="theme-color" content="#0F0F11" />
-    <meta name="description" content="BDRT Holdings homepage hero image." />
+    <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
     <link rel="stylesheet" href="./styles.css" />
   </head>
@@ -35,13 +35,20 @@
         </nav>
       </header>
 
-      <img
-        class="hero__image"
-        src="https://unsplash.com/photos/s3VxCT4p8FM/download?force=true&amp;w=2400"
-        alt="Fashion editorial portrait of a model seated in a wooden chair on a concrete floor."
-        fetchpriority="high"
-        decoding="async"
-      />
+      <video
+        class="hero__video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="auto"
+        aria-hidden="true"
+      >
+        <source
+          src="https://www.dropbox.com/scl/fi/kdqyesm9g437sj5ll2gob/model-onboarding-hero.mp4?rlkey=5djiv6x231vjlw78dgsfapk24&amp;raw=1"
+          type="video/mp4"
+        />
+      </video>
     </main>
   </body>
 </html>
