@@ -496,8 +496,14 @@ body::-webkit-scrollbar,
   box-shadow: 0 7px 22px rgba(15, 15, 17, 0.10);
 }
 
-.portfolio-shot.is-flight-hidden {
-  visibility: hidden !important;
+.portfolio-shot.is-expanded img.is-loaded {
+  opacity: 0 !important;
+}
+
+.portfolio-gallery__page.has-focused-shot .portfolio-shot:not(.is-expanded) img.is-loaded {
+  object-fit: contain;
+  transform: scale(0.68);
+  filter: brightness(0.78);
 }
 
 .portfolio-gallery__flight {
@@ -507,10 +513,12 @@ body::-webkit-scrollbar,
   max-width: none;
   max-height: none;
   margin: 0;
-  border: 1px solid rgba(15, 15, 17, 0.055);
+  border: 1px solid rgba(15, 15, 17, 0.10);
+  background: #f4f1ea;
   object-fit: cover;
   object-position: center;
-  pointer-events: none;
+  pointer-events: auto;
+  cursor: zoom-out;
   user-select: none;
   -webkit-user-drag: none;
   will-change: top, left, width, height;
@@ -581,16 +589,68 @@ body::-webkit-scrollbar,
 .portfolio-gallery__page--c .portfolio-shot--7 { grid-column: 6 / span 3; grid-row: 5 / span 2; }
 .portfolio-gallery__page--last .portfolio-shot--6 { grid-column: 4 / span 5; }
 
+.portfolio-shot:not(.is-broken)::before {
+  position: absolute;
+  z-index: 2;
+  inset: 0;
+  background: rgba(15, 15, 17, 0.30);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 240ms ease;
+}
+
+.portfolio-shot:not(.is-broken)::after {
+  position: absolute;
+  z-index: 3;
+  right: 10px;
+  bottom: 10px;
+  left: 10px;
+  color: #fff;
+  content: "CLICK TO EXPAND";
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.15em;
+  line-height: 1.4;
+  text-align: center;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.42);
+  transition: opacity 240ms ease;
+}
+
+.portfolio-shot.is-broken::after {
+  content: attr(aria-label);
+  right: 14px;
+  bottom: 14px;
+  left: 14px;
+  color: rgba(15, 15, 17, 0.48);
+  text-shadow: none;
+}
+
 @media (hover: hover) and (pointer: fine) {
-  .portfolio-shot:hover img.is-loaded {
+  .portfolio-shot:not(.is-expanded):hover img.is-loaded {
     filter: brightness(0.86);
-    transform: scale(1.045);
+    transform: scale(1.035);
+  }
+
+  .portfolio-shot:not(.is-expanded):hover::before,
+  .portfolio-shot:not(.is-expanded):hover::after,
+  .portfolio-shot:not(.is-expanded):focus-visible::before,
+  .portfolio-shot:not(.is-expanded):focus-visible::after {
+    opacity: 1;
   }
 }
 
-.portfolio-shot.is-expanded img.is-loaded {
-  filter: brightness(0.9);
-  transform: scale(1.015);
+.portfolio-shot.is-expanded {
+  border-color: rgba(15, 15, 17, 0.22);
+  box-shadow: 0 7px 22px rgba(15, 15, 17, 0.10);
+}
+
+.portfolio-gallery__viewport.is-dragging .portfolio-shot::before,
+.portfolio-gallery__viewport.is-dragging .portfolio-shot::after {
+  opacity: 0 !important;
 }
 
 @media (max-width: 900px) {
