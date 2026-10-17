@@ -6266,3 +6266,173 @@ body.portal-closing .site-header {
     transition: none !important;
   }
 }
+
+
+/* Single-piece portal: one continuous sheet silhouette with the wordmark inside its arch. */
+:root {
+  --portal-sheet-height: 86dvh;
+  --portal-arch-height: 118px;
+  --portal-arch-width: 146px;
+  --portal-arch-radius: 73px;
+}
+
+/* The sheet owns the motion. The pseudo-element paints the entire outline in one pass. */
+.portal-sheet {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: var(--portal-sheet-height);
+  overflow: visible;
+  isolation: isolate;
+  background: transparent !important;
+  transform: translateY(calc(var(--portal-arch-height) - var(--portal-sheet-height)));
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-sheet::before {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  display: block;
+  background: var(--obsidian);
+  content: "";
+  clip-path: polygon(
+    0 0, 100% 0,
+    100% calc(100% - 118px),
+    calc(50% + 73px) calc(100% - 118px),
+    calc(50% + 73px) calc(100% - 87px),
+    calc(50% + 72px) calc(100% - 74px),
+    calc(50% + 69px) calc(100% - 61px),
+    calc(50% + 65px) calc(100% - 49px),
+    calc(50% + 59px) calc(100% - 39px),
+    calc(50% + 52px) calc(100% - 29px),
+    calc(50% + 43px) calc(100% - 21px),
+    calc(50% + 34px) calc(100% - 15px),
+    calc(50% + 23px) calc(100% - 9px),
+    calc(50% + 12px) calc(100% - 6px),
+    50% calc(100% - 5px),
+    calc(50% - 12px) calc(100% - 6px),
+    calc(50% - 23px) calc(100% - 9px),
+    calc(50% - 34px) calc(100% - 15px),
+    calc(50% - 43px) calc(100% - 21px),
+    calc(50% - 52px) calc(100% - 29px),
+    calc(50% - 59px) calc(100% - 39px),
+    calc(50% - 65px) calc(100% - 49px),
+    calc(50% - 69px) calc(100% - 61px),
+    calc(50% - 72px) calc(100% - 74px),
+    calc(50% - 73px) calc(100% - 87px),
+    calc(50% - 73px) calc(100% - 118px),
+    0 calc(100% - 118px)
+  );
+}
+
+/* Keep portal copy out of the arch; it is part of the same moving sheet. */
+.portal-page {
+  inset: 0 0 var(--portal-arch-height);
+  padding-bottom: 18px;
+  z-index: 1;
+}
+
+.portal-sheet__wordmark {
+  position: absolute;
+  z-index: 4;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transition:
+    bottom 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 160ms ease;
+}
+
+body.portal-open .site-header,
+body.portal-closing .site-header {
+  top: var(--header-top);
+  transition: top 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.portal-open .site-header .wordmark-frame,
+body.portal-open .site-header .wordmark {
+  visibility: hidden !important;
+  opacity: 0 !important;
+  transition: none !important;
+}
+
+body.portal-open .portal-sheet__wordmark {
+  visibility: visible;
+  opacity: 1;
+}
+
+.portal-experience.is-open .portal-sheet {
+  transform: translateY(0);
+}
+
+.portal-experience.is-open .portal-sheet__wordmark {
+  bottom: 17px;
+}
+
+/* One connected outline on narrow screens, keeping the original mobile arch proportions. */
+@media (max-width: 760px) {
+  :root {
+    --portal-sheet-height: 78dvh;
+    --portal-arch-height: 116px;
+    --portal-arch-width: 138px;
+    --portal-arch-radius: 69px;
+  }
+
+  .portal-sheet::before {
+    clip-path: polygon(
+      0 0, 100% 0,
+      100% calc(100% - 116px),
+      calc(50% + 69px) calc(100% - 116px),
+      calc(50% + 69px) calc(100% - 85px),
+      calc(50% + 67px) calc(100% - 72px),
+      calc(50% + 64px) calc(100% - 59px),
+      calc(50% + 61px) calc(100% - 47px),
+      calc(50% + 55px) calc(100% - 37px),
+      calc(50% + 48px) calc(100% - 27px),
+      calc(50% + 40px) calc(100% - 19px),
+      calc(50% + 31px) calc(100% - 12px),
+      calc(50% + 22px) calc(100% - 7px),
+      calc(50% + 11px) calc(100% - 4px),
+      50% calc(100% - 3px),
+      calc(50% - 11px) calc(100% - 4px),
+      calc(50% - 22px) calc(100% - 7px),
+      calc(50% - 31px) calc(100% - 12px),
+      calc(50% - 40px) calc(100% - 19px),
+      calc(50% - 48px) calc(100% - 27px),
+      calc(50% - 55px) calc(100% - 37px),
+      calc(50% - 61px) calc(100% - 47px),
+      calc(50% - 64px) calc(100% - 59px),
+      calc(50% - 67px) calc(100% - 72px),
+      calc(50% - 69px) calc(100% - 85px),
+      calc(50% - 69px) calc(100% - 116px),
+      0 calc(100% - 116px)
+    );
+  }
+
+  .portal-page {
+    inset: 0 0 var(--portal-arch-height);
+    padding: 65px 22px 12px;
+  }
+
+  .portal-sheet__wordmark {
+    bottom: 38px;
+  }
+
+  .portal-experience.is-open .portal-sheet__wordmark {
+    bottom: 17px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-sheet,
+  .portal-sheet__wordmark,
+  body.portal-open .site-header,
+  body.portal-closing .site-header {
+    transition: none !important;
+  }
+}
