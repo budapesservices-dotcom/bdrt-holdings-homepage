@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-hover-handoff-match-45" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-single-image-no-handoff-46" />
   </head>
   <body>
     <main class="page">
@@ -320,26 +320,70 @@
           const galleryShots = Array.from(portfolioGalleryViewport.querySelectorAll(".portfolio-shot"));
           let activeExpandedShot = null;
           let activeFlightImage = null;
+          let activeFlightShot = null;
+          let activeFlightOriginalState = null;
+          let activeFlightOriginalRect = null;
+          let activeFlightClickHandler = null;
           let activeFlightAnimation = null;
-          let activeSourceFadeAnimation = null;
+          let galleryHandoffRelease = null;
           let galleryPointer = null;
           let suppressGalleryClickUntil = 0;
           let galleryTransitionToken = 0;
 
+          const clearGalleryHandoffSuppression = () => {
+            if (galleryHandoffRelease) {
+              window.removeEventListener("pointermove", galleryHandoffRelease);
+              window.removeEventListener("pointerdown", galleryHandoffRelease);
+              portfolioGalleryViewport.removeEventListener("pointerleave", galleryHandoffRelease);
+              galleryHandoffRelease = null;
+            }
+            portfolioGalleryViewport.classList.remove("is-gallery-handoff");
+          };
+
+          const suppressGalleryHoverAfterClose = () => {
+            clearGalleryHandoffSuppression();
+            portfolioGalleryViewport.classList.add("is-gallery-handoff");
+            galleryHandoffRelease = () => clearGalleryHandoffSuppression();
+            window.addEventListener("pointermove", galleryHandoffRelease, { once: true });
+            window.addEventListener("pointerdown", galleryHandoffRelease, { once: true });
+            portfolioGalleryViewport.addEventListener("pointerleave", galleryHandoffRelease, { once: true });
+          };
+
+          const restoreFlightImageToShot = (shot = activeFlightShot) => {
+            const image = activeFlightImage;
+            if (!image) return null;
+
+            if (activeFlightClickHandler) {
+              image.removeEventListener("click", activeFlightClickHandler);
+            }
+            activeFlightClickHandler = null;
+
+            const original = activeFlightOriginalState;
+            if (shot && image.parentElement !== shot) shot.appendChild(image);
+            if (original) {
+              image.className = original.className;
+              if (original.alt === null) image.removeAttribute("alt");
+              else image.setAttribute("alt", original.alt);
+              if (original.ariaHidden === null) image.removeAttribute("aria-hidden");
+              else image.setAttribute("aria-hidden", original.ariaHidden);
+              if (original.style === null) image.removeAttribute("style");
+              else image.setAttribute("style", original.style);
+            }
+
+            activeFlightImage = null;
+            activeFlightShot = null;
+            activeFlightOriginalState = null;
+            activeFlightOriginalRect = null;
+            return image;
+          };
+
           const stopGalleryFlight = () => {
             galleryTransitionToken += 1;
             try { activeFlightAnimation?.cancel(); } catch (_) {}
-            try { activeSourceFadeAnimation?.cancel(); } catch (_) {}
             activeFlightAnimation = null;
-            activeSourceFadeAnimation = null;
-            galleryShots.forEach((shot) => {
-              if (shot.classList.contains("is-closing")) {
-                shot.querySelector("img")?.style.removeProperty("opacity");
-              }
-              shot.classList.remove("is-flight-hidden", "is-closing");
-            });
-            activeFlightImage?.remove();
-            activeFlightImage = null;
+            clearGalleryHandoffSuppression();
+            if (activeFlightImage) restoreFlightImageToShot(activeFlightShot);
+            galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden", "is-closing"));
             portfolioGalleryViewport.classList.remove("has-expanded-shot");
             portfolioGalleryViewport.querySelectorAll(".portfolio-gallery__page.has-focused-shot").forEach((page) => {
               clearFocusedPageShrink(page);
@@ -455,7 +499,23 @@
 
           const makeGalleryFlight = (sourceImage, startRect, page) => {
             const pageRect = page.getBoundingClientRect();
-            const flight = sourceImage.cloneNode(false);
+            activeFlightShot = sourceImage.closest(".portfolio-shot");
+            activeFlightOriginalState = {
+              className: sourceImage.className,
+              alt: sourceImage.getAttribute("alt"),
+              ariaHidden: sourceImage.getAttribute("aria-hidden"),
+              style: sourceImage.getAttribute("style")
+            };
+            activeFlightOriginalRect = {
+              left: startRect.left,
+              top: startRect.top,
+              width: startRect.width,
+              height: startRect.height
+            };
+
+            // Reuse the real image node so the close animation never swaps pixels
+            // between a clone and the original image at the final frame.
+            const flight = sourceImage;
             flight.classList.add("portfolio-gallery__flight");
             flight.alt = "";
             flight.setAttribute("aria-hidden", "true");
@@ -465,11 +525,13 @@
             flight.style.height = `${startRect.height}px`;
             flight.style.objectFit = "cover";
             flight.style.objectPosition = window.getComputedStyle(sourceImage).objectPosition;
-            flight.addEventListener("click", (event) => {
+
+            activeFlightClickHandler = (event) => {
               event.preventDefault();
               event.stopPropagation();
               closeGalleryShot();
-            });
+            };
+            flight.addEventListener("click", activeFlightClickHandler);
             getGalleryFlightLayer(page).appendChild(flight);
             return flight;
           };
@@ -489,7 +551,7 @@
 
             const page = shot.closest(".portfolio-gallery__page");
             if (!page) return;
-            const sourceRect = shot.getBoundingClientRect();
+            const sourceRect = sourceImage.getBoundingClientRect();
             const pageRect = page.getBoundingClientRect();
             if (!(sourceRect.width > 0 && sourceRect.height > 0 && pageRect.width > 0 && pageRect.height > 0)) return;
 
@@ -534,6 +596,7 @@
               flight.style.top = `${finalTop}px`;
               flight.style.width = `${finalWidth}px`;
               flight.style.height = `${finalHeight}px`;
+              try { activeFlightAnimation?.cancel(); } catch (_) {}
               activeFlightAnimation = null;
             }).catch(() => {});
           };
@@ -553,12 +616,9 @@
               return;
             }
 
-            const sourceImage = shot.querySelector("img");
             const page = shot.closest(".portfolio-gallery__page");
             const pageRect = page?.getBoundingClientRect();
-            // Match the actual image content box, not the figure's border box,
-            // so the final handoff cannot jump by the tile border thickness.
-            const targetRect = sourceImage ? sourceImage.getBoundingClientRect() : shot.getBoundingClientRect();
+            const targetRect = activeFlightOriginalRect || shot.getBoundingClientRect();
             const currentRect = flight.getBoundingClientRect();
             const fromLeft = pageRect ? currentRect.left - pageRect.left : 0;
             const fromTop = pageRect ? currentRect.top - pageRect.top : 0;
@@ -571,27 +631,20 @@
             shot.classList.remove("is-expanded");
             shot.classList.add("is-closing");
             shot.setAttribute("aria-expanded", "false");
-            try { activeSourceFadeAnimation?.cancel(); } catch (_) {}
-            activeSourceFadeAnimation = null;
-            if (sourceImage) sourceImage.style.opacity = "0";
-            // Restore the surrounding mosaic as soon as the close starts, matching
-            // the original close behavior. The flight image itself fades back to grayscale.
+
+            // The surrounding mosaic restores as the close begins, preserving the
+            // original interaction. The same image node fades to grayscale and returns.
             clearFocusedPageShrink(page);
             portfolioGalleryViewport.classList.remove("has-expanded-shot");
             activeExpandedShot = null;
 
             const finish = () => {
               if (token !== galleryTransitionToken || activeFlightImage !== flight) return;
-              // The source has reached full opacity underneath an identical gray flight.
-              // Restore its base style and remove the flight in the same frame.
-              if (sourceImage) sourceImage.style.removeProperty("opacity");
-              try { activeSourceFadeAnimation?.cancel(); } catch (_) {}
               try { activeFlightAnimation?.cancel(); } catch (_) {}
-              activeSourceFadeAnimation = null;
               activeFlightAnimation = null;
-              flight.remove();
-              activeFlightImage = null;
+              restoreFlightImageToShot(shot);
               shot.classList.remove("is-closing");
+              if (!immediate) suppressGalleryHoverAfterClose();
             };
 
             if (immediate || !targetRect.width || !targetRect.height) {
@@ -619,47 +672,10 @@
               easing: "cubic-bezier(0.22, 1, 0.36, 1)",
               fill: "both"
             });
-
-            activeFlightAnimation.finished.then(() => {
-              if (token !== galleryTransitionToken || activeFlightImage !== flight) return;
-
-              // Pin the gray flight exactly over the original tile before crossfading.
-              flight.style.left = `${toLeft}px`;
-              flight.style.top = `${toTop}px`;
-              flight.style.width = `${targetRect.width}px`;
-              flight.style.height = `${targetRect.height}px`;
-              flight.style.filter = "grayscale(100%)";
-              try { activeFlightAnimation?.cancel(); } catch (_) {}
-              activeFlightAnimation = null;
-
-              // The remaining transition only swaps two matching grayscale layers;
-              // it does not move, resize, or recolor the image again.
-              activeFlightAnimation = flight.animate(
-                [{ opacity: 1 }, { opacity: 0 }],
-                {
-                  duration: 100,
-                  easing: "linear",
-                  fill: "both"
-                }
-              );
-              if (sourceImage) {
-                activeSourceFadeAnimation = sourceImage.animate(
-                  [{ opacity: 0 }, { opacity: 1 }],
-                  {
-                    duration: 100,
-                    easing: "linear",
-                    fill: "both"
-                  }
-                );
-              }
-
-              const crossfades = [activeFlightAnimation.finished];
-              if (activeSourceFadeAnimation) crossfades.push(activeSourceFadeAnimation.finished);
-              Promise.all(crossfades).then(finish).catch(() => {});
-            }).catch(() => {});
+            activeFlightAnimation.finished.then(finish).catch(() => {});
           };
 
-          galleryShots.forEach((shot) => {
+                    galleryShots.forEach((shot) => {
             shot.addEventListener("click", (event) => {
               if (performance.now() < suppressGalleryClickUntil) {
                 event.preventDefault();
