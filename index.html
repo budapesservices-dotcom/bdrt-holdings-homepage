@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-drag-release-49" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-drag-release-50" />
   </head>
   <body>
     <main class="page">
@@ -627,12 +627,18 @@
 
             const page = shot.closest(".portfolio-gallery__page");
             const pageRect = page?.getBoundingClientRect();
-            const targetRect = activeFlightOriginalRect || shot.getBoundingClientRect();
             const currentRect = flight.getBoundingClientRect();
+            const fallbackRect = shot.getBoundingClientRect();
+            const targetRect = activeFlightOriginalRect || {
+              left: pageRect ? fallbackRect.left - pageRect.left : fallbackRect.left,
+              top: pageRect ? fallbackRect.top - pageRect.top : fallbackRect.top,
+              width: fallbackRect.width,
+              height: fallbackRect.height
+            };
             const fromLeft = pageRect ? currentRect.left - pageRect.left : 0;
             const fromTop = pageRect ? currentRect.top - pageRect.top : 0;
-            const toLeft = pageRect ? targetRect.left - pageRect.left : 0;
-            const toTop = pageRect ? targetRect.top - pageRect.top : 0;
+            const toLeft = targetRect.left;
+            const toTop = targetRect.top;
             const token = ++galleryTransitionToken;
             try { activeFlightAnimation?.cancel(); } catch (_) {}
             activeFlightAnimation = null;
