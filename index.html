@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-portfolio-loop-14" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-portfolio-duration-indicator-15" />
   </head>
   <body>
     <main class="page">
@@ -166,27 +166,85 @@
         const portfolioCopy = document.querySelector(".businesses-section__copy");
         const discoverButton = document.getElementById("business-discover");
         const portfolioReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const businessesPanel = document.getElementById("businesses");
+        const portfolioAutoplayDelay = 4800;
         let activePortfolioButton = defaultPortfolioButton || null;
         let portfolioSwitchTimer = 0;
         let portfolioDiscoverTimer = 0;
+        let portfolioAutoplayTimer = 0;
+        let portfolioPlaybackActive = false;
 
         const updateBrandCopy = (brand) => {
           if (portfolioTitle) portfolioTitle.textContent = brand.title;
           if (portfolioDescription) portfolioDescription.textContent = brand.description;
         };
 
-        // Keep the outgoing card's gentle drop and the incoming card's rise in sequence.
+        const stopPortfolioProgress = () => {
+          window.clearTimeout(portfolioAutoplayTimer);
+          portfolioAutoplayTimer = 0;
+          portfolioButtons.forEach((candidate) => candidate.classList.remove("is-timing"));
+        };
+
+        const startPortfolioProgress = (button = activePortfolioButton) => {
+          stopPortfolioProgress();
+          if (
+            portfolioReduceMotion.matches ||
+            !portfolioPlaybackActive ||
+            document.hidden ||
+            !businessesPanel?.classList.contains("is-active") ||
+            !button
+          ) return;
+
+          // Restart the bright edge indicator in sync with this brand's full viewing duration.
+          void button.offsetWidth;
+          button.classList.add("is-timing");
+          portfolioAutoplayTimer = window.setTimeout(() => {
+            portfolioAutoplayTimer = 0;
+            if (document.hidden || !businessesPanel?.classList.contains("is-active")) {
+              syncPortfolioPlayback();
+              return;
+            }
+
+            const currentIndex = portfolioButtons.indexOf(activePortfolioButton);
+            const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % portfolioButtons.length;
+            selectPortfolioBrand(portfolioButtons[nextIndex]);
+          }, portfolioAutoplayDelay);
+        };
+
+        const syncPortfolioPlayback = () => {
+          const shouldPlay =
+            !portfolioReduceMotion.matches &&
+            !document.hidden &&
+            Boolean(businessesPanel?.classList.contains("is-active")) &&
+            portfolioButtons.length > 1;
+
+          if (!shouldPlay) {
+            portfolioPlaybackActive = false;
+            stopPortfolioProgress();
+            return;
+          }
+
+          if (!portfolioPlaybackActive) {
+            portfolioPlaybackActive = true;
+            startPortfolioProgress(activePortfolioButton);
+          }
+        };
+
+        // The outgoing tile drops away; the next tile rises as its copy fades in.
         const selectPortfolioBrand = (button) => {
           const brand = portfolioBrandContent[button.dataset.brand];
           if (!brand) return;
 
           window.clearTimeout(portfolioSwitchTimer);
           portfolioSwitchTimer = 0;
+          stopPortfolioProgress();
+
           if (button === activePortfolioButton) {
             portfolioButtons.forEach((candidate) => {
               candidate.classList.remove("is-dropping", "is-rising");
             });
             if (portfolioCopy) portfolioCopy.classList.remove("is-changing");
+            startPortfolioProgress(button);
             return;
           }
 
@@ -202,6 +260,7 @@
             });
             activePortfolioButton = button;
             updateBrandCopy(brand);
+            startPortfolioProgress(button);
             return;
           }
 
@@ -221,40 +280,30 @@
 
             window.requestAnimationFrame(() => {
               if (portfolioCopy) portfolioCopy.classList.remove("is-changing");
-              window.requestAnimationFrame(() => button.classList.remove("is-rising"));
+              window.requestAnimationFrame(() => {
+                button.classList.remove("is-rising");
+                startPortfolioProgress(button);
+              });
             });
           }, 190);
         };
 
-        const businessesPanel = document.getElementById("businesses");
-        const portfolioAutoplayDelay = 4800;
-        let portfolioAutoplayTimer = 0;
-
-        const schedulePortfolioAdvance = () => {
-          window.clearTimeout(portfolioAutoplayTimer);
-          if (portfolioReduceMotion.matches || portfolioButtons.length < 2) return;
-
-          portfolioAutoplayTimer = window.setTimeout(() => {
-            if (document.hidden || !businessesPanel?.classList.contains("is-active")) {
-              schedulePortfolioAdvance();
-              return;
-            }
-
-            const currentIndex = portfolioButtons.indexOf(activePortfolioButton);
-            const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % portfolioButtons.length;
-            selectPortfolioBrand(portfolioButtons[nextIndex]);
-            schedulePortfolioAdvance();
-          }, portfolioAutoplayDelay);
-        };
-
         portfolioButtons.forEach((button) => {
-          button.addEventListener("click", () => {
-            selectPortfolioBrand(button);
-            schedulePortfolioAdvance();
-          });
+          button.addEventListener("click", () => selectPortfolioBrand(button));
         });
 
-        schedulePortfolioAdvance();
+        if (businessesPanel && "MutationObserver" in window) {
+          const portfolioPanelObserver = new MutationObserver(syncPortfolioPlayback);
+          portfolioPanelObserver.observe(businessesPanel, {
+            attributes: true,
+            attributeFilter: ["class"]
+          });
+        }
+        document.addEventListener("visibilitychange", syncPortfolioPlayback);
+        if (typeof portfolioReduceMotion.addEventListener === "function") {
+          portfolioReduceMotion.addEventListener("change", syncPortfolioPlayback);
+        }
+        syncPortfolioPlayback();
 
         if (discoverButton) {
           discoverButton.addEventListener("click", () => {
