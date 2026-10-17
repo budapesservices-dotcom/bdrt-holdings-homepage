@@ -583,7 +583,7 @@ body::-webkit-scrollbar,
 
 .business-logo.is-selected.is-timing .business-logo__duration::before {
   opacity: 1;
-  animation: portfolio-duration-fill 4800ms linear forwards;
+  animation: portfolio-duration-fill 7000ms linear forwards;
 }
 
 @keyframes portfolio-duration-fill {
