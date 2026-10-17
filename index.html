@@ -1090,8 +1090,9 @@
 
           const request = ++portfolioBackdropRequest;
           // Leave the current backdrop visible until the incoming image/video can draw its first frame.
-          warmPortfolioBackdrop(brandKey).then(() => {
-            if (request !== portfolioBackdropRequest) return;
+          warmPortfolioBackdrop(brandKey).then((ready) => {
+            // Keep the current backdrop visible when the incoming media fails to warm up.
+            if (!ready || request !== portfolioBackdropRequest) return;
             portfolioBackdropLayers.forEach((layer) => {
               layer.classList.toggle("is-active", layer === targetLayer);
             });
