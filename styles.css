@@ -4868,3 +4868,13 @@ body.header-over-light .site-nav a:focus-visible {
     gap: 6px;
   }
 }
+
+
+.portal-sheet__clip-defs {
+  position: absolute;
+  z-index: -1;
+  width: 0;
+  height: 0;
+  overflow: hidden;
+  pointer-events: none;
+}
