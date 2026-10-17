@@ -149,9 +149,9 @@ body {
   left: 50%;
   width: 140px;
   height: 140px;
-  border: 1px solid rgba(120, 85, 34, 0.66);
+  border: 1.5px solid rgba(120, 85, 34, 0.95);
   border-radius: 50%;
-  background: rgba(194, 165, 110, 0.10);
+  background: rgba(194, 165, 110, 0.32);
   clip-path: inset(50% 0 0 0);
   content: "";
   opacity: 1;
@@ -231,8 +231,9 @@ body {
     top: -67px;
     width: 134px;
     height: 134px;
-    border-color: rgba(120, 85, 34, 0.66);
-    background: rgba(194, 165, 110, 0.10);
+    border-width: 1.5px;
+    border-color: rgba(120, 85, 34, 0.95);
+    background: rgba(194, 165, 110, 0.32);
     opacity: 1;
   }
 
