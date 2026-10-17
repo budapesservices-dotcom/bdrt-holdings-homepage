@@ -7317,3 +7317,59 @@ body.portal-closing .portal-sheet::before {
     max-height: 29px;
   }
 }
+
+
+/* Give the VOXA House footer mark more presence without scaling the VOXA logo. */
+.site-footer__brand-link[href="https://voxahouse.com/"] {
+  min-height: 72px;
+}
+
+.site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame {
+  min-height: 62px;
+}
+
+.site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+  width: min(100%, 218px);
+  height: 56px;
+  max-height: 56px;
+}
+
+@media (max-width: 1080px) {
+  .site-footer__brand-link[href="https://voxahouse.com/"] {
+    min-height: 66px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame {
+    min-height: 56px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 202px);
+    height: 50px;
+    max-height: 50px;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-footer__brand-link[href="https://voxahouse.com/"] {
+    min-height: 55px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame {
+    min-height: 49px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 190px);
+    height: 43px;
+    max-height: 43px;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 174px);
+    height: 38px;
+    max-height: 38px;
+  }
+}
