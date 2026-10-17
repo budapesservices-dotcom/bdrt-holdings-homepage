@@ -7604,3 +7604,46 @@ body.portal-closing .portal-sheet::before {
   }
 }
 
+/* Mobile navbar refinement: smaller BDRT mark, raised placement, tighter navigation rows. */
+@media (max-width: 760px) {
+  .site-header {
+    --header-top: max(8px, env(safe-area-inset-top));
+    top: var(--header-top);
+    row-gap: 7px;
+    width: calc(100% - 20px);
+  }
+
+  .site-header .wordmark {
+    padding: 0 12px 6px;
+    transform: translateY(-7px);
+  }
+
+  .site-header .wordmark-frame {
+    top: calc(-5px - var(--header-top));
+    width: 112px;
+    height: 96px;
+  }
+
+  .site-header .wordmark__main {
+    font-size: 24px;
+  }
+
+  .site-header .wordmark__sub {
+    margin-top: 4px;
+    padding-left: 0.72em;
+    font-size: 7.2px;
+    letter-spacing: 0.72em;
+  }
+
+  .site-header .site-nav {
+    gap: 3px 11px;
+    font-size: 7.5px;
+    letter-spacing: 0.045em;
+    line-height: 1.3;
+  }
+
+  .site-header .site-nav a {
+    padding: 3px 0;
+  }
+}
+
