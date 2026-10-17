@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-contest-fit-55" />
+    <link rel="stylesheet" href="./styles.css?v=gallery-expanded-caption-fix-56" />
   </head>
   <body>
     <main class="page">
@@ -516,6 +516,8 @@
           let activeFlightOriginalRect = null;
           let activeFlightClickHandler = null;
           let activeFlightAnimation = null;
+          let activeFlightCaption = null;
+          let activeFlightCaptionAnimation = null;
           let galleryHandoffRelease = null;
           let queuedGalleryShot = null;
           let galleryPointer = null;
@@ -542,14 +544,25 @@
             portfolioGalleryViewport.addEventListener("pointerleave", galleryHandoffRelease, { once: true });
           };
 
+          const discardFlightCaption = () => {
+            try { activeFlightCaptionAnimation?.cancel(); } catch (_) {}
+            activeFlightCaptionAnimation = null;
+            activeFlightCaption?.remove();
+            activeFlightCaption = null;
+          };
+
           const restoreFlightImageToShot = (shot = activeFlightShot) => {
             const image = activeFlightImage;
-            if (!image) return null;
+            if (!image) {
+              discardFlightCaption();
+              return null;
+            }
 
             if (activeFlightClickHandler) {
               image.removeEventListener("click", activeFlightClickHandler);
             }
             activeFlightClickHandler = null;
+            discardFlightCaption();
 
             const original = activeFlightOriginalState;
             if (shot && image.parentElement !== shot) shot.appendChild(image);
@@ -576,6 +589,7 @@
             activeFlightAnimation = null;
             clearGalleryHandoffSuppression();
             if (activeFlightImage) restoreFlightImageToShot(activeFlightShot);
+            else discardFlightCaption();
             galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden", "is-closing", "is-opening"));
             portfolioGalleryViewport.classList.remove("has-expanded-shot");
             portfolioGalleryViewport.querySelectorAll(".portfolio-gallery__page.has-focused-shot").forEach((page) => {
@@ -730,7 +744,21 @@
               closeGalleryShot();
             };
             flight.addEventListener("click", activeFlightClickHandler);
-            getGalleryFlightLayer(page).appendChild(flight);
+            const flightLayer = getGalleryFlightLayer(page);
+            flightLayer.appendChild(flight);
+
+            const sourceCaption = activeFlightShot?.querySelector(".portfolio-shot__caption");
+            if (sourceCaption) {
+              activeFlightCaption = sourceCaption.cloneNode(true);
+              activeFlightCaption.classList.add("portfolio-gallery__flight-caption");
+              activeFlightCaption.setAttribute("aria-hidden", "true");
+              activeFlightCaption.style.left = `${startRect.left - pageRect.left}px`;
+              activeFlightCaption.style.top = `${startRect.top - pageRect.top}px`;
+              activeFlightCaption.style.width = `${startRect.width}px`;
+              activeFlightCaption.style.height = `${startRect.height}px`;
+              activeFlightCaption.style.opacity = "0";
+              flightLayer.appendChild(activeFlightCaption);
+            }
             return flight;
           };
 
@@ -814,6 +842,29 @@
               try { activeFlightAnimation?.cancel(); } catch (_) {}
               activeFlightAnimation = null;
             }).catch(() => {});
+
+            const flightCaption = activeFlightCaption;
+            if (flightCaption) {
+              const captionAnimation = flightCaption.animate([
+                { left: `${localLeft}px`, top: `${localTop}px`, width: `${sourceRect.width}px`, height: `${sourceRect.height}px`, opacity: 0 },
+                { left: `${finalLeft}px`, top: `${finalTop}px`, width: `${finalWidth}px`, height: `${finalHeight}px`, opacity: 1 }
+              ], {
+                duration: 620,
+                easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+                fill: "both"
+              });
+              activeFlightCaptionAnimation = captionAnimation;
+              captionAnimation.finished.then(() => {
+                if (token !== galleryTransitionToken || activeFlightCaption !== flightCaption) return;
+                flightCaption.style.left = `${finalLeft}px`;
+                flightCaption.style.top = `${finalTop}px`;
+                flightCaption.style.width = `${finalWidth}px`;
+                flightCaption.style.height = `${finalHeight}px`;
+                flightCaption.style.opacity = "1";
+                try { captionAnimation.cancel(); } catch (_) {}
+                if (activeFlightCaptionAnimation === captionAnimation) activeFlightCaptionAnimation = null;
+              }).catch(() => {});
+            }
           };
 
           const closeGalleryShot = (immediate = false) => {
@@ -834,6 +885,10 @@
             const page = shot.closest(".portfolio-gallery__page");
             const pageRect = page?.getBoundingClientRect();
             const currentRect = flight.getBoundingClientRect();
+            const flightCaption = activeFlightCaption;
+            const currentCaptionRect = flightCaption?.getBoundingClientRect();
+            const captionOpacityValue = flightCaption ? Number.parseFloat(window.getComputedStyle(flightCaption).opacity) : 0;
+            const captionStartOpacity = Number.isFinite(captionOpacityValue) ? captionOpacityValue : 0;
             const fallbackRect = shot.getBoundingClientRect();
             const targetRect = activeFlightOriginalRect || {
               left: pageRect ? fallbackRect.left - pageRect.left : fallbackRect.left,
@@ -848,6 +903,8 @@
             const token = ++galleryTransitionToken;
             try { activeFlightAnimation?.cancel(); } catch (_) {}
             activeFlightAnimation = null;
+            try { activeFlightCaptionAnimation?.cancel(); } catch (_) {}
+            activeFlightCaptionAnimation = null;
 
             shot.classList.remove("is-expanded");
             shot.classList.add("is-closing");
@@ -900,6 +957,29 @@
               easing: "cubic-bezier(0.22, 1, 0.36, 1)",
               fill: "both"
             });
+            if (flightCaption && currentCaptionRect && pageRect) {
+              activeFlightCaptionAnimation = flightCaption.animate([
+                {
+                  left: `${currentCaptionRect.left - pageRect.left}px`,
+                  top: `${currentCaptionRect.top - pageRect.top}px`,
+                  width: `${currentCaptionRect.width}px`,
+                  height: `${currentCaptionRect.height}px`,
+                  opacity: captionStartOpacity
+                },
+                {
+                  left: `${toLeft}px`,
+                  top: `${toTop}px`,
+                  width: `${targetRect.width}px`,
+                  height: `${targetRect.height}px`,
+                  opacity: 0
+                }
+              ], {
+                duration: 620,
+                easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+                fill: "both"
+              });
+            }
+
             activeFlightAnimation.finished.then(finish).catch(() => {});
           };
 
