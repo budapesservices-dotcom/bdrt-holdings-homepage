@@ -7588,3 +7588,14 @@ body.portal-closing .portal-sheet::before {
   }
 }
 
+/* Keep the raised Businesses logos, but match the visible active panel depth to Our Brands. */
+.businesses-section--companies .business-logo::after {
+  top: 8vh;
+}
+
+@media (max-width: 640px) {
+  .businesses-section--companies .business-logo::after {
+    top: 6vh;
+  }
+}
+
