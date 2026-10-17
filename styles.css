@@ -45,14 +45,16 @@ body {
 .magazine-stack {
   position: relative;
   width: 100%;
-  min-height: 100vh;
-  min-height: 100svh;
-  min-height: 100dvh;
+  height: 200vh;
+  height: 200svh;
+  height: 200dvh;
   isolation: isolate;
 }
 
 .hero {
-  position: relative;
+  position: sticky;
+  z-index: 1;
+  top: 0;
   width: 100%;
   height: 100vh;
   height: 100svh;
@@ -81,18 +83,28 @@ body {
   pointer-events: none;
 }
 
-.hero-scroll,
-.scroll-pill,
-.scroll-indicator,
-.scroll-cue,
-.scroll-down,
-.scroll-to-discover {
+.hero .hero-scroll,
+.hero .scroll-pill,
+.hero .scroll-indicator,
+.hero .scroll-cue,
+.hero .scroll-down,
+.hero .scroll-to-discover,
+.hero [class*="scroll-pill" i],
+.hero [id*="scroll-pill" i],
+.hero [class*="scroll-indicator" i],
+.hero [id*="scroll-indicator" i],
+body > .scroll-pill,
+body > .scroll-indicator,
+body > [class*="scroll-pill" i],
+body > [id*="scroll-pill" i] {
   display: none !important;
   visibility: hidden !important;
+  opacity: 0 !important;
+  pointer-events: none !important;
 }
-
 .about-section {
   position: relative;
+  z-index: 2;
   display: flex;
   width: 100%;
   height: 100vh;
@@ -103,6 +115,7 @@ body {
   justify-content: center;
   padding: clamp(88px, 12vh, 144px) clamp(24px, 8vw, 120px);
   border-top: 1px solid rgba(212, 197, 185, 0.32);
+  box-shadow: 0 -18px 44px rgba(0, 0, 0, 0.28);
   background: var(--obsidian);
   color: var(--cream);
   text-align: center;
