@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-header-reverse-sync-5" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-magazine-entering-state-6" />
   </head>
   <body>
     <main class="page">
@@ -189,8 +189,15 @@
             transitionDirection < 0 ? startIndex : -1
           );
 
+          // Commit the incoming panel's offscreen position before starting its entrance.
+          const enteringPanel = transitionDirection > 0 ? panels[targetIndex] : null;
+          if (enteringPanel) {
+            enteringPanel.classList.add("is-entering");
+            void enteringPanel.offsetHeight;
+          }
+
           const duration = 620;
-          const startedAt = performance.now();
+          let startedAt = performance.now();
           const easeOutQuint = (progress) => 1 - Math.pow(1 - progress, 5);
           const root = document.documentElement;
           const previousScrollBehavior = root.style.scrollBehavior;
@@ -217,7 +224,16 @@
             }, 60);
           };
 
-          animationFrame = window.requestAnimationFrame(animate);
+          if (enteringPanel) {
+            // Release the entering state on the next frame, then animate scroll in sync.
+            animationFrame = window.requestAnimationFrame((now) => {
+              enteringPanel.classList.remove("is-entering");
+              startedAt = now;
+              animationFrame = window.requestAnimationFrame(animate);
+            });
+          } else {
+            animationFrame = window.requestAnimationFrame(animate);
+          }
           return true;
         };
 
