@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-expand-smooth-32" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-expand-smooth-33" />
   </head>
   <body>
     <main class="page">
@@ -385,7 +385,7 @@
             if (!(pageWidth > 0 && pageHeight > 0 && ratio > 0)) return false;
 
             page.style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
-            page.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr)`;
+            page.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
             page.classList.add("has-expanded-shot");
 
             const pageShots = Array.from(page.querySelectorAll(".portfolio-shot"));
