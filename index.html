@@ -264,8 +264,9 @@
           }
 
           portfolioBackdropWarmPromises.set(brandKey, warmPromise);
-          warmPromise.then((ready) => {
-            if (!ready && portfolioBackdropWarmPromises.get(brandKey) === warmPromise) {
+          warmPromise.then(() => {
+            // Cache only an in-flight warm-up. Recheck readiness next time in case the browser evicts media data.
+            if (portfolioBackdropWarmPromises.get(brandKey) === warmPromise) {
               portfolioBackdropWarmPromises.delete(brandKey);
             }
           });
