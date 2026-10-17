@@ -376,13 +376,11 @@ body::-webkit-scrollbar,
   margin: 0 auto;
   text-align: center;
   opacity: 1;
-  transform: translateY(0);
-  transition: opacity 360ms ease, transform 420ms cubic-bezier(0.22, 1, 0.36, 1);
+  transition: opacity 360ms ease;
 }
 
 .businesses-section__copy.is-changing {
   opacity: 0;
-  transform: translateY(10px);
 }
 
 .businesses-section__title {
@@ -502,6 +500,7 @@ body::-webkit-scrollbar,
 
 .business-logo {
   position: relative;
+  isolation: isolate;
   appearance: none;
   display: flex;
   width: 100%;
@@ -517,28 +516,62 @@ body::-webkit-scrollbar,
   color: var(--cream);
   opacity: 1;
   cursor: pointer;
-  transform: translateY(0);
+  transform: none;
+}
+
+/* The light panel moves independently; the button and logo stay in place. */
+.business-logo::after {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  border: 1px solid rgba(244, 241, 234, 0.96);
+  border-bottom: 0;
+  border-radius: inherit;
+  background: var(--cream);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(100%);
   transition:
     transform 470ms cubic-bezier(0.22, 1, 0.36, 1),
-    background-color 380ms ease,
-    border-color 380ms ease,
-    color 380ms ease;
+    opacity 140ms ease;
 }
 
 .business-logo.is-selected {
-  border-color: rgba(244, 241, 234, 0.96);
-  background: var(--cream);
+  border-color: transparent;
+  background: transparent;
   color: var(--obsidian);
 }
 
-/* A bright, edge-hugging timer indicates how long the selected brand remains active. */
-.business-logo.is-selected::before {
+.business-logo.is-selected::after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.business-logo.is-dropping::after,
+.business-logo.is-rising::after {
+  opacity: 1;
+  transform: translateY(100%);
+}
+
+/* The timer's track fills the tile, so the white edge travels with the cream fill. */
+.business-logo__duration {
   position: absolute;
   z-index: 3;
-  top: 0;
+  inset: 0;
+  border-radius: inherit;
+  pointer-events: none;
+  transform: translateY(0);
+  transition: transform 470ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.business-logo__duration::before {
+  position: absolute;
+  top: -2px;
   right: 0;
   left: 0;
   height: 3px;
+  border-radius: 14px 14px 0 0;
   background: #FFFFFF;
   box-shadow: 0 0 9px rgba(255, 255, 255, 0.88);
   content: "";
@@ -548,7 +581,7 @@ body::-webkit-scrollbar,
   transform-origin: left center;
 }
 
-.business-logo.is-selected.is-timing::before {
+.business-logo.is-selected.is-timing .business-logo__duration::before {
   opacity: 1;
   animation: portfolio-duration-fill 4800ms linear forwards;
 }
@@ -558,23 +591,20 @@ body::-webkit-scrollbar,
   to { transform: scaleX(1); }
 }
 
-.business-logo.is-dropping {
-  border-color: transparent;
-  background: transparent;
-  transform: translateY(15px);
+.business-logo.is-dropping .business-logo__duration,
+.business-logo.is-rising .business-logo__duration {
+  transform: translateY(100%);
 }
 
-.business-logo.is-rising {
-  transform: translateY(19px);
+/* Discover animates only the light fill and the timer track, never the logo tile. */
+.business-logo.is-discovered::after,
+.business-logo.is-discovered .business-logo__duration {
+  animation: businessDiscoverFill 720ms cubic-bezier(0.22, 1, 0.36, 1);
 }
 
-.business-logo.is-discovered {
-  animation: businessDiscoverPulse 720ms cubic-bezier(0.22, 1, 0.36, 1);
-}
-
-@keyframes businessDiscoverPulse {
+@keyframes businessDiscoverFill {
   0% { transform: translateY(0); }
-  38% { transform: translateY(13px); }
+  38% { transform: translateY(12px); }
   72% { transform: translateY(-3px); }
   100% { transform: translateY(0); }
 }
@@ -589,6 +619,8 @@ body::-webkit-scrollbar,
 }
 
 .business-logo img {
+  position: relative;
+  z-index: 1;
   display: block;
   width: 100%;
   height: 34px;
@@ -603,12 +635,20 @@ body::-webkit-scrollbar,
   filter: brightness(0) saturate(100%);
 }
 
+.business-logo.is-dropping img,
+.business-logo.is-selected.is-rising img {
+  filter: brightness(0) invert(1);
+  transition: filter 180ms ease;
+}
+
 .business-logo img[hidden],
 .business-logo__fallback[hidden] {
   display: none !important;
 }
 
 .business-logo__fallback:not([hidden]) {
+  position: relative;
+  z-index: 1;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -626,6 +666,12 @@ body::-webkit-scrollbar,
 
 .business-logo.is-selected .business-logo__fallback:not([hidden]) {
   color: var(--obsidian);
+}
+
+.business-logo.is-dropping .business-logo__fallback:not([hidden]),
+.business-logo.is-selected.is-rising .business-logo__fallback:not([hidden]) {
+  color: var(--cream);
+  transition: color 180ms ease;
 }
 
 .business-logo__fallback--serif:not([hidden]) {
@@ -731,12 +777,17 @@ body::-webkit-scrollbar,
   .businesses-section__discover,
   .businesses-section__discover::before,
   .businesses-section__discover-arrow,
-  .business-logo {
+  .business-logo::after,
+  .business-logo__duration {
     transition: none;
   }
 
-  .business-logo.is-selected.is-timing::before,
-  .business-logo.is-discovered {
+  .business-logo.is-selected.is-timing .business-logo__duration::before {
+    animation: none;
+  }
+
+  .business-logo.is-discovered::after,
+  .business-logo.is-discovered .business-logo__duration {
     animation: none;
   }
 }
