@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-local-brand-assets-10" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-portfolio-selector-11" />
   </head>
   <body>
     <main class="page">
@@ -72,73 +72,43 @@
         </section>
 
         <section class="businesses-section section-panel" id="businesses" data-theme="dark" aria-label="Our businesses and portfolio">
-          <div class="businesses-section__logo-rail" aria-label="Brand logos">
-            <div class="business-logo">
-              <img
-                src="./assets/brand-logos/voxa-logo.svg"
-                alt="VOXA logo"
-                width="180"
-                height="54"
-                decoding="async"
-                onerror="this.hidden=true; this.nextElementSibling.hidden=false"
-              />
+          <div class="businesses-section__intro">
+            <div class="businesses-section__eyebrow">
+              <span>BDRT HOLDINGS / PORTFOLIO</span>
+              <span class="businesses-section__index" data-brand-index>01 / 06</span>
+            </div>
+            <div class="businesses-section__copy" aria-live="polite" aria-atomic="true">
+              <p class="businesses-section__kicker" data-brand-kicker>TALENT · CULTURE · COMMERCIAL</p>
+              <h2 class="businesses-section__title" id="business-detail-title">VOXA Brand</h2>
+              <p class="businesses-section__description" id="business-detail-description">Personal branding, fashion, media, and creative commercial opportunities.</p>
+            </div>
+          </div>
+
+          <div class="businesses-section__logo-rail" role="group" aria-label="Choose a portfolio company">
+            <button type="button" class="business-logo is-selected" data-brand="voxa" aria-pressed="true" aria-controls="business-detail-title business-detail-description" aria-label="Show VOXA Brand details">
+              <img src="./assets/brand-logos/voxa-logo.svg" alt="" width="180" height="54" decoding="async" onerror="this.hidden=true; this.nextElementSibling.hidden=false" />
               <span class="business-logo__fallback business-logo__fallback--serif" hidden>VOXA</span>
-            </div>
-            <div class="business-logo">
-              <img
-                src="./assets/brand-logos/voxa-house-logo.svg"
-                alt="VOXA House logo"
-                width="180"
-                height="54"
-                decoding="async"
-                onerror="this.hidden=true; this.nextElementSibling.hidden=false"
-              />
+            </button>
+            <button type="button" class="business-logo" data-brand="voxa-house" aria-pressed="false" aria-controls="business-detail-title business-detail-description" aria-label="Show VOXA House details">
+              <img src="./assets/brand-logos/voxa-house-logo.svg" alt="" width="180" height="54" decoding="async" onerror="this.hidden=true; this.nextElementSibling.hidden=false" />
               <span class="business-logo__fallback" hidden>VOXA HOUSE</span>
-            </div>
-            <div class="business-logo">
-              <img
-                src="./assets/brand-logos/imerge-logo.svg"
-                alt="Imerge logo"
-                width="180"
-                height="54"
-                decoding="async"
-                onerror="this.hidden=true; this.nextElementSibling.hidden=false"
-              />
+            </button>
+            <button type="button" class="business-logo" data-brand="imerge" aria-pressed="false" aria-controls="business-detail-title business-detail-description" aria-label="Show iMERGE Advertising details">
+              <img src="./assets/brand-logos/imerge-logo.svg" alt="" width="180" height="54" decoding="async" onerror="this.hidden=true; this.nextElementSibling.hidden=false" />
               <span class="business-logo__fallback" hidden>IMERGE</span>
-            </div>
-            <div class="business-logo">
-              <img
-                src="./assets/brand-logos/involia-logo.svg"
-                alt="Involia logo"
-                width="180"
-                height="54"
-                decoding="async"
-                onerror="this.hidden=true; this.nextElementSibling.hidden=false"
-              />
+            </button>
+            <button type="button" class="business-logo" data-brand="involia" aria-pressed="false" aria-controls="business-detail-title business-detail-description" aria-label="Show Involia details">
+              <img src="./assets/brand-logos/involia-logo.svg" alt="" width="180" height="54" decoding="async" onerror="this.hidden=true; this.nextElementSibling.hidden=false" />
               <span class="business-logo__fallback" hidden>INVOLIA</span>
-            </div>
-            <div class="business-logo">
-              <img
-                src="./assets/brand-logos/academic-elements.svg"
-                alt="Academic Elements logo"
-                width="180"
-                height="54"
-                decoding="async"
-                onerror="this.hidden=true; this.nextElementSibling.hidden=false"
-              />
+            </button>
+            <button type="button" class="business-logo" data-brand="academic-elements" aria-pressed="false" aria-controls="business-detail-title business-detail-description" aria-label="Show Academic Elements details">
+              <img src="./assets/brand-logos/academic-elements.svg" alt="" width="180" height="54" decoding="async" onerror="this.hidden=true; this.nextElementSibling.hidden=false" />
               <span class="business-logo__fallback" hidden>ACADEMIC ELEMENTS</span>
-            </div>
-            <div class="business-logo">
-              <img
-                src="./assets/brand-logos/emerging-brands-ventures.svg"
-                alt="Emerging Brands and Ventures logo"
-                width="180"
-                height="54"
-                decoding="async"
-                onerror="this.hidden=true; this.nextElementSibling.hidden=false"
-              />
+            </button>
+            <button type="button" class="business-logo" data-brand="emerging" aria-pressed="false" aria-controls="business-detail-title business-detail-description" aria-label="Show Emerging Brands &amp; Ventures details">
+              <img src="./assets/brand-logos/emerging-brands-ventures.svg" alt="" width="180" height="54" decoding="async" onerror="this.hidden=true; this.nextElementSibling.hidden=false" />
               <span class="business-logo__fallback" hidden>EMERGING BRANDS &amp; VENTURES</span>
-            </div>
+            </button>
           </div>
         </section>
       </div>
@@ -149,6 +119,67 @@
         const stack = document.querySelector(".magazine-stack");
         const panels = Array.from(document.querySelectorAll(".section-panel"));
         if (!stack || panels.length === 0) return;
+
+        const portfolioButtons = Array.from(document.querySelectorAll(".business-logo[data-brand]"));
+        const portfolioBrandContent = {
+          "voxa": {
+            title: "VOXA Brand",
+            description: "Personal branding, fashion, media, and creative commercial opportunities.",
+            kicker: "TALENT · CULTURE · COMMERCIAL"
+          },
+          "voxa-house": {
+            title: "VOXA House",
+            description: "Creator development, fashion, media production, brand partnerships, and premium experiences.",
+            kicker: "CREATOR CULTURE · MEDIA · EXPERIENCES"
+          },
+          "imerge": {
+            title: "iMERGE Advertising",
+            description: "Advertising, branding, marketing, and commercial creative services.",
+            kicker: "ADVERTISING · BRAND STRATEGY · GROWTH"
+          },
+          "involia": {
+            title: "Involia",
+            description: "Construction management, commercial development, and project execution.",
+            kicker: "DEVELOPMENT · DELIVERY · EXECUTION"
+          },
+          "academic-elements": {
+            title: "Academic Elements",
+            description: "Nonprofit programs, education, workforce development, and community impact.",
+            kicker: "EDUCATION · WORKFORCE · COMMUNITY"
+          },
+          "emerging": {
+            title: "Emerging Brands & Ventures",
+            description: "Additional creative and commercial businesses being developed for 2027 and beyond.",
+            kicker: "NEW VENTURES · NEXT CHAPTER"
+          }
+        };
+        const portfolioTitle = document.getElementById("business-detail-title");
+        const portfolioDescription = document.getElementById("business-detail-description");
+        const portfolioKicker = document.querySelector("[data-brand-kicker]");
+        const portfolioIndex = document.querySelector("[data-brand-index]");
+
+        const activatePortfolioBrand = (button) => {
+          const brand = portfolioBrandContent[button.dataset.brand];
+          if (!brand) return;
+          portfolioButtons.forEach((candidate) => {
+            const selected = candidate === button;
+            candidate.classList.toggle("is-selected", selected);
+            candidate.setAttribute("aria-pressed", String(selected));
+          });
+          if (portfolioTitle) portfolioTitle.textContent = brand.title;
+          if (portfolioDescription) portfolioDescription.textContent = brand.description;
+          if (portfolioKicker) portfolioKicker.textContent = brand.kicker;
+          if (portfolioIndex) {
+            const index = portfolioButtons.indexOf(button) + 1;
+            portfolioIndex.textContent = `${String(index).padStart(2, "0")} / ${String(portfolioButtons.length).padStart(2, "0")}`;
+          }
+        };
+
+        portfolioButtons.forEach((button) => {
+          button.addEventListener("click", () => activatePortfolioBrand(button));
+        });
+        const defaultPortfolioButton = portfolioButtons.find((button) => button.dataset.brand === "voxa");
+        if (defaultPortfolioButton) activatePortfolioBrand(defaultPortfolioButton);
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let activePanelIndex = 0;
