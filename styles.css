@@ -7599,3 +7599,31 @@ body.portal-closing .portal-sheet::before {
   }
 }
 
+/* Final alignment: lower the four Businesses marks slightly and snug the timing bar to the panel edge. */
+.businesses-section--companies .business-logo img,
+.businesses-section--companies .business-logo__fallback:not([hidden]) {
+  margin-top: 18px;
+}
+
+.businesses-section--companies .business-logo__duration::before {
+  top: calc(8vh - 3px);
+}
+
+@media (max-width: 900px) {
+  .businesses-section--companies .business-logo img,
+  .businesses-section--companies .business-logo__fallback:not([hidden]) {
+    margin-top: 16px;
+  }
+}
+
+@media (max-width: 640px) {
+  .businesses-section--companies .business-logo img,
+  .businesses-section--companies .business-logo__fallback:not([hidden]) {
+    margin-top: 16px;
+  }
+
+  .businesses-section--companies .business-logo__duration::before {
+    top: calc(6vh - 3px);
+  }
+}
+
