@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-same-node-fade-clean-47" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-drag-release-48" />
   </head>
   <body>
     <main class="page">
@@ -327,6 +327,7 @@
           let activeFlightAnimation = null;
           let galleryHandoffRelease = null;
           let galleryPointer = null;
+          let galleryMomentumFrame = 0;
           let suppressGalleryClickUntil = 0;
           let galleryTransitionToken = 0;
 
@@ -507,8 +508,8 @@
               style: sourceImage.getAttribute("style")
             };
             activeFlightOriginalRect = {
-              left: startRect.left,
-              top: startRect.top,
+              left: startRect.left - pageRect.left,
+              top: startRect.top - pageRect.top,
               width: startRect.width,
               height: startRect.height
             };
@@ -715,29 +716,73 @@
             }
           });
 
-          portfolioGalleryViewport.addEventListener("scroll", () => {
-            if (activeExpandedShot) closeGalleryShot(true);
-          }, { passive: true });
-
           window.addEventListener("resize", () => {
             if (activeExpandedShot) closeGalleryShot(true);
           }, { passive: true });
 
+          const stopGalleryMomentum = () => {
+            if (galleryMomentumFrame) {
+              window.cancelAnimationFrame(galleryMomentumFrame);
+              galleryMomentumFrame = 0;
+            }
+          };
+
+          const releaseGalleryMomentum = (velocity) => {
+            stopGalleryMomentum();
+            if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+            if (!Number.isFinite(velocity) || Math.abs(velocity) < 0.08) return;
+
+            const maxScroll = Math.max(0, portfolioGalleryViewport.scrollWidth - portfolioGalleryViewport.clientWidth);
+            const start = portfolioGalleryViewport.scrollLeft;
+            const projectedDistance = Math.max(
+              -portfolioGalleryViewport.clientWidth * 0.32,
+              Math.min(portfolioGalleryViewport.clientWidth * 0.32, velocity * 190)
+            );
+            const target = Math.max(0, Math.min(maxScroll, start + projectedDistance));
+            const distance = target - start;
+            if (Math.abs(distance) < 2) return;
+
+            const duration = Math.max(170, Math.min(300, Math.abs(distance) * 0.55));
+            const startedAt = performance.now();
+            const tick = (now) => {
+              const progress = Math.min(1, (now - startedAt) / duration);
+              const eased = 1 - Math.pow(1 - progress, 4);
+              portfolioGalleryViewport.scrollLeft = start + distance * eased;
+              if (progress < 1) {
+                galleryMomentumFrame = window.requestAnimationFrame(tick);
+              } else {
+                galleryMomentumFrame = 0;
+              }
+            };
+            galleryMomentumFrame = window.requestAnimationFrame(tick);
+          };
+
+          portfolioGalleryViewport.addEventListener("wheel", stopGalleryMomentum, { passive: true });
+
           portfolioGalleryViewport.addEventListener("pointerdown", (event) => {
             if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+            stopGalleryMomentum();
+            const now = performance.now();
             galleryPointer = {
               pointerId: event.pointerId,
               startX: event.clientX,
               startY: event.clientY,
               startScrollLeft: portfolioGalleryViewport.scrollLeft,
+              lastX: event.clientX,
+              lastTime: now,
+              velocity: 0,
               dragging: false
             };
           });
 
           portfolioGalleryViewport.addEventListener("pointermove", (event) => {
             if (!galleryPointer || event.pointerId !== galleryPointer.pointerId) return;
+            const now = performance.now();
             const deltaX = event.clientX - galleryPointer.startX;
             const deltaY = event.clientY - galleryPointer.startY;
+            const elapsed = Math.max(1, now - galleryPointer.lastTime);
+            const instantVelocity = -(event.clientX - galleryPointer.lastX) / elapsed;
+
             if (!galleryPointer.dragging && Math.abs(deltaX) > 6 && Math.abs(deltaX) > Math.abs(deltaY) * 1.15) {
               galleryPointer.dragging = true;
               suppressGalleryClickUntil = performance.now() + 700;
@@ -746,17 +791,30 @@
             }
             if (galleryPointer.dragging) {
               portfolioGalleryViewport.scrollLeft = galleryPointer.startScrollLeft - deltaX;
+              galleryPointer.velocity = Math.max(
+                -2,
+                Math.min(2, galleryPointer.velocity * 0.62 + instantVelocity * 0.38)
+              );
               if (event.cancelable) event.preventDefault();
             }
+
+            galleryPointer.lastX = event.clientX;
+            galleryPointer.lastTime = now;
           });
 
           const endGalleryDrag = (event) => {
             if (!galleryPointer || (event.pointerId !== undefined && event.pointerId !== galleryPointer.pointerId)) return;
-            portfolioGalleryViewport.classList.remove("is-dragging");
-            if (portfolioGalleryViewport.hasPointerCapture?.(galleryPointer.pointerId)) {
-              try { portfolioGalleryViewport.releasePointerCapture(galleryPointer.pointerId); } catch (_) {}
-            }
+            const completedDrag = galleryPointer.dragging;
+            const releaseVelocity = galleryPointer.velocity;
+            const pointerId = galleryPointer.pointerId;
             galleryPointer = null;
+            portfolioGalleryViewport.classList.remove("is-dragging");
+            if (portfolioGalleryViewport.hasPointerCapture?.(pointerId)) {
+              try { portfolioGalleryViewport.releasePointerCapture(pointerId); } catch (_) {}
+            }
+            if (completedDrag && event.type === "pointerup") {
+              releaseGalleryMomentum(releaseVelocity);
+            }
           };
           portfolioGalleryViewport.addEventListener("pointerup", endGalleryDrag);
           portfolioGalleryViewport.addEventListener("pointercancel", endGalleryDrag);
