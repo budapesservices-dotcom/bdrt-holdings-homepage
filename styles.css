@@ -681,6 +681,17 @@ body::-webkit-scrollbar,
   }
 }
 
+.portfolio-shot.is-opening img.is-loaded {
+  filter: grayscale(1) !important;
+  transform: scale(1.001) !important;
+  transition: none !important;
+}
+
+.portfolio-shot.is-opening::before,
+.portfolio-shot.is-opening::after {
+  opacity: 0 !important;
+}
+
 .portfolio-gallery__viewport.is-gallery-handoff .portfolio-shot:hover img.is-loaded,
 .portfolio-gallery__viewport.is-gallery-handoff .portfolio-shot:focus-visible img.is-loaded {
   filter: grayscale(1) !important;
