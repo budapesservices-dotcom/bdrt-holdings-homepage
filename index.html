@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-preserve-ratio-grayscale-39" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-no-flicker-no-ghost-frame-40" />
   </head>
   <body>
     <main class="page">
@@ -332,6 +332,10 @@
             activeFlightImage?.remove();
             activeFlightImage = null;
             galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden", "is-closing"));
+            portfolioGalleryViewport.classList.remove("has-expanded-shot");
+            portfolioGalleryViewport.querySelectorAll(".portfolio-gallery__page.has-focused-shot").forEach((page) => {
+              clearFocusedPageShrink(page);
+            });
           };
 
           const clearFocusedPageShrink = (page) => {
@@ -557,15 +561,17 @@
             shot.classList.remove("is-expanded");
             shot.classList.add("is-closing");
             shot.setAttribute("aria-expanded", "false");
-            clearFocusedPageShrink(shot.closest(".portfolio-gallery__page"));
+            // Keep neighboring clips and hidden source tile in place until the flight
+            // reaches its original bounds. This avoids border flashes and color flicker.
             activeExpandedShot = null;
-            portfolioGalleryViewport.classList.remove("has-expanded-shot");
 
             const finish = () => {
               if (token !== galleryTransitionToken || activeFlightImage !== flight) return;
               flight.remove();
               activeFlightImage = null;
               activeFlightAnimation = null;
+              clearFocusedPageShrink(page);
+              portfolioGalleryViewport.classList.remove("has-expanded-shot");
               if (sourceImage) sourceImage.style.removeProperty("opacity");
               shot.classList.remove("is-closing");
             };
