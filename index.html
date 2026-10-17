@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=contact-panel-added-60" />
+    <link rel="stylesheet" href="./styles.css?v=contact-editorial-form-61" />
   </head>
   <body>
     <main class="page">
@@ -486,7 +486,98 @@
           </footer>
         </section>
 
-        <section class="contact-section section-panel" id="contact" data-theme="dark" aria-label="Contact BDRT Holdings"></section>
+                <section class="contact-section section-panel" id="contact" data-theme="dark" aria-label="Contact BDRT Holdings">
+          <div class="contact-section__layout">
+            <div class="contact-section__editorial">
+              <div class="contact-section__masthead">
+                <p class="contact-section__eyebrow">GET IN TOUCH</p>
+                <span class="contact-section__folio">BDRT HOLDINGS <i aria-hidden="true">/</i> 06</span>
+              </div>
+
+              <h2 class="contact-section__headline">Let's Create <em>Together.</em></h2>
+              <p class="contact-section__intro">Interested in working with VOXA or partnering with VOXA House? We'd love to hear from you. Submit an inquiry and our team will be in touch shortly.</p>
+
+              <figure class="contact-section__visual">
+                <img
+                  src="https://bdrt.net/assets/528313425_18079685395931453_5748386439330515742_n_1770108566385-D46D5pJV.jpg"
+                  alt="Editorial portrait representing VOXA and VOXA House creative partnerships"
+                  loading="lazy"
+                  decoding="async"
+                  onerror="this.hidden=true; this.closest('figure')?.classList.add('is-unavailable')"
+                />
+                <figcaption>
+                  <span>VOXA <i aria-hidden="true">×</i> VOXA HOUSE</span>
+                  <span>CREATIVE PARTNERSHIPS</span>
+                </figcaption>
+              </figure>
+
+              <div class="contact-section__signature">
+                <span>BUILT ON CREATIVE INSTINCT.</span>
+                <span>OPEN TO WHAT'S NEXT.</span>
+              </div>
+            </div>
+
+            <div class="contact-section__form-panel">
+              <div class="contact-section__form-masthead">
+                <span>INQUIRY FORM</span>
+                <span>01 <i aria-hidden="true">—</i> START HERE</span>
+              </div>
+
+              <form class="contact-form" id="contact-inquiry-form">
+                <fieldset class="contact-form__interests">
+                  <legend>I'm interested in <span>SELECT ALL THAT APPLY</span></legend>
+                  <div class="contact-form__interest-grid">
+                    <label class="contact-interest">
+                      <input type="checkbox" name="interest" value="VOXA — Entertainer" />
+                      <span class="contact-interest__check" aria-hidden="true">↗</span>
+                      <span class="contact-interest__copy">
+                        <span class="contact-interest__name">VOXA</span>
+                        <span class="contact-interest__type">ENTERTAINER</span>
+                      </span>
+                    </label>
+                    <label class="contact-interest">
+                      <input type="checkbox" name="interest" value="VOXA House — Brand" />
+                      <span class="contact-interest__check" aria-hidden="true">↗</span>
+                      <span class="contact-interest__copy">
+                        <span class="contact-interest__name">VOXA House</span>
+                        <span class="contact-interest__type">BRAND</span>
+                      </span>
+                    </label>
+                  </div>
+                </fieldset>
+
+                <div class="contact-form__fields">
+                  <label class="contact-field">
+                    <span class="contact-field__label">Name <i aria-hidden="true">01</i></span>
+                    <input type="text" name="name" autocomplete="name" placeholder="Your name" required />
+                  </label>
+                  <label class="contact-field">
+                    <span class="contact-field__label">Email <i aria-hidden="true">02</i></span>
+                    <input type="email" name="email" autocomplete="email" placeholder="you@company.com" required />
+                  </label>
+                  <label class="contact-field contact-field--full">
+                    <span class="contact-field__label">Company <small>OPTIONAL</small></span>
+                    <input type="text" name="company" autocomplete="organization" placeholder="Your company name" />
+                  </label>
+                  <label class="contact-field contact-field--full contact-field--message">
+                    <span class="contact-field__label">Message <i aria-hidden="true">03</i></span>
+                    <textarea name="message" rows="2" placeholder="Tell us a little about your idea..." required></textarea>
+                  </label>
+                </div>
+
+                <div class="contact-form__submit-row">
+                  <button class="contact-form__submit" type="submit">
+                    <span>SUBMIT INQUIRY</span>
+                    <span class="contact-form__submit-arrow" aria-hidden="true">↗</span>
+                  </button>
+                  <span class="contact-form__privacy">YOUR DETAILS STAY WITH OUR TEAM.</span>
+                </div>
+                <p class="contact-form__notice" id="contact-form-notice" role="status" aria-live="polite" hidden></p>
+                <a class="contact-form__fallback" id="contact-form-fallback" href="https://bdrt.net/" target="_blank" rel="noopener noreferrer" hidden>OPEN OFFICIAL BDRT INQUIRY PAGE <span aria-hidden="true">↗</span></a>
+              </form>
+            </div>
+          </div>
+        </section>
       </div>
     </main>
 
