@@ -7576,3 +7576,15 @@ body.portal-closing .portal-sheet::before {
     margin-top: 10px;
   }
 }
+
+/* Raise the entire Businesses logo rail so the brand marks are not clipped by the viewport. */
+.businesses-section--companies .businesses-section__logo-rail {
+  bottom: -1vh;
+}
+
+@media (max-width: 640px) {
+  .businesses-section--companies .businesses-section__logo-rail {
+    bottom: -1vh;
+  }
+}
+
