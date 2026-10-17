@@ -7532,14 +7532,14 @@ body.portal-closing .portal-sheet::before {
   height: 44px;
   max-width: min(100%, 172px);
   max-height: 44px;
-  margin-top: clamp(25px, 3vh, 34px);
+  margin-top: -8px;
   object-fit: contain;
   object-position: center;
 }
 
 .businesses-section--companies .business-logo__fallback:not([hidden]) {
   align-self: center;
-  margin-top: clamp(25px, 3vh, 34px);
+  margin-top: -8px;
   text-align: center;
 }
 
@@ -7549,11 +7549,11 @@ body.portal-closing .portal-sheet::before {
     height: 38px;
     max-width: min(100%, 150px);
     max-height: 38px;
-    margin-top: clamp(25px, 3vh, 34px);
+    margin-top: -6px;
   }
 
   .businesses-section--companies .business-logo__fallback:not([hidden]) {
-    margin-top: clamp(25px, 3vh, 34px);
+    margin-top: -6px;
   }
 }
 
@@ -7569,11 +7569,11 @@ body.portal-closing .portal-sheet::before {
     height: 32px;
     max-width: 100%;
     max-height: 32px;
-    margin-top: 23px;
+    margin-top: 0;
   }
 
   .businesses-section--companies .business-logo__fallback:not([hidden]) {
-    margin-top: 23px;
+    margin-top: 0;
   }
 }
 
