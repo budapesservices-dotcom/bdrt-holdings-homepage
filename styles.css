@@ -384,6 +384,11 @@ body::-webkit-scrollbar,
   }
 }
 
+.contact-section {
+  background: var(--obsidian);
+  color: var(--cream);
+}
+
 .portfolio-section {
   display: flex;
   flex-direction: column;
