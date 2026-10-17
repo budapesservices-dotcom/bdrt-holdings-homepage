@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-expand-ratio-31" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-expand-smooth-32" />
   </head>
   <body>
     <main class="page">
@@ -332,6 +332,9 @@
           let galleryPointer = null;
           let lastGalleryPointerType = "";
           let suppressGalleryClickUntil = 0;
+          let galleryMotionToken = 0;
+          let galleryMotionBusy = false;
+          const galleryFlightRecords = new Set();
 
           const clearFigureLayout = (shot) => {
             ["grid-column", "grid-row", "width", "height", "aspect-ratio", "align-self", "justify-self", "z-index"].forEach((property) => {
@@ -339,57 +342,36 @@
             });
           };
 
-          const animateGalleryReflow = (beforeRects, shotsToAnimate) => {
-            window.requestAnimationFrame(() => {
-              shotsToAnimate.forEach((shot) => {
-                const before = beforeRects.get(shot);
-                const after = shot.getBoundingClientRect();
-                if (!before || !before.width || !before.height || !after.width || !after.height) return;
+          const cancelGalleryMotion = () => {
+            galleryMotionToken += 1;
+            galleryMotionBusy = false;
+            galleryShots.forEach((shot) => {
+              shot.getAnimations().forEach((animation) => animation.cancel());
+              shot.classList.remove("is-flight-hidden");
+            });
+            galleryFlightRecords.forEach((record) => {
+              try { record.animation?.cancel(); } catch (_) {}
+              record.element.remove();
+            });
+            galleryFlightRecords.clear();
+            portfolioGalleryViewport.classList.remove("is-expanding");
+          };
 
-                const deltaX = before.left - after.left;
-                const deltaY = before.top - after.top;
-                const scaleX = before.width / after.width;
-                const scaleY = before.height / after.height;
-                if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1 && Math.abs(scaleX - 1) < 0.01 && Math.abs(scaleY - 1) < 0.01) return;
-
-                if (typeof shot.animate === "function") {
-                  shot.animate([
-                    { transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`, transformOrigin: "top left" },
-                    { transform: "translate(0px, 0px) scale(1, 1)", transformOrigin: "top left" }
-                  ], {
-                    duration: 680,
-                    easing: "cubic-bezier(0.22, 1, 0.36, 1)"
-                  });
-                }
-              });
+          const resetGalleryPage = (page) => {
+            page.classList.remove("has-expanded-shot");
+            page.style.removeProperty("grid-template-columns");
+            page.style.removeProperty("grid-template-rows");
+            page.querySelectorAll(".portfolio-shot").forEach((shot) => {
+              shot.classList.remove("is-expanded", "is-flight-hidden");
+              shot.setAttribute("aria-expanded", "false");
+              clearFigureLayout(shot);
             });
           };
 
-          const clearExpandedGallery = (onlyPage = null) => {
-            const pagesToClear = onlyPage ? [onlyPage] : galleryPages;
-            const shotsToAnimate = onlyPage ? Array.from(onlyPage.querySelectorAll(".portfolio-shot")) : galleryShots;
-            const beforeRects = new Map(shotsToAnimate.map((shot) => [shot, shot.getBoundingClientRect()]));
-
-            pagesToClear.forEach((page) => {
-              page.classList.remove("has-expanded-shot");
-              page.style.removeProperty("grid-template-columns");
-              page.style.removeProperty("grid-template-rows");
-              page.querySelectorAll(".portfolio-shot").forEach((shot) => {
-                shot.classList.remove("is-expanded");
-                shot.setAttribute("aria-expanded", "false");
-                clearFigureLayout(shot);
-              });
-            });
-            if (!onlyPage || activeExpandedShot?.closest(".portfolio-gallery__page") === onlyPage) {
-              activeExpandedShot = null;
-            }
-            animateGalleryReflow(beforeRects, shotsToAnimate);
-          };
-
-          const layoutExpandedGalleryShot = (shot) => {
+          const applyExpandedGalleryLayout = (shot) => {
             const page = shot.closest(".portfolio-gallery__page");
             const image = shot.querySelector("img");
-            if (!page || !image || !image.naturalWidth || !image.naturalHeight) return;
+            if (!page || !image || !image.naturalWidth || !image.naturalHeight) return false;
 
             const mobileLayout = window.matchMedia("(max-width: 760px)").matches;
             const columns = mobileLayout ? 6 : 12;
@@ -400,35 +382,21 @@
             const columnGap = Number.parseFloat(computedPage.columnGap) || 8;
             const unitWidth = (pageWidth - columnGap * (columns - 1)) / columns;
             const ratio = image.naturalWidth / image.naturalHeight;
-            if (!(pageWidth > 0 && pageHeight > 0 && ratio > 0)) return;
+            if (!(pageWidth > 0 && pageHeight > 0 && ratio > 0)) return false;
 
             page.style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
-            page.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
+            page.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr)`;
             page.classList.add("has-expanded-shot");
 
             const pageShots = Array.from(page.querySelectorAll(".portfolio-shot"));
             const selectedIndex = pageShots.indexOf(shot);
-            let spanColumns;
-            let startColumn;
-            let desiredWidth;
-
-            if (mobileLayout) {
-              // Leave a full half-page lane for the image, with the other six tiles stacked alongside it.
-              spanColumns = 3;
-              const imageOnLeft = selectedIndex % 2 === 0;
-              startColumn = imageOnLeft ? 1 : columns - spanColumns + 1;
-              const laneWidth = spanColumns * unitWidth + (spanColumns - 1) * columnGap;
-              desiredWidth = Math.min(laneWidth, pageHeight * ratio);
-            } else {
-              desiredWidth = Math.min(pageWidth * 0.62, pageHeight * ratio);
-              spanColumns = Math.ceil((desiredWidth + columnGap) / (unitWidth + columnGap));
-              spanColumns = Math.max(3, Math.min(columns - 4, spanColumns));
-              startColumn = Math.floor((columns - spanColumns) / 2) + 1;
-            }
-
-            const areaWidth = spanColumns * unitWidth + (spanColumns - 1) * columnGap;
-            const expandedWidth = Math.min(desiredWidth, areaWidth);
+            const spanColumns = mobileLayout ? 3 : 6;
+            const expandedAreaWidth = spanColumns * unitWidth + (spanColumns - 1) * columnGap;
+            const expandedWidth = Math.min(expandedAreaWidth, pageHeight * ratio);
             const expandedHeight = expandedWidth / ratio;
+            const startColumn = mobileLayout
+              ? (selectedIndex % 2 === 0 ? 1 : columns - spanColumns + 1)
+              : 4;
 
             shot.classList.add("is-expanded");
             shot.setAttribute("aria-expanded", "true");
@@ -443,8 +411,7 @@
 
             const otherShots = pageShots.filter((candidate) => candidate !== shot);
             if (mobileLayout) {
-              const imageOnLeft = selectedIndex % 2 === 0;
-              const sideStart = imageOnLeft ? spanColumns + 1 : 1;
+              const sideStart = startColumn === 1 ? spanColumns + 1 : 1;
               otherShots.forEach((candidate, index) => {
                 candidate.style.gridColumn = `${sideStart} / span ${columns - spanColumns}`;
                 candidate.style.gridRow = `${index + 1} / span 1`;
@@ -453,42 +420,162 @@
                 candidate.style.zIndex = "1";
               });
             } else {
-              const leftColumns = startColumn - 1;
-              const rightStart = startColumn + spanColumns;
-              const rightColumns = columns - rightStart + 1;
               otherShots.forEach((candidate, index) => {
                 const useLeft = index < 3;
-                const laneStart = useLeft ? 1 : rightStart;
-                const laneColumns = useLeft ? leftColumns : rightColumns;
-                const laneIndex = useLeft ? index : index - 3;
-                candidate.style.gridColumn = `${laneStart} / span ${laneColumns}`;
-                candidate.style.gridRow = `${laneIndex * 2 + 1} / span 2`;
+                const laneStart = useLeft ? 1 : 10;
+                const laneRow = useLeft ? index : index - 3;
+                candidate.style.gridColumn = `${laneStart} / span 3`;
+                candidate.style.gridRow = `${laneRow * 2 + 1} / span 2`;
                 candidate.style.alignSelf = "stretch";
                 candidate.style.justifySelf = "stretch";
                 candidate.style.zIndex = "1";
               });
             }
+            return true;
+          };
+
+          const captureGalleryRects = (pages) => {
+            const rects = new Map();
+            pages.forEach((page) => {
+              page.querySelectorAll(".portfolio-shot").forEach((shot) => {
+                rects.set(shot, shot.getBoundingClientRect());
+              });
+            });
+            return rects;
+          };
+
+          const rectChanged = (before, after) => before && after && (
+            Math.abs(before.left - after.left) > 1 ||
+            Math.abs(before.top - after.top) > 1 ||
+            Math.abs(before.width - after.width) > 1 ||
+            Math.abs(before.height - after.height) > 1
+          );
+
+          const animateGalleryLayout = (beforeRects, afterRects, specialShots, token) => {
+            const animations = [];
+            const specialElements = new Set();
+
+            afterRects.forEach((after, shot) => {
+              const before = beforeRects.get(shot);
+              if (!rectChanged(before, after)) return;
+
+              if (specialShots.has(shot)) {
+                const sourceImage = shot.querySelector("img");
+                if (sourceImage && sourceImage.naturalWidth > 0) {
+                  const flightImage = sourceImage.cloneNode(false);
+                  flightImage.classList.add("portfolio-gallery__flight");
+                  flightImage.alt = "";
+                  flightImage.setAttribute("aria-hidden", "true");
+                  flightImage.style.left = `${before.left}px`;
+                  flightImage.style.top = `${before.top}px`;
+                  flightImage.style.width = `${before.width}px`;
+                  flightImage.style.height = `${before.height}px`;
+                  flightImage.style.objectPosition = window.getComputedStyle(sourceImage).objectPosition;
+                  document.body.appendChild(flightImage);
+                  shot.classList.add("is-flight-hidden");
+                  specialElements.add(shot);
+
+                  const animation = flightImage.animate([
+                    { left: `${before.left}px`, top: `${before.top}px`, width: `${before.width}px`, height: `${before.height}px` },
+                    { left: `${after.left}px`, top: `${after.top}px`, width: `${after.width}px`, height: `${after.height}px` }
+                  ], {
+                    duration: 680,
+                    easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+                    fill: "both"
+                  });
+                  const record = { element: flightImage, shot, animation, token };
+                  galleryFlightRecords.add(record);
+                  animations.push(animation);
+                  continue;
+                }
+              }
+
+              const deltaX = before.left - after.left;
+              const deltaY = before.top - after.top;
+              const scaleX = before.width / after.width;
+              const scaleY = before.height / after.height;
+              const animation = shot.animate([
+                { transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`, transformOrigin: "top left" },
+                { transform: "translate(0px, 0px) scale(1, 1)", transformOrigin: "top left" }
+              ], {
+                duration: 680,
+                easing: "cubic-bezier(0.22, 1, 0.36, 1)"
+              });
+              animations.push(animation);
+            });
+
+            if (!animations.length) {
+              specialElements.forEach((shot) => shot.classList.remove("is-flight-hidden"));
+              return;
+            }
+
+            galleryMotionBusy = true;
+            portfolioGalleryViewport.classList.add("is-expanding");
+            Promise.all(animations.map((animation) => animation.finished.catch(() => null))).then(() => {
+              if (token !== galleryMotionToken) return;
+              galleryFlightRecords.forEach((record) => {
+                if (record.token !== token) return;
+                record.element.remove();
+                record.shot.classList.remove("is-flight-hidden");
+                galleryFlightRecords.delete(record);
+              });
+              galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden"));
+              galleryMotionBusy = false;
+              portfolioGalleryViewport.classList.remove("is-expanding");
+            });
+          };
+
+          const setExpandedGalleryShot = (nextShot, options = {}) => {
+            const { toggle = false, onlyPage = null, force = false } = options;
+            const previousShot = activeExpandedShot;
+
+            if (toggle && nextShot && previousShot === nextShot) nextShot = null;
+            if (!toggle && !force && nextShot && previousShot === nextShot) return;
+            if (!nextShot && onlyPage && previousShot?.closest(".portfolio-gallery__page") !== onlyPage) return;
+            if (!nextShot && !onlyPage && !previousShot) return;
+
+            cancelGalleryMotion();
+
+            const affectedPages = new Set();
+            if (previousShot) affectedPages.add(previousShot.closest(".portfolio-gallery__page"));
+            if (nextShot) affectedPages.add(nextShot.closest(".portfolio-gallery__page"));
+            if (onlyPage) affectedPages.add(onlyPage);
+            affectedPages.delete(null);
+
+            const beforeRects = captureGalleryRects(affectedPages);
+            affectedPages.forEach(resetGalleryPage);
+            activeExpandedShot = null;
+
+            if (nextShot) {
+              if (!applyExpandedGalleryLayout(nextShot)) {
+                // If dimensions are not ready, leave the gallery in its stable default layout.
+                affectedPages.forEach(resetGalleryPage);
+                return;
+              }
+              activeExpandedShot = nextShot;
+            }
+
+            const afterRects = captureGalleryRects(affectedPages);
+            const specialShots = new Set([previousShot, nextShot].filter(Boolean));
+            const token = galleryMotionToken;
+            animateGalleryLayout(beforeRects, afterRects, specialShots, token);
           };
 
           const expandGalleryShot = (shot, toggle = false) => {
             if (!shot) return;
             const image = shot.querySelector("img");
             if (!image || !image.naturalWidth || !image.naturalHeight) return;
+            setExpandedGalleryShot(shot, { toggle });
+          };
 
-            if (toggle && activeExpandedShot === shot) {
-              clearExpandedGallery();
-              return;
-            }
-
-            clearExpandedGallery();
-            activeExpandedShot = shot;
-            layoutExpandedGalleryShot(shot);
+          const clearExpandedGallery = (onlyPage = null) => {
+            setExpandedGalleryShot(null, { onlyPage });
           };
 
           galleryShots.forEach((shot) => {
             shot.addEventListener("pointerenter", (event) => {
               if (event.pointerType === "mouse" && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-                expandGalleryShot(shot);
+                if (!galleryMotionBusy) expandGalleryShot(shot);
               }
             });
 
