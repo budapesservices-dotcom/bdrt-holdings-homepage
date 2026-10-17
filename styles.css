@@ -514,11 +514,15 @@ body::-webkit-scrollbar,
 }
 
 .portfolio-gallery__page.has-focused-shot .portfolio-shot.shrink-height:not(.is-expanded) {
-  transform: scaleY(0.36);
+  transform: scaleY(var(--shrink-scale, 0.36));
 }
 
 .portfolio-gallery__page.has-focused-shot .portfolio-shot.shrink-width:not(.is-expanded) {
-  transform: scaleX(0.44);
+  transform: scaleX(var(--shrink-scale, 0.44));
+}
+
+.portfolio-gallery__viewport.has-expanded-shot .portfolio-shot:not(.is-expanded) img.is-loaded {
+  filter: grayscale(1);
 }
 
 .portfolio-gallery__flight-layer {
