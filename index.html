@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-expand-anchored-34" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-free-ratio-35" />
   </head>
   <body>
     <main class="page">
@@ -143,16 +143,6 @@
         </section>
 
         <section class="portfolio-section section-panel" id="portfolio" data-theme="light" aria-label="Portfolio gallery">
-          <div class="portfolio-gallery__header">
-            <div class="portfolio-gallery__heading">
-              <p class="portfolio-gallery__eyebrow">BDRT HOLDINGS / VISUAL ARCHIVE</p>
-              <h2 class="portfolio-gallery__title">Selected work</h2>
-            </div>
-            <div class="portfolio-gallery__instruction">
-              <span>HOVER / TAP TO EXPAND</span>
-              <span class="portfolio-gallery__instruction-arrow" aria-hidden="true">↗</span>
-            </div>
-          </div>
           <div class="portfolio-gallery__viewport" id="portfolio-gallery-viewport" tabindex="0" role="region" aria-label="Horizontal portfolio gallery. Drag sideways or use the left and right arrow keys to explore 41 images.">
             <div class="portfolio-gallery__track">
 
@@ -344,6 +334,35 @@
             galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden"));
           };
 
+          const clearFocusedPageShrink = (page) => {
+            page?.querySelectorAll(".portfolio-shot").forEach((candidate) => {
+              candidate.classList.remove("shrink-width", "shrink-height");
+            });
+          };
+
+          const applyFocusedPageShrink = (expandedShot) => {
+            const page = expandedShot.closest(".portfolio-gallery__page");
+            if (!page) return;
+            const expandedRect = expandedShot.getBoundingClientRect();
+            page.querySelectorAll(".portfolio-shot").forEach((candidate) => {
+              candidate.classList.remove("shrink-width", "shrink-height");
+              if (candidate === expandedShot) return;
+              const rect = candidate.getBoundingClientRect();
+              if (!(rect.width > 0 && rect.height > 0)) return;
+
+              // Compress only one axis: landscape tiles lose height, portrait tiles lose width.
+              if (rect.width > rect.height * 1.12) {
+                candidate.classList.add("shrink-height");
+              } else if (rect.height > rect.width * 1.12) {
+                candidate.classList.add("shrink-width");
+              } else if (Math.abs(rect.width - expandedRect.width) >= Math.abs(rect.height - expandedRect.height)) {
+                candidate.classList.add("shrink-width");
+              } else {
+                candidate.classList.add("shrink-height");
+              }
+            });
+          };
+
           const makeGalleryFlight = (sourceImage, startRect) => {
             const flight = sourceImage.cloneNode(false);
             flight.classList.add("portfolio-gallery__flight");
@@ -374,7 +393,9 @@
             if (previousShot) {
               previousShot.classList.remove("is-expanded");
               previousShot.setAttribute("aria-expanded", "false");
-              previousShot.closest(".portfolio-gallery__page")?.classList.remove("has-focused-shot");
+              const previousPage = previousShot.closest(".portfolio-gallery__page");
+              previousPage?.classList.remove("has-focused-shot");
+              clearFocusedPageShrink(previousPage);
             }
 
             const sourceRect = shot.getBoundingClientRect();
@@ -395,7 +416,9 @@
             activeFlightImage = flight;
             shot.classList.add("is-expanded");
             shot.setAttribute("aria-expanded", "true");
-            shot.closest(".portfolio-gallery__page")?.classList.add("has-focused-shot");
+            const focusedPage = shot.closest(".portfolio-gallery__page");
+            focusedPage?.classList.add("has-focused-shot");
+            applyFocusedPageShrink(shot);
 
             const token = ++galleryTransitionToken;
             activeFlightAnimation = flight.animate([
@@ -424,7 +447,9 @@
               if (shot) {
                 shot.classList.remove("is-expanded");
                 shot.setAttribute("aria-expanded", "false");
-                shot.closest(".portfolio-gallery__page")?.classList.remove("has-focused-shot");
+                const page = shot.closest(".portfolio-gallery__page");
+                page?.classList.remove("has-focused-shot");
+                clearFocusedPageShrink(page);
               }
               activeExpandedShot = null;
               stopGalleryFlight();
@@ -440,7 +465,9 @@
 
             shot.classList.remove("is-expanded");
             shot.setAttribute("aria-expanded", "false");
-            shot.closest(".portfolio-gallery__page")?.classList.remove("has-focused-shot");
+            const focusedPage = shot.closest(".portfolio-gallery__page");
+            focusedPage?.classList.remove("has-focused-shot");
+            clearFocusedPageShrink(focusedPage);
             activeExpandedShot = null;
 
             const finish = () => {
