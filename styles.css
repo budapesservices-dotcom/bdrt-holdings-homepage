@@ -7604,7 +7604,7 @@ body.portal-closing .portal-sheet::before {
   }
 }
 
-/* Mobile navbar refinement: smaller BDRT mark, raised placement, tighter navigation rows. */
+/* Mobile navbar refinement: smaller wordmark, independently raised arch, tighter navigation rows. */
 @media (max-width: 760px) {
   .site-header {
     --header-top: max(8px, env(safe-area-inset-top));
@@ -7615,11 +7615,11 @@ body.portal-closing .portal-sheet::before {
 
   .site-header .wordmark {
     padding: 0 12px 6px;
-    transform: translateY(-7px);
+    transform: translateY(0);
   }
 
   .site-header .wordmark-frame {
-    top: calc(-5px - var(--header-top));
+    top: calc(-12px - var(--header-top));
     width: 112px;
     height: 96px;
   }
