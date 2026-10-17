@@ -24,6 +24,8 @@ html {
   margin: 0;
   padding: 0;
   overflow-x: clip;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   background: var(--obsidian);
   scroll-behavior: smooth;
   scroll-snap-type: y mandatory;
@@ -39,7 +41,19 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: clip;
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
   background: var(--obsidian);
+}
+
+html::-webkit-scrollbar,
+body::-webkit-scrollbar,
+*::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+  background: transparent !important;
 }
 
 .magazine-stack {
@@ -83,20 +97,24 @@ body {
   pointer-events: none;
 }
 
-.hero .hero-scroll,
-.hero .scroll-pill,
-.hero .scroll-indicator,
-.hero .scroll-cue,
-.hero .scroll-down,
-.hero .scroll-to-discover,
-.hero [class*="scroll-pill" i],
-.hero [id*="scroll-pill" i],
-.hero [class*="scroll-indicator" i],
-.hero [id*="scroll-indicator" i],
-body > .scroll-pill,
-body > .scroll-indicator,
-body > [class*="scroll-pill" i],
-body > [id*="scroll-pill" i] {
+.hero-scroll,
+.scroll-pill,
+.scroll-indicator,
+.scroll-cue,
+.scroll-down,
+.scroll-to-discover,
+[class*="scroll-pill" i],
+[id*="scroll-pill" i],
+[class*="scroll-indicator" i],
+[id*="scroll-indicator" i],
+[class*="scroll-cue" i],
+[id*="scroll-cue" i],
+[class*="scroll-down" i],
+[id*="scroll-down" i],
+[class*="scroll-to-discover" i],
+[id*="scroll-to-discover" i],
+[class~="pill"],
+[id*="pill" i] {
   display: none !important;
   visibility: hidden !important;
   opacity: 0 !important;
