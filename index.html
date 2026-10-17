@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=voxa-photographer-hero-video-53" />
+    <link rel="stylesheet" href="./styles.css?v=voxa-background-start-at-5-54" />
   </head>
   <body>
     <main class="page">
@@ -74,7 +74,7 @@
         <section class="businesses-section section-panel" id="our-brands" data-theme="dark" aria-label="Our brands and portfolio">
           <div class="businesses-section__backdrops" aria-hidden="true">
             <div class="businesses-backdrop is-active" data-background="voxa">
-              <video muted loop playsinline preload="none">
+              <video muted loop playsinline preload="none" data-start-at="5">
                 <source src="https://voxahouse.com/images/photographer/hero-video.mp4" type="video/mp4" />
               </video>
             </div>
@@ -1018,7 +1018,8 @@
                 portfolioBackdropPauseTimers.delete(video);
               }
               if (restart) {
-                try { video.currentTime = 0; } catch (_) {}
+                const startAt = Number.parseFloat(video.dataset.startAt);
+                try { video.currentTime = Number.isFinite(startAt) && startAt >= 0 ? startAt : 0; } catch (_) {}
               }
               const playPromise = video.play();
               if (playPromise && typeof playPromise.catch === "function") playPromise.catch(() => {});
