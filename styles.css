@@ -567,7 +567,7 @@ body::-webkit-scrollbar,
 
 .business-logo__duration::before {
   position: absolute;
-  top: -2px;
+  top: -5px;
   right: 0;
   left: 0;
   height: 3px;
