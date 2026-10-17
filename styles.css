@@ -6148,3 +6148,91 @@ body.portal-open.header-over-light .wordmark__sub,
 body.portal-open.header-over-dark .wordmark__sub {
   color: var(--champagne);
 }
+
+
+/* Portal arch integration: align the original wordmark with the portal sheet edge. */
+:root {
+  --portal-sheet-height: 86dvh;
+  --portal-arch-height: 118px;
+  --portal-join-inset: 0px;
+}
+
+/* The panel grows from the original arch at the top, then carries it to the lower edge. */
+.portal-sheet {
+  height: var(--portal-sheet-height);
+  transform: translateY(calc(0px - var(--portal-sheet-height)));
+  overflow: visible;
+  background: transparent;
+  clip-path: none;
+  -webkit-clip-path: none;
+}
+
+.portal-sheet::before {
+  bottom: 0;
+}
+
+.portal-page {
+  inset: 0;
+  padding-bottom: 18px;
+}
+
+body.portal-open .site-header {
+  top: calc(var(--header-top) + var(--portal-sheet-height));
+  transition: top 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.portal-open .wordmark-frame {
+  top: calc(0px - var(--header-top));
+  width: 146px;
+  height: 118px;
+}
+
+body.portal-open .wordmark {
+  transform: none;
+  padding: 2px 17px 10px;
+}
+
+body.portal-closing .site-header {
+  top: var(--header-top);
+  transition: top 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@media (max-width: 760px) {
+  :root {
+    --portal-sheet-height: 78dvh;
+    --portal-arch-height: 116px;
+    --portal-join-inset: 0px;
+  }
+
+  .portal-sheet {
+    height: var(--portal-sheet-height);
+  }
+
+  .portal-page {
+    inset: 0;
+    padding: 65px 22px 12px;
+  }
+
+  body.portal-open .site-header {
+    top: calc(var(--header-top) + var(--portal-sheet-height));
+  }
+
+  body.portal-open .wordmark-frame {
+    width: 138px;
+    height: 116px;
+  }
+
+  body.portal-open .wordmark {
+    transform: none;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .portal-sheet,
+  .wordmark-frame__fill,
+  .wordmark-frame__stroke,
+  .portal-open .wordmark {
+    transition: none !important;
+  }
+}
