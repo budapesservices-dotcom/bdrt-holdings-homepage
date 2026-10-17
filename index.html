@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-portfolio-motion-discover-13" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-portfolio-loop-14" />
   </head>
   <body>
     <main class="page">
@@ -226,9 +226,35 @@
           }, 190);
         };
 
+        const businessesPanel = document.getElementById("businesses");
+        const portfolioAutoplayDelay = 4800;
+        let portfolioAutoplayTimer = 0;
+
+        const schedulePortfolioAdvance = () => {
+          window.clearTimeout(portfolioAutoplayTimer);
+          if (portfolioReduceMotion.matches || portfolioButtons.length < 2) return;
+
+          portfolioAutoplayTimer = window.setTimeout(() => {
+            if (document.hidden || !businessesPanel?.classList.contains("is-active")) {
+              schedulePortfolioAdvance();
+              return;
+            }
+
+            const currentIndex = portfolioButtons.indexOf(activePortfolioButton);
+            const nextIndex = currentIndex < 0 ? 0 : (currentIndex + 1) % portfolioButtons.length;
+            selectPortfolioBrand(portfolioButtons[nextIndex]);
+            schedulePortfolioAdvance();
+          }, portfolioAutoplayDelay);
+        };
+
         portfolioButtons.forEach((button) => {
-          button.addEventListener("click", () => selectPortfolioBrand(button));
+          button.addEventListener("click", () => {
+            selectPortfolioBrand(button);
+            schedulePortfolioAdvance();
+          });
         });
+
+        schedulePortfolioAdvance();
 
         if (discoverButton) {
           discoverButton.addEventListener("click", () => {
