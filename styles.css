@@ -168,7 +168,9 @@ body::-webkit-scrollbar,
   line-height: 1.68;
   text-align: justify;
   text-justify: inter-word;
-  hyphens: auto;
+  hyphens: none;
+  word-break: normal;
+  overflow-wrap: normal;
 }
 
 .about-section__links {
@@ -494,6 +496,37 @@ body.header-over-dark {
 
 body.header-over-dark .wordmark__main {
   color: var(--cream);
+}
+
+body.header-over-dark .wordmark__sub {
+  color: var(--champagne);
+}
+
+body.header-over-light {
+  --wordmark-frame-tint: rgba(15, 15, 17, 0.20);
+}
+
+body.header-over-light .wordmark__main {
+  color: var(--obsidian);
+}
+
+body.header-over-light .wordmark__sub {
+  color: var(--deep-bronze);
+}
+
+body.header-over-light .site-nav--left,
+body.header-over-light .site-nav--right {
+  color: var(--obsidian);
+  text-shadow: none;
+}
+
+body.header-over-light .site-nav a::after {
+  background: var(--deep-bronze);
+}
+
+body.header-over-light .site-nav a:hover,
+body.header-over-light .site-nav a:focus-visible {
+  color: var(--deep-bronze);
 }
 
 .wordmark__sub {
