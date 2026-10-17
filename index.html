@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-contained-anchor-36" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-gap-aware-grayscale-37" />
   </head>
   <body>
     <main class="page">
@@ -340,37 +340,83 @@
             page.querySelectorAll(".portfolio-shot").forEach((candidate) => {
               candidate.classList.remove("shrink-width", "shrink-height");
               candidate.style.removeProperty("transform-origin");
+              candidate.style.removeProperty("--shrink-scale");
             });
           };
 
-          const applyFocusedPageShrink = (expandedShot) => {
+          const applyFocusedPageShrink = (expandedShot, target, pageRect) => {
             const page = expandedShot.closest(".portfolio-gallery__page");
-            if (!page) return;
+            if (!page || !target || !pageRect) return;
+
             const focusRect = expandedShot.getBoundingClientRect();
-            const focusCenterX = focusRect.left + focusRect.width / 2;
-            const focusCenterY = focusRect.top + focusRect.height / 2;
+            const focusLeft = focusRect.left - pageRect.left;
+            const focusTop = focusRect.top - pageRect.top;
+            const focusRight = focusLeft + focusRect.width;
+            const focusBottom = focusTop + focusRect.height;
+            const focusCenterX = focusLeft + focusRect.width / 2;
+            const focusCenterY = focusTop + focusRect.height / 2;
+            const style = window.getComputedStyle(page);
+            const columnGap = Number.parseFloat(style.columnGap) || 8;
+            const rowGap = Number.parseFloat(style.rowGap) || 8;
 
             page.querySelectorAll(".portfolio-shot").forEach((candidate) => {
               candidate.classList.remove("shrink-width", "shrink-height");
               candidate.style.removeProperty("transform-origin");
+              candidate.style.removeProperty("--shrink-scale");
               if (candidate === expandedShot) return;
 
               const rect = candidate.getBoundingClientRect();
               if (!(rect.width > 0 && rect.height > 0)) return;
-              const centerX = rect.left + rect.width / 2;
-              const centerY = rect.top + rect.height / 2;
-              const ratio = rect.width / rect.height;
-              const verticalSeparation = Math.abs(centerY - focusCenterY);
-              const horizontalSeparation = Math.abs(centerX - focusCenterX);
 
-              // Shrink each affected photo towards the expanded photo, along only one axis.
-              if (ratio > 1.12 || (ratio >= 1 / 1.12 && verticalSeparation >= horizontalSeparation)) {
-                candidate.classList.add("shrink-height");
-                candidate.style.transformOrigin = centerY <= focusCenterY ? "50% 100%" : "50% 0%";
-              } else {
-                candidate.classList.add("shrink-width");
-                candidate.style.transformOrigin = centerX <= focusCenterX ? "100% 50%" : "0% 50%";
+              const left = rect.left - pageRect.left;
+              const top = rect.top - pageRect.top;
+              const right = left + rect.width;
+              const bottom = top + rect.height;
+              const centerX = left + rect.width / 2;
+              const centerY = top + rect.height / 2;
+
+              // Only consider direct neighbors (including corner neighbors) in the original grid.
+              const gapX = Math.max(left - focusRight, focusLeft - right, 0);
+              const gapY = Math.max(top - focusBottom, focusTop - bottom, 0);
+              if (gapX > columnGap + 2 || gapY > rowGap + 2) return;
+
+              // The expanded image must actually overlap this neighbor's original cell.
+              const overlapX = Math.min(right, target.left + target.width) - Math.max(left, target.left);
+              const overlapY = Math.min(bottom, target.top + target.height) - Math.max(top, target.top);
+              if (overlapX <= 0 || overlapY <= 0) return;
+
+              // Keep a constant gap equal to the original grid gap. Shrink only the axis
+              // that can leave a visible strip outside the expanded image's final bounds.
+              const options = [];
+              const addOption = (axis, remaining, dimension, origin) => {
+                if (!(remaining > 0) || !(remaining < dimension * 0.985)) return;
+                options.push({
+                  axis,
+                  scale: Math.max(0.04, Math.min(0.98, remaining / dimension)),
+                  origin
+                });
+              };
+
+              if (left < target.left) {
+                addOption("width", target.left - columnGap - left, rect.width, "0% 50%");
               }
+              if (right > target.left + target.width) {
+                addOption("width", right - (target.left + target.width + columnGap), rect.width, "100% 50%");
+              }
+              if (top < target.top) {
+                addOption("height", target.top - rowGap - top, rect.height, "50% 0%");
+              }
+              if (bottom > target.top + target.height) {
+                addOption("height", bottom - (target.top + target.height + rowGap), rect.height, "50% 100%");
+              }
+
+              if (!options.length) return;
+              // Preserve as much of the neighboring image as possible while maintaining the gap.
+              options.sort((a, b) => b.scale - a.scale);
+              const chosen = options[0];
+              candidate.classList.add(chosen.axis === "width" ? "shrink-width" : "shrink-height");
+              candidate.style.setProperty("--shrink-scale", String(chosen.scale));
+              candidate.style.transformOrigin = chosen.origin;
             });
           };
 
@@ -447,7 +493,8 @@
             shot.classList.add("is-expanded");
             shot.setAttribute("aria-expanded", "true");
             page.classList.add("has-focused-shot");
-            applyFocusedPageShrink(shot);
+            portfolioGalleryViewport.classList.add("has-expanded-shot");
+            applyFocusedPageShrink(shot, { left: finalLeft, top: finalTop, width: finalWidth, height: finalHeight }, pageRect);
 
             const token = ++galleryTransitionToken;
             activeFlightAnimation = flight.animate([
@@ -479,6 +526,7 @@
                 clearFocusedPageShrink(shot.closest(".portfolio-gallery__page"));
               }
               activeExpandedShot = null;
+              portfolioGalleryViewport.classList.remove("has-expanded-shot");
               stopGalleryFlight();
               return;
             }
@@ -500,6 +548,7 @@
             shot.setAttribute("aria-expanded", "false");
             clearFocusedPageShrink(shot.closest(".portfolio-gallery__page"));
             activeExpandedShot = null;
+            portfolioGalleryViewport.classList.remove("has-expanded-shot");
 
             const finish = () => {
               if (token !== galleryTransitionToken || activeFlightImage !== flight) return;
