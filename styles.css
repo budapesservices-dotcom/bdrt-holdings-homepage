@@ -145,12 +145,13 @@ body {
 .wordmark::before {
   position: absolute;
   z-index: -1;
-  top: -50px;
+  top: -27px;
   left: 50%;
-  width: 122px;
-  height: 156px;
+  width: 126px;
+  height: 108px;
   border: 1.5px solid rgba(120, 85, 34, 0.95);
-  border-radius: 50%;
+  border-bottom: 0;
+  border-radius: 64px 64px 0 0;
   background: rgba(194, 165, 110, 0.32);
   content: "";
   opacity: 1;
@@ -227,11 +228,13 @@ body {
   }
 
   .wordmark::before {
-    top: -47px;
-    width: 116px;
-    height: 148px;
+    top: -25px;
+    width: 118px;
+    height: 102px;
     border-width: 1.5px;
+    border-bottom: 0;
     border-color: rgba(120, 85, 34, 0.95);
+    border-radius: 60px 60px 0 0;
     background: rgba(194, 165, 110, 0.32);
     opacity: 1;
   }
