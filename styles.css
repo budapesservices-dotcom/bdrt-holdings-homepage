@@ -6813,3 +6813,204 @@ body.portal-closing .portal-sheet::before {
     letter-spacing: 0.085em;
   }
 }
+
+
+/* Portal controls: share Discover's refined outline-pill treatment. */
+.portal-experience__close {
+  min-height: 43px;
+  gap: 8px;
+  margin: 0;
+  padding: 0 24px;
+  overflow: hidden;
+  border: 1px solid var(--cream);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+  isolation: isolate;
+  transition: color 380ms ease, border-color 380ms ease;
+}
+
+.portal-experience__close::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--cream);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-experience__close:hover,
+.portal-experience__close:focus-visible {
+  border-color: var(--cream);
+  background: transparent;
+  color: var(--obsidian);
+}
+
+.portal-experience__close:hover::before,
+.portal-experience__close:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.portal-experience__close:focus-visible {
+  outline: 1px solid var(--champagne);
+  outline-offset: 5px;
+}
+
+.portal-experience__close-icon {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+  transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-experience__close:hover .portal-experience__close-icon,
+.portal-experience__close:focus-visible .portal-experience__close-icon {
+  transform: translate(-2px, -2px);
+}
+
+/* Client Login: two matching Discover-style actions, kept as a visual portal concept. */
+.portal-login-card--client .portal-login-card__actions {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.portal-login-card--client .portal-login-card__submit,
+.portal-login-card--client .portal-login-card__signup {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  min-width: 0;
+  min-height: 43px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin: 0;
+  padding: 0 12px;
+  overflow: hidden;
+  border: 1px solid #B9CBD9;
+  border-radius: 999px;
+  background: transparent;
+  color: #DCE7EF;
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  isolation: isolate;
+  cursor: pointer;
+  transition: color 380ms ease, border-color 380ms ease;
+}
+
+.portal-login-card--client .portal-login-card__submit::before,
+.portal-login-card--client .portal-login-card__signup::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: #B9CBD9;
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-login-card--client .portal-login-card__submit:hover,
+.portal-login-card--client .portal-login-card__submit:focus-visible,
+.portal-login-card--client .portal-login-card__signup:hover,
+.portal-login-card--client .portal-login-card__signup:focus-visible {
+  border-color: #B9CBD9;
+  background: transparent;
+  color: #101A24;
+}
+
+.portal-login-card--client .portal-login-card__submit:hover::before,
+.portal-login-card--client .portal-login-card__submit:focus-visible::before,
+.portal-login-card--client .portal-login-card__signup:hover::before,
+.portal-login-card--client .portal-login-card__signup:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.portal-login-card--client .portal-login-card__submit:focus-visible,
+.portal-login-card--client .portal-login-card__signup:focus-visible {
+  outline: 1px solid #B9CBD9;
+  outline-offset: 4px;
+}
+
+.portal-login-card--client .portal-login-card__submit span {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+  font-size: 12px;
+  transition: color 380ms ease, transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-login-card--client .portal-login-card__submit:hover span,
+.portal-login-card--client .portal-login-card__submit:focus-visible span {
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 760px) {
+  .portal-experience__close {
+    min-height: 40px;
+    gap: 7px;
+    padding: 0 17px;
+    font-size: 7.5px;
+    letter-spacing: 0.14em;
+  }
+
+  .portal-login-card--client .portal-login-card__actions {
+    gap: 8px;
+    margin-top: 15px;
+  }
+
+  .portal-login-card--client .portal-login-card__submit,
+  .portal-login-card--client .portal-login-card__signup {
+    min-height: 40px;
+    padding: 0 9px;
+    font-size: 7.5px;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (max-width: 420px) {
+  .portal-experience__close {
+    padding: 0 14px;
+    font-size: 7px;
+    letter-spacing: 0.12em;
+  }
+
+  .portal-login-card--client .portal-login-card__actions {
+    gap: 7px;
+  }
+
+  .portal-login-card--client .portal-login-card__submit,
+  .portal-login-card--client .portal-login-card__signup {
+    padding: 0 7px;
+    font-size: 7px;
+    letter-spacing: 0.085em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-experience__close,
+  .portal-experience__close::before,
+  .portal-experience__close-icon,
+  .portal-login-card--client .portal-login-card__submit,
+  .portal-login-card--client .portal-login-card__submit::before,
+  .portal-login-card--client .portal-login-card__submit span,
+  .portal-login-card--client .portal-login-card__signup,
+  .portal-login-card--client .portal-login-card__signup::before {
+    transition: none !important;
+  }
+}
