@@ -355,38 +355,128 @@ body::-webkit-scrollbar,
   height: 100dvh;
   margin: 0;
   padding: 0;
+  overflow: hidden;
   background: var(--obsidian);
   color: var(--cream);
+}
+
+.businesses-section__intro {
+  position: absolute;
+  top: 46%;
+  left: 50%;
+  width: min(82%, 1080px);
+  transform: translate(-50%, -50%);
+}
+
+.businesses-section__eyebrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  width: 100%;
+  margin: 0 0 clamp(22px, 3.4vh, 38px);
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--hairline);
+  color: var(--cashmere);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(8px, 0.72vw, 10px);
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.businesses-section__index {
+  flex: 0 0 auto;
+  color: var(--champagne);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.16em;
+}
+
+.businesses-section__copy {
+  max-width: 860px;
+}
+
+.businesses-section__kicker {
+  margin: 0 0 clamp(13px, 2vh, 20px);
+  color: var(--champagne);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(8px, 0.82vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.21em;
+  line-height: 1.5;
+  text-transform: uppercase;
+}
+
+.businesses-section__title {
+  max-width: 100%;
+  margin: 0;
+  color: var(--cream);
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(44px, 6.6vw, 96px);
+  font-weight: 500;
+  letter-spacing: -0.055em;
+  line-height: 0.98;
+  text-wrap: balance;
+}
+
+.businesses-section__description {
+  max-width: 590px;
+  margin: clamp(16px, 2.8vh, 28px) 0 0;
+  color: rgba(244, 241, 234, 0.78);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(14px, 1.3vw, 18px);
+  font-weight: 400;
+  letter-spacing: -0.012em;
+  line-height: 1.72;
+  text-wrap: pretty;
 }
 
 .businesses-section__logo-rail {
   position: absolute;
   right: 0;
-  bottom: clamp(26px, 4.2vh, 48px);
+  bottom: clamp(24px, 4.2vh, 44px);
   left: 0;
   display: grid;
   width: min(82%, 1080px);
   margin: 0 auto;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   align-items: center;
-  justify-items: center;
+  justify-items: stretch;
   gap: clamp(8px, 1.3vw, 18px);
 }
 
 .business-logo {
+  appearance: none;
   display: flex;
   width: 100%;
-  height: clamp(26px, 2.7vw, 34px);
+  height: clamp(58px, 6vw, 76px);
   min-width: 0;
   align-items: center;
   justify-content: center;
-  opacity: 0.92;
-  transition: opacity 180ms ease, transform 180ms ease;
+  padding: 12px;
+  border: 1px solid transparent;
+  border-radius: 2px;
+  background: transparent;
+  color: var(--cream);
+  opacity: 1;
+  cursor: pointer;
+  transition: none;
 }
 
-.business-logo:hover {
-  opacity: 1;
-  transform: translateY(-2px);
+.business-logo.is-selected {
+  border-color: var(--cream);
+  background: var(--cream);
+  color: var(--obsidian);
+}
+
+.business-logo:focus {
+  outline: none;
+}
+
+.business-logo:focus-visible {
+  outline: 1px solid var(--champagne);
+  outline-offset: 4px;
 }
 
 .business-logo img {
@@ -397,6 +487,10 @@ body::-webkit-scrollbar,
   object-fit: contain;
   object-position: center;
   filter: brightness(0) invert(1);
+}
+
+.business-logo.is-selected img {
+  filter: brightness(0) saturate(100%);
 }
 
 .business-logo img[hidden],
@@ -419,44 +513,79 @@ body::-webkit-scrollbar,
   text-wrap: balance;
 }
 
+.business-logo.is-selected .business-logo__fallback:not([hidden]) {
+  color: var(--obsidian);
+}
+
 .business-logo__fallback--serif:not([hidden]) {
   font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
   font-size: clamp(19px, 2.15vw, 32px);
   letter-spacing: -0.035em;
 }
 
-.business-logo__wordmark {
-  color: var(--cream);
-  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
-  font-size: clamp(19px, 2.15vw, 32px);
-  font-weight: 700;
-  letter-spacing: -0.035em;
-  line-height: 1;
-  white-space: nowrap;
-}
-
 @media (max-width: 900px) {
+  .businesses-section__intro {
+    width: calc(100% - 56px);
+  }
+
   .businesses-section__logo-rail {
     width: calc(100% - 48px);
-    gap: clamp(10px, 1.7vw, 16px);
+    gap: clamp(8px, 1.4vw, 14px);
   }
 
   .business-logo {
-    height: clamp(32px, 4.8vw, 44px);
+    padding: 9px;
+  }
+
+  .businesses-section__title {
+    font-size: clamp(42px, 7.4vw, 72px);
   }
 }
 
 @media (max-width: 640px) {
+  .businesses-section__intro {
+    top: 45%;
+    width: calc(100% - 44px);
+  }
+
+  .businesses-section__eyebrow {
+    gap: 10px;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    font-size: 8px;
+    letter-spacing: 0.12em;
+  }
+
+  .businesses-section__title {
+    font-size: clamp(36px, 9.2vw, 54px);
+    line-height: 0.99;
+    letter-spacing: -0.05em;
+  }
+
+  .businesses-section__kicker {
+    max-width: 100%;
+    margin-bottom: 14px;
+    font-size: 8px;
+    letter-spacing: 0.15em;
+  }
+
+  .businesses-section__description {
+    max-width: 100%;
+    margin-top: 17px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
   .businesses-section__logo-rail {
     right: 0;
-    bottom: max(26px, env(safe-area-inset-bottom));
+    bottom: max(24px, env(safe-area-inset-bottom));
     left: 0;
     display: flex;
     width: calc(100% - 36px);
     justify-content: flex-start;
-    gap: 14px;
+    gap: 10px;
     margin: 0 18px;
-    padding: 0 0 8px;
+    padding: 0 0 5px;
     overflow-x: auto;
     overflow-y: hidden;
     overscroll-behavior-x: contain;
@@ -465,14 +594,22 @@ body::-webkit-scrollbar,
   }
 
   .business-logo {
-    flex: 0 0 74px;
-    width: 74px;
-    height: 28px;
+    flex: 0 0 88px;
+    width: 88px;
+    height: 54px;
+    padding: 10px;
     scroll-snap-align: center;
   }
 
-  .business-logo__wordmark {
+  .business-logo__fallback--serif:not([hidden]) {
     font-size: 18px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .businesses-section__intro *,
+  .business-logo {
+    transition: none;
   }
 }
 
