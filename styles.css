@@ -6597,3 +6597,87 @@ body.portal-closing .portal-sheet::before {
     font-size: 22px;
   }
 }
+
+
+/* Distinct luxury palette: Client Login in midnight navy and platinum; Donor Portal stays charcoal and champagne. */
+.portal-login-card--client {
+  border-color: rgba(174, 196, 215, 0.34);
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(117, 159, 191, 0.16), transparent 48%),
+    linear-gradient(145deg, #172635 0%, #0E1722 72%);
+  color: #F1F4F6;
+  box-shadow: 0 25px 75px rgba(0, 0, 0, 0.32);
+}
+
+.portal-login-card--client::before {
+  background: linear-gradient(90deg, transparent, rgba(190, 211, 227, 0.9), transparent);
+}
+
+.portal-login-card--client .portal-login-card__masthead {
+  border-bottom-color: rgba(174, 196, 215, 0.22);
+}
+
+.portal-login-card--client .portal-login-card__monogram {
+  color: #F3F6F8;
+}
+
+.portal-login-card--client .portal-login-card__classification {
+  color: rgba(194, 211, 224, 0.62);
+}
+
+.portal-login-card--client .portal-login-card__heading > p {
+  color: #B9CDDD;
+}
+
+.portal-login-card--client .portal-login-card__heading h2 {
+  color: #F3F6F8;
+}
+
+.portal-login-card--client .portal-login-card__description {
+  color: rgba(204, 219, 231, 0.72);
+}
+
+.portal-login-card--client .portal-login-field > span {
+  color: rgba(204, 219, 231, 0.76);
+}
+
+.portal-login-card--client .portal-login-field__surface {
+  border-color: rgba(158, 186, 207, 0.3);
+  background: rgba(255, 255, 255, 0.025);
+  color: rgba(226, 235, 242, 0.62);
+}
+
+.portal-login-card--client .portal-login-card__submit {
+  background: linear-gradient(135deg, #E1EAF0 0%, #B9CBD9 100%);
+  color: #101A24;
+}
+
+.portal-login-card--client .portal-login-card__submit span {
+  color: #101A24;
+}
+
+.portal-login-card--client .portal-login-card__note {
+  color: rgba(194, 211, 224, 0.48);
+}
+
+.portal-login-card--client .portal-login-card__note i {
+  color: #B9CDDD;
+}
+
+.portal-login-card--client .portal-client-assurance {
+  border-top-color: rgba(174, 196, 215, 0.2);
+  color: rgba(204, 219, 231, 0.74);
+}
+
+.portal-login-card--client .portal-donor-assurance__seal {
+  border-color: rgba(185, 205, 221, 0.64);
+  color: #D3E0E9;
+}
+
+.portal-login-card--client .portal-donor-assurance i {
+  color: rgba(194, 211, 224, 0.55);
+}
+
+.portal-login-card--client .portal-donor-assurance b {
+  color: #B9CDDD;
+}
