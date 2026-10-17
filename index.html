@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-drag-release-50" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-smooth-release-switch-51" />
   </head>
   <body>
     <main class="page">
@@ -326,6 +326,7 @@
           let activeFlightClickHandler = null;
           let activeFlightAnimation = null;
           let galleryHandoffRelease = null;
+          let queuedGalleryShot = null;
           let galleryPointer = null;
           let galleryMomentumFrame = 0;
           let suppressGalleryClickUntil = 0;
@@ -545,6 +546,18 @@
             if (!sourceImage || !sourceImage.naturalWidth || !sourceImage.naturalHeight) return;
             if (activeExpandedShot === shot) return;
 
+            // If another image is open, let it finish its normal closing animation
+            // before starting the next image. Rapid extra clicks update the queued target.
+            if (activeExpandedShot && activeExpandedShot !== shot) {
+              queuedGalleryShot = shot;
+              closeGalleryShot();
+              return;
+            }
+            if (activeFlightImage && activeFlightShot?.classList.contains("is-closing")) {
+              queuedGalleryShot = shot;
+              return;
+            }
+
             stopGalleryFlight();
             const previousShot = activeExpandedShot;
             if (previousShot) {
@@ -659,7 +672,14 @@
               activeFlightAnimation = null;
               restoreFlightImageToShot(shot);
               shot.classList.remove("is-closing");
-              if (!immediate) suppressGalleryHoverAfterClose();
+
+              const nextShot = queuedGalleryShot;
+              queuedGalleryShot = null;
+              if (nextShot && nextShot !== shot && nextShot.isConnected) {
+                openGalleryShot(nextShot);
+              } else if (!immediate) {
+                suppressGalleryHoverAfterClose();
+              }
             };
 
             if (immediate || !targetRect.width || !targetRect.height) {
@@ -744,18 +764,19 @@
             const maxScroll = Math.max(0, portfolioGalleryViewport.scrollWidth - portfolioGalleryViewport.clientWidth);
             const start = portfolioGalleryViewport.scrollLeft;
             const projectedDistance = Math.max(
-              -portfolioGalleryViewport.clientWidth * 0.32,
-              Math.min(portfolioGalleryViewport.clientWidth * 0.32, velocity * 190)
+              -portfolioGalleryViewport.clientWidth * 0.42,
+              Math.min(portfolioGalleryViewport.clientWidth * 0.42, velocity * 280)
             );
             const target = Math.max(0, Math.min(maxScroll, start + projectedDistance));
             const distance = target - start;
             if (Math.abs(distance) < 2) return;
 
-            const duration = Math.max(170, Math.min(300, Math.abs(distance) * 0.55));
+            // Give the release a little more travel and a longer ease-out tail.
+            const duration = Math.max(260, Math.min(460, 240 + Math.abs(distance) * 0.45));
             const startedAt = performance.now();
             const tick = (now) => {
               const progress = Math.min(1, (now - startedAt) / duration);
-              const eased = 1 - Math.pow(1 - progress, 4);
+              const eased = 1 - Math.pow(1 - progress, 4.5);
               portfolioGalleryViewport.scrollLeft = start + distance * eased;
               if (progress < 1) {
                 galleryMomentumFrame = window.requestAnimationFrame(tick);
