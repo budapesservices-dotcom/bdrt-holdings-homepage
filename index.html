@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-section3-background-smoothfade-zoom-25" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-section3-background-ready-fade-26" />
   </head>
   <body>
     <main class="page">
@@ -188,6 +188,89 @@
         const portfolioBackdropLayers = Array.from(document.querySelectorAll(".businesses-backdrop[data-background]"));
         const portfolioBackdropFadeDuration = 1350;
         const portfolioBackdropPauseTimers = new Map();
+        const portfolioBackdropWarmPromises = new Map();
+        let portfolioBackdropRequest = 0;
+
+        const warmPortfolioBackdrop = (brandKey) => {
+          const cachedPromise = portfolioBackdropWarmPromises.get(brandKey);
+          if (cachedPromise) return cachedPromise;
+
+          const layer = portfolioBackdropLayers.find((candidate) => candidate.dataset.background === brandKey);
+          if (!layer) return Promise.resolve(false);
+
+          const image = layer.querySelector("img");
+          const video = layer.querySelector("video");
+          let warmPromise;
+
+          if (image) {
+            image.loading = "eager";
+            if (image.complete) {
+              warmPromise = image.naturalWidth > 0
+                ? (typeof image.decode === "function" ? image.decode().then(() => true).catch(() => true) : Promise.resolve(true))
+                : Promise.resolve(false);
+            } else {
+              warmPromise = new Promise((resolve) => {
+                let settled = false;
+                const timeout = window.setTimeout(() => finish(false), 5000);
+                const finish = (ready) => {
+                  if (settled) return;
+                  settled = true;
+                  window.clearTimeout(timeout);
+                  image.removeEventListener("load", onLoad);
+                  image.removeEventListener("error", onError);
+                  resolve(ready);
+                };
+                const onLoad = () => {
+                  if (typeof image.decode === "function") {
+                    image.decode().then(() => finish(true)).catch(() => finish(true));
+                  } else {
+                    finish(true);
+                  }
+                };
+                const onError = () => finish(false);
+                image.addEventListener("load", onLoad, { once: true });
+                image.addEventListener("error", onError, { once: true });
+                if (image.complete) {
+                  if (image.naturalWidth > 0) onLoad();
+                  else onError();
+                }
+              });
+            }
+          } else if (video) {
+            if (video.readyState >= 2) {
+              warmPromise = Promise.resolve(true);
+            } else {
+              warmPromise = new Promise((resolve) => {
+                let settled = false;
+                const timeout = window.setTimeout(() => finish(false), 6000);
+                const finish = (ready) => {
+                  if (settled) return;
+                  settled = true;
+                  window.clearTimeout(timeout);
+                  video.removeEventListener("loadeddata", onLoaded);
+                  video.removeEventListener("error", onError);
+                  resolve(ready);
+                };
+                const onLoaded = () => finish(video.readyState >= 2);
+                const onError = () => finish(false);
+                video.addEventListener("loadeddata", onLoaded, { once: true });
+                video.addEventListener("error", onError, { once: true });
+                video.preload = "auto";
+                try { video.load(); } catch (_) { finish(false); }
+              });
+            }
+          } else {
+            warmPromise = Promise.resolve(true);
+          }
+
+          portfolioBackdropWarmPromises.set(brandKey, warmPromise);
+          warmPromise.then((ready) => {
+            if (!ready && portfolioBackdropWarmPromises.get(brandKey) === warmPromise) {
+              portfolioBackdropWarmPromises.delete(brandKey);
+            }
+          });
+          return warmPromise;
+        };
 
         const restartPortfolioImageZoom = (image) => {
           if (!image) return;
@@ -238,15 +321,18 @@
         };
 
         const updatePortfolioBackdrop = (brandKey) => {
-          let activeLayer = null;
-          portfolioBackdropLayers.forEach((layer) => {
-            const selected = layer.dataset.background === brandKey;
-            layer.classList.toggle("is-active", selected);
-            if (selected) activeLayer = layer;
-          });
+          const targetLayer = portfolioBackdropLayers.find((layer) => layer.dataset.background === brandKey);
+          if (!targetLayer) return;
 
-          if (!activeLayer) return;
-          syncActiveBackdropMedia(true);
+          const request = ++portfolioBackdropRequest;
+          // Leave the current backdrop visible until the incoming image/video can draw its first frame.
+          warmPortfolioBackdrop(brandKey).then(() => {
+            if (request !== portfolioBackdropRequest) return;
+            portfolioBackdropLayers.forEach((layer) => {
+              layer.classList.toggle("is-active", layer === targetLayer);
+            });
+            syncActiveBackdropMedia(true);
+          });
         };
 
         const portfolioTitle = document.getElementById("business-detail-title");
@@ -298,6 +384,13 @@
             !businessesPanel?.classList.contains("is-active") ||
             !button
           ) return;
+
+          // Prepare the following backdrop while this brand is being shown.
+          const currentBrandIndex = portfolioButtons.indexOf(button);
+          if (currentBrandIndex >= 0 && portfolioButtons.length > 1) {
+            const upcomingButton = portfolioButtons[(currentBrandIndex + 1) % portfolioButtons.length];
+            if (upcomingButton && upcomingButton !== button) warmPortfolioBackdrop(upcomingButton.dataset.brand);
+          }
 
           // Restart the bright edge indicator in sync with this brand's full viewing duration.
           void button.offsetWidth;
@@ -395,6 +488,8 @@
         };
 
         portfolioButtons.forEach((button) => {
+          button.addEventListener("pointerenter", () => warmPortfolioBackdrop(button.dataset.brand), { passive: true });
+          button.addEventListener("focus", () => warmPortfolioBackdrop(button.dataset.brand));
           button.addEventListener("click", () => selectPortfolioBrand(button));
         });
 
