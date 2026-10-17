@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=businesses-our-brands-split-59" />
+    <link rel="stylesheet" href="./styles.css?v=contact-panel-added-60" />
   </head>
   <body>
     <main class="page">
@@ -475,7 +475,7 @@
               </div>
             </div>
           </div>
-          <footer class="portfolio-footer" id="contact" aria-label="Connect with BDRT Holdings">
+          <footer class="portfolio-footer" id="portfolio-footer" aria-label="Connect with BDRT Holdings">
             <div class="portfolio-footer__top">
               <div class="portfolio-footer__message">
                 <p class="portfolio-gallery__eyebrow">CONNECT WITH BDRT</p>
@@ -485,6 +485,8 @@
             </div>
           </footer>
         </section>
+
+        <section class="contact-section section-panel" id="contact" data-theme="dark" aria-label="Contact BDRT Holdings"></section>
       </div>
     </main>
 
@@ -1676,7 +1678,6 @@
         const moveOne = (direction) => moveToSection(activePanelIndex + direction);
 
         const sectionAliases = {
-          "#contact": "#portfolio",
           "#client-login": "#portfolio",
           "#donor-portal": "#portfolio"
         };
