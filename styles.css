@@ -7014,3 +7014,108 @@ body.portal-closing .portal-sheet::before {
     transition: none !important;
   }
 }
+
+
+/* Final portal polish: no decorative arrow on close or sign-in; donor CTA mirrors Discover. */
+.portal-login-card--client .portal-login-card__submit {
+  justify-content: center;
+}
+
+/* Donor portal action uses the same outline, liquid fill and type treatment as Discover. */
+.portal-login-card--donor .portal-login-card__submit {
+  position: relative;
+  display: inline-flex;
+  width: 100%;
+  min-width: 142px;
+  min-height: 43px;
+  box-sizing: border-box;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  margin-top: 18px;
+  padding: 0 25px;
+  overflow: hidden;
+  border: 1px solid var(--cream);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+  line-height: 1;
+  text-align: center;
+  white-space: nowrap;
+  isolation: isolate;
+  cursor: pointer;
+  transition: color 380ms ease, border-color 380ms ease;
+}
+
+.portal-login-card--donor .portal-login-card__submit::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--cream);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-login-card--donor .portal-login-card__submit:hover,
+.portal-login-card--donor .portal-login-card__submit:focus-visible {
+  border-color: var(--cream);
+  background: transparent;
+  color: var(--obsidian);
+}
+
+.portal-login-card--donor .portal-login-card__submit:hover::before,
+.portal-login-card--donor .portal-login-card__submit:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.portal-login-card--donor .portal-login-card__submit:focus-visible {
+  outline: 1px solid var(--champagne);
+  outline-offset: 5px;
+}
+
+.portal-login-card--donor .portal-login-card__submit span {
+  position: relative;
+  z-index: 1;
+  color: inherit;
+  font-size: 12px;
+  letter-spacing: 0;
+  transition: transform 380ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-login-card--donor .portal-login-card__submit:hover span,
+.portal-login-card--donor .portal-login-card__submit:focus-visible span {
+  transform: translate(2px, -2px);
+}
+
+@media (max-width: 760px) {
+  .portal-login-card--donor .portal-login-card__submit {
+    min-height: 40px;
+    margin-top: 15px;
+    padding: 0 22px;
+    font-size: 8px;
+  }
+}
+
+@media (max-width: 420px) {
+  .portal-login-card--donor .portal-login-card__submit {
+    min-width: 0;
+    padding: 0 14px;
+    font-size: 7px;
+    letter-spacing: 0.1em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-login-card--donor .portal-login-card__submit,
+  .portal-login-card--donor .portal-login-card__submit::before,
+  .portal-login-card--donor .portal-login-card__submit span {
+    transition: none !important;
+  }
+}
