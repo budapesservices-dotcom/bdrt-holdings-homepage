@@ -6374,7 +6374,7 @@ body.portal-open .portal-sheet__wordmark {
 }
 
 .portal-experience.is-open .portal-sheet__wordmark {
-  bottom: 17px;
+  bottom: 34px;
 }
 
 /* One connected outline on narrow screens, keeping the original mobile arch proportions. */
@@ -6427,7 +6427,7 @@ body.portal-open .portal-sheet__wordmark {
   }
 
   .portal-experience.is-open .portal-sheet__wordmark {
-    bottom: 17px;
+    bottom: 30px;
   }
 }
 
