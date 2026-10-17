@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-portfolio-editorial-select-12" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-portfolio-motion-discover-13" />
   </head>
   <body>
     <main class="page">
@@ -76,6 +76,9 @@
             <div class="businesses-section__copy" aria-live="polite" aria-atomic="true">
               <h2 class="businesses-section__title" id="business-detail-title">VOXA Brand</h2>
               <p class="businesses-section__description" id="business-detail-description">Turning a distinctive personal identity into culture, content, and brand partnerships that move people and markets.</p>
+              <button type="button" class="businesses-section__discover" id="business-discover">
+                <span>DISCOVER <span class="businesses-section__discover-arrow" aria-hidden="true">↗</span></span>
+              </button>
             </div>
           </div>
 
@@ -157,11 +160,85 @@
           if (portfolioDescription) portfolioDescription.textContent = brand.description;
         };
 
-        portfolioButtons.forEach((button) => {
-          button.addEventListener("click", () => activatePortfolioBrand(button));
-        });
         const defaultPortfolioButton = portfolioButtons.find((button) => button.dataset.brand === "voxa");
         if (defaultPortfolioButton) activatePortfolioBrand(defaultPortfolioButton);
+
+        const portfolioCopy = document.querySelector(".businesses-section__copy");
+        const discoverButton = document.getElementById("business-discover");
+        const portfolioReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let activePortfolioButton = defaultPortfolioButton || null;
+        let portfolioSwitchTimer = 0;
+        let portfolioDiscoverTimer = 0;
+
+        const updateBrandCopy = (brand) => {
+          if (portfolioTitle) portfolioTitle.textContent = brand.title;
+          if (portfolioDescription) portfolioDescription.textContent = brand.description;
+        };
+
+        // Keep the outgoing card's gentle drop and the incoming card's rise in sequence.
+        const selectPortfolioBrand = (button) => {
+          const brand = portfolioBrandContent[button.dataset.brand];
+          if (!brand || button === activePortfolioButton) return;
+
+          window.clearTimeout(portfolioSwitchTimer);
+          portfolioButtons.forEach((candidate) => {
+            candidate.classList.remove("is-dropping", "is-rising");
+          });
+
+          if (portfolioReduceMotion.matches || !activePortfolioButton) {
+            portfolioButtons.forEach((candidate) => {
+              const selected = candidate === button;
+              candidate.classList.toggle("is-selected", selected);
+              candidate.setAttribute("aria-pressed", String(selected));
+            });
+            activePortfolioButton = button;
+            updateBrandCopy(brand);
+            return;
+          }
+
+          const outgoing = activePortfolioButton;
+          if (portfolioCopy) portfolioCopy.classList.add("is-changing");
+          outgoing.classList.add("is-dropping");
+
+          portfolioSwitchTimer = window.setTimeout(() => {
+            outgoing.classList.remove("is-selected", "is-dropping");
+            outgoing.setAttribute("aria-pressed", "false");
+
+            button.classList.add("is-selected", "is-rising");
+            button.setAttribute("aria-pressed", "true");
+            activePortfolioButton = button;
+            updateBrandCopy(brand);
+
+            window.requestAnimationFrame(() => {
+              if (portfolioCopy) portfolioCopy.classList.remove("is-changing");
+              window.requestAnimationFrame(() => button.classList.remove("is-rising"));
+            });
+          }, 190);
+        };
+
+        portfolioButtons.forEach((button) => {
+          button.removeEventListener("click", () => activatePortfolioBrand(button));
+          button.addEventListener("click", () => selectPortfolioBrand(button));
+        });
+
+        if (discoverButton) {
+          discoverButton.addEventListener("click", () => {
+            const selected = activePortfolioButton;
+            if (!selected) return;
+
+            window.clearTimeout(portfolioDiscoverTimer);
+            selected.classList.remove("is-discovered");
+            void selected.offsetWidth;
+            selected.classList.add("is-discovered");
+            if (portfolioReduceMotion.matches) {
+              selected.classList.remove("is-discovered");
+              return;
+            }
+            portfolioDiscoverTimer = window.setTimeout(() => {
+              selected.classList.remove("is-discovered");
+            }, 720);
+          });
+        }
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let activePanelIndex = 0;
