@@ -2,9 +2,9 @@
   color-scheme: dark;
   --obsidian: #0F0F11;
   --cream: #F4F1EA;
-  --espresso: #2B211B;
-  --antique-gold: #86643B;
-  --soft-gold: #B59A70;
+  --espresso: #1C120C;
+  --antique-gold: #785522;
+  --soft-gold: #C2A56E;
 }
 
 * {
@@ -139,13 +139,13 @@ body {
   text-decoration: none;
   line-height: 1;
   white-space: nowrap;
-  text-shadow: 0 1px 1px rgba(244, 241, 234, 0.22);
+  text-shadow: 0 1px 0 rgba(244, 241, 234, 0.72), 0 0 5px rgba(244, 241, 234, 0.3);
 }
 
 .wordmark::before {
   position: absolute;
   z-index: -1;
-  top: -75px;
+  top: -58px;
   left: 50%;
   width: 130px;
   height: 130px;
@@ -170,15 +170,15 @@ body {
   display: block;
   margin-top: 7px;
   padding-left: 0.96em;
-  color: var(--antique-gold);
+  color: #63431D;
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 9px;
-  font-weight: 600;
+  font-size: 9.5px;
+  font-weight: 700;
   letter-spacing: 0.96em;
   line-height: 1;
   transform: scaleY(0.8);
   transform-origin: center top;
-  text-shadow: none;
+  text-shadow: 0 1px 0 rgba(244, 241, 234, 0.82), 0 0 5px rgba(244, 241, 234, 0.28);
 }
 
 @media (max-width: 1100px) and (min-width: 761px) {
@@ -200,7 +200,7 @@ body {
   .wordmark::before {
     width: 118px;
     height: 118px;
-    top: -68px;
+    top: -59px;
   }
 
   .wordmark__sub {
@@ -226,7 +226,7 @@ body {
   }
 
   .wordmark::before {
-    top: -68px;
+    top: -58px;
     width: 124px;
     height: 124px;
     opacity: 0.95;
