@@ -359,6 +359,97 @@ body::-webkit-scrollbar,
   color: var(--cream);
 }
 
+.businesses-section__logo-rail {
+  position: absolute;
+  right: 0;
+  bottom: clamp(30px, 5.6vh, 66px);
+  left: 0;
+  display: grid;
+  width: min(88%, 1360px);
+  margin: 0 auto;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  align-items: center;
+  justify-items: center;
+  gap: clamp(14px, 2.4vw, 38px);
+}
+
+.business-logo {
+  display: flex;
+  width: 100%;
+  height: clamp(36px, 4.4vw, 54px);
+  min-width: 0;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.92;
+  transition: opacity 180ms ease, transform 180ms ease;
+}
+
+.business-logo:hover {
+  opacity: 1;
+  transform: translateY(-2px);
+}
+
+.business-logo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  max-width: 180px;
+  object-fit: contain;
+  object-position: center;
+  filter: brightness(0) invert(1);
+}
+
+.business-logo__wordmark {
+  color: var(--cream);
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(19px, 2.15vw, 32px);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+@media (max-width: 900px) {
+  .businesses-section__logo-rail {
+    width: calc(100% - 48px);
+    gap: clamp(10px, 1.7vw, 16px);
+  }
+
+  .business-logo {
+    height: clamp(32px, 4.8vw, 44px);
+  }
+}
+
+@media (max-width: 640px) {
+  .businesses-section__logo-rail {
+    right: 0;
+    bottom: max(26px, env(safe-area-inset-bottom));
+    left: 0;
+    display: flex;
+    width: calc(100% - 36px);
+    justify-content: flex-start;
+    gap: 24px;
+    margin: 0 18px;
+    padding: 0 0 8px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x proximity;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .business-logo {
+    flex: 0 0 96px;
+    width: 96px;
+    height: 38px;
+    scroll-snap-align: center;
+  }
+
+  .business-logo__wordmark {
+    font-size: 22px;
+  }
+}
+
 .section-panel {
   position: fixed;
   z-index: 1;
