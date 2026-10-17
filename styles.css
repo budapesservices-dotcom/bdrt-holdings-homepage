@@ -154,7 +154,7 @@ body {
   top: calc(0px - var(--header-top));
   left: 50%;
   display: block;
-  width: 130px;
+  width: 146px;
   height: 100px;
   overflow: visible;
   pointer-events: none;
@@ -235,7 +235,7 @@ body {
   }
 
   .wordmark-frame {
-    width: 124px;
+    width: 140px;
     height: 100px;
   }
 
@@ -263,7 +263,7 @@ body {
   }
 
   .wordmark-frame {
-    width: 126px;
+    width: 138px;
     height: 98px;
   }
 
