@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-no-flicker-no-ghost-frame-40" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-close-fade-restored-41" />
   </head>
   <body>
     <main class="page">
@@ -561,8 +561,10 @@
             shot.classList.remove("is-expanded");
             shot.classList.add("is-closing");
             shot.setAttribute("aria-expanded", "false");
-            // Keep neighboring clips and hidden source tile in place until the flight
-            // reaches its original bounds. This avoids border flashes and color flicker.
+            // Restore the surrounding mosaic as soon as the close starts, matching
+            // the original close behavior. The flight image itself fades back to grayscale.
+            clearFocusedPageShrink(page);
+            portfolioGalleryViewport.classList.remove("has-expanded-shot");
             activeExpandedShot = null;
 
             const finish = () => {
@@ -570,8 +572,6 @@
               flight.remove();
               activeFlightImage = null;
               activeFlightAnimation = null;
-              clearFocusedPageShrink(page);
-              portfolioGalleryViewport.classList.remove("has-expanded-shot");
               if (sourceImage) sourceImage.style.removeProperty("opacity");
               shot.classList.remove("is-closing");
             };
@@ -582,8 +582,20 @@
             }
 
             activeFlightAnimation = flight.animate([
-              { left: `${fromLeft}px`, top: `${fromTop}px`, width: `${currentRect.width}px`, height: `${currentRect.height}px` },
-              { left: `${toLeft}px`, top: `${toTop}px`, width: `${targetRect.width}px`, height: `${targetRect.height}px` }
+              {
+                left: `${fromLeft}px`,
+                top: `${fromTop}px`,
+                width: `${currentRect.width}px`,
+                height: `${currentRect.height}px`,
+                filter: "grayscale(0%)"
+              },
+              {
+                left: `${toLeft}px`,
+                top: `${toTop}px`,
+                width: `${targetRect.width}px`,
+                height: `${targetRect.height}px`,
+                filter: "grayscale(100%)"
+              }
             ], {
               duration: 620,
               easing: "cubic-bezier(0.22, 1, 0.36, 1)",
