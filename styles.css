@@ -6439,3 +6439,55 @@ body.portal-open .portal-sheet__wordmark {
     transition: none !important;
   }
 }
+
+
+/* Soft return transition: blend portal branding back to the page instead of snapping colors. */
+/* The regular header returns through opacity while its section-specific colors ease in. */
+.site-header .wordmark,
+.site-header .wordmark-frame {
+  transition: opacity 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-header .wordmark__main,
+.site-header .wordmark__sub {
+  transition: color 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-header .wordmark-frame__fill {
+  transition: fill 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-header .wordmark-frame__stroke {
+  transition: stroke 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+/* Ease the portal mark out and gently soften the single-piece sheet as it leaves. */
+.portal-sheet__wordmark {
+  transition:
+    bottom 900ms cubic-bezier(0.16, 1, 0.3, 1),
+    opacity 560ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portal-sheet::before {
+  background-color: var(--obsidian);
+  transition:
+    background-color 620ms cubic-bezier(0.22, 1, 0.36, 1),
+    opacity 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+body.portal-closing .portal-sheet::before {
+  background-color: rgba(15, 15, 17, 0.9);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header .wordmark,
+  .site-header .wordmark-frame,
+  .site-header .wordmark__main,
+  .site-header .wordmark__sub,
+  .site-header .wordmark-frame__fill,
+  .site-header .wordmark-frame__stroke,
+  .portal-sheet__wordmark,
+  .portal-sheet::before {
+    transition: none !important;
+  }
+}
