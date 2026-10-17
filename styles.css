@@ -39,7 +39,7 @@ body {
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: contain;
+  object-fit: cover;
   object-position: center;
 }
 
@@ -71,14 +71,14 @@ body {
 
 .wordmark__sub {
   display: block;
-  margin-top: 6px;
-  padding-left: 0.43em;
+  margin-top: 7px;
+  padding-left: 0.72em;
   font-family: Arial, Helvetica, sans-serif;
   font-size: 8px;
   font-weight: 400;
-  letter-spacing: 0.43em;
+  letter-spacing: 0.72em;
   line-height: 1;
-  transform: scaleY(0.82);
+  transform: scaleY(0.78);
   transform-origin: center top;
 }
 
@@ -97,6 +97,7 @@ body {
 
   .wordmark__sub {
     font-size: 8px;
-    letter-spacing: 0.46em;
+    letter-spacing: 0.68em;
+    padding-left: 0.68em;
   }
 }
