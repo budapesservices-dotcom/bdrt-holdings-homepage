@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=magazine-stack-5" />
+    <link rel="stylesheet" href="./styles.css?v=magnet-snap-6" />
   </head>
   <body>
     <main class="page">
@@ -65,5 +65,104 @@
     </main>
 
 
+
+    <script>
+      (() => {
+        const sections = Array.from(document.querySelectorAll(".hero, .about-section"));
+        if (sections.length < 2) return;
+
+        const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let locked = false;
+        let unlockTimer;
+        let touchStartX = 0;
+        let touchStartY = 0;
+        let verticalTouch = false;
+
+        const currentIndex = () => {
+          const threshold = window.innerHeight * 0.45;
+          return window.scrollY >= sections[1].getBoundingClientRect().top + window.scrollY - threshold ? 1 : 0;
+        };
+
+        const scrollToSection = (index) => {
+          if (locked || index < 0 || index >= sections.length) return false;
+          const target = sections[index];
+          const top = target.getBoundingClientRect().top + window.scrollY;
+          if (Math.abs(window.scrollY - top) < 3) return false;
+
+          locked = true;
+          window.scrollTo({
+            top,
+            behavior: reduceMotion.matches ? "auto" : "smooth"
+          });
+
+          window.clearTimeout(unlockTimer);
+          unlockTimer = window.setTimeout(() => {
+            locked = false;
+          }, reduceMotion.matches ? 180 : Math.max(850, Math.min(1350, window.innerHeight * 1.05)));
+          return true;
+        };
+
+        const moveByDirection = (direction) => {
+          const index = currentIndex();
+          const nextIndex = index + direction;
+          return scrollToSection(nextIndex);
+        };
+
+        window.addEventListener("wheel", (event) => {
+          if (event.ctrlKey || Math.abs(event.deltaY) < 5) return;
+          if (locked) {
+            event.preventDefault();
+            return;
+          }
+          const direction = event.deltaY > 0 ? 1 : -1;
+          if (moveByDirection(direction)) event.preventDefault();
+        }, { passive: false });
+
+        window.addEventListener("touchstart", (event) => {
+          const touch = event.changedTouches[0];
+          touchStartX = touch.clientX;
+          touchStartY = touch.clientY;
+          verticalTouch = false;
+        }, { passive: true });
+
+        window.addEventListener("touchmove", (event) => {
+          const touch = event.changedTouches[0];
+          const dx = touch.clientX - touchStartX;
+          const dy = touch.clientY - touchStartY;
+          if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.15) {
+            const canMove = dy < 0 ? currentIndex() < sections.length - 1 : currentIndex() > 0;
+            if (canMove) {
+              verticalTouch = true;
+              event.preventDefault();
+            }
+          }
+        }, { passive: false });
+
+        window.addEventListener("touchend", (event) => {
+          if (!verticalTouch) return;
+          const touch = event.changedTouches[0];
+          const dy = touch.clientY - touchStartY;
+          if (Math.abs(dy) > 42) moveByDirection(dy < 0 ? 1 : -1);
+          verticalTouch = false;
+        }, { passive: true });
+
+        window.addEventListener("keydown", (event) => {
+          if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
+          const active = document.activeElement;
+          if (active && /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(active.tagName)) return;
+          if (["ArrowDown", "PageDown"].includes(event.key) || (event.key === " " && !active?.closest("a"))) {
+            if (moveByDirection(1)) event.preventDefault();
+          } else if (["ArrowUp", "PageUp"].includes(event.key)) {
+            if (moveByDirection(-1)) event.preventDefault();
+          }
+        });
+
+        window.addEventListener("resize", () => {
+          if (!locked) return;
+          window.clearTimeout(unlockTimer);
+          locked = false;
+        });
+      })();
+    </script>
   </body>
 </html>
