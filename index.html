@@ -6,38 +6,38 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=magnet-snap-6" />
+    <link rel="stylesheet" href="./styles.css?v=magnet-snap-7" />
   </head>
   <body>
     <main class="page">
+      <header class="site-header">
+        <svg class="wordmark-frame" viewBox="0 0 130 116" preserveAspectRatio="none" aria-hidden="true">
+          <path class="wordmark-frame__stroke" d="M1 0 V31 C1 76 29.654 113 65 113 C100.346 113 129 76 129 31 V0" />
+          <path class="wordmark-frame__fill" d="M1 0 H129 V31 C129 76 100.346 113 65 113 C29.654 113 1 76 1 31 Z" />
+        </svg>
+
+        <nav class="site-nav site-nav--left" aria-label="Main navigation">
+          <a href="#home" aria-current="page">HOME</a>
+          <a href="#about">ABOUT</a>
+          <a href="#businesses">BUSINESSES</a>
+          <a href="#our-brands">OUR BRANDS</a>
+        </nav>
+
+        <a class="wordmark" href="#home" aria-label="BDRT Holdings home">
+          <span class="wordmark__main">BDRT</span>
+          <span class="wordmark__sub">HOLDINGS</span>
+        </a>
+
+        <nav class="site-nav site-nav--right" aria-label="Secondary navigation">
+          <a href="#portfolio">PORTFOLIO</a>
+          <a href="#contact">CONTACT</a>
+          <a href="#client-login">CLIENT LOGIN</a>
+          <a href="#donor-portal">DONOR PORTAL</a>
+        </nav>
+      </header>
+
       <div class="magazine-stack">
         <section class="hero" id="home" aria-label="BDRT Holdings">
-          <header class="site-header">
-            <svg class="wordmark-frame" viewBox="0 0 130 116" preserveAspectRatio="none" aria-hidden="true">
-              <path class="wordmark-frame__stroke" d="M1 0 V31 C1 76 29.654 113 65 113 C100.346 113 129 76 129 31 V0" />
-              <path class="wordmark-frame__fill" d="M1 0 H129 V31 C129 76 100.346 113 65 113 C29.654 113 1 76 1 31 Z" />
-            </svg>
-
-            <nav class="site-nav site-nav--left" aria-label="Main navigation">
-              <a href="#home" aria-current="page">HOME</a>
-              <a href="#about">ABOUT</a>
-              <a href="#businesses">BUSINESSES</a>
-              <a href="#our-brands">OUR BRANDS</a>
-            </nav>
-
-            <a class="wordmark" href="#home" aria-label="BDRT Holdings home">
-              <span class="wordmark__main">BDRT</span>
-              <span class="wordmark__sub">HOLDINGS</span>
-            </a>
-
-            <nav class="site-nav site-nav--right" aria-label="Secondary navigation">
-              <a href="#portfolio">PORTFOLIO</a>
-              <a href="#contact">CONTACT</a>
-              <a href="#client-login">CLIENT LOGIN</a>
-              <a href="#donor-portal">DONOR PORTAL</a>
-            </nav>
-          </header>
-
           <video
             class="hero__video"
             autoplay
@@ -64,103 +64,113 @@
       </div>
     </main>
 
-
-
     <script>
       (() => {
-        const sections = Array.from(document.querySelectorAll(".hero, .about-section"));
-        if (sections.length < 2) return;
+        const hero = document.querySelector(".hero");
+        const about = document.querySelector(".about-section");
+        if (!hero || !about) return;
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        let locked = false;
-        let unlockTimer;
-        let touchStartX = 0;
-        let touchStartY = 0;
-        let verticalTouch = false;
+        let animating = false;
+        let animationFrame = 0;
+        let unlockTimer = 0;
+        let startX = 0;
+        let startY = 0;
+        let capturedVerticalSwipe = false;
 
-        const currentIndex = () => {
-          const threshold = window.innerHeight * 0.45;
-          return window.scrollY >= sections[1].getBoundingClientRect().top + window.scrollY - threshold ? 1 : 0;
+        const sectionTarget = (index) => {
+          if (index <= 0) return 0;
+          return Math.max(0, about.getBoundingClientRect().top + window.scrollY);
         };
 
-        const scrollToSection = (index) => {
-          if (locked || index < 0 || index >= sections.length) return false;
-          const target = sections[index];
-          const top = target.getBoundingClientRect().top + window.scrollY;
-          if (Math.abs(window.scrollY - top) < 3) return false;
+        const currentSection = () => window.scrollY > window.innerHeight * 0.48 ? 1 : 0;
 
-          locked = true;
-          window.scrollTo({
-            top,
-            behavior: reduceMotion.matches ? "auto" : "smooth"
-          });
+        const moveToSection = (index) => {
+          if (animating || index < 0 || index > 1) return false;
+          const start = window.scrollY;
+          const target = sectionTarget(index);
+          if (Math.abs(target - start) < 3) return false;
 
+          window.cancelAnimationFrame(animationFrame);
           window.clearTimeout(unlockTimer);
-          unlockTimer = window.setTimeout(() => {
-            locked = false;
-          }, reduceMotion.matches ? 180 : Math.max(850, Math.min(1350, window.innerHeight * 1.05)));
+          animating = true;
+
+          if (reduceMotion.matches) {
+            window.scrollTo(0, target);
+            animating = false;
+            return true;
+          }
+
+          const duration = 430;
+          const startedAt = performance.now();
+          const easeOutCubic = (progress) => 1 - Math.pow(1 - progress, 3);
+
+          const animate = (now) => {
+            const progress = Math.min(1, (now - startedAt) / duration);
+            const eased = easeOutCubic(progress);
+            window.scrollTo(0, start + (target - start) * eased);
+
+            if (progress < 1) {
+              animationFrame = window.requestAnimationFrame(animate);
+            } else {
+              window.scrollTo(0, target);
+              unlockTimer = window.setTimeout(() => { animating = false; }, 90);
+            }
+          };
+
+          animationFrame = window.requestAnimationFrame(animate);
           return true;
         };
 
-        const moveByDirection = (direction) => {
-          const index = currentIndex();
-          const nextIndex = index + direction;
-          return scrollToSection(nextIndex);
-        };
+        const moveOne = (direction) => moveToSection(currentSection() + direction);
 
         window.addEventListener("wheel", (event) => {
-          if (event.ctrlKey || Math.abs(event.deltaY) < 5) return;
-          if (locked) {
+          if (event.ctrlKey || Math.abs(event.deltaY) < 2.5) return;
+          if (animating) {
             event.preventDefault();
             return;
           }
-          const direction = event.deltaY > 0 ? 1 : -1;
-          if (moveByDirection(direction)) event.preventDefault();
+          if (moveOne(event.deltaY > 0 ? 1 : -1)) event.preventDefault();
         }, { passive: false });
 
         window.addEventListener("touchstart", (event) => {
           const touch = event.changedTouches[0];
-          touchStartX = touch.clientX;
-          touchStartY = touch.clientY;
-          verticalTouch = false;
+          startX = touch.clientX;
+          startY = touch.clientY;
+          capturedVerticalSwipe = false;
         }, { passive: true });
 
         window.addEventListener("touchmove", (event) => {
           const touch = event.changedTouches[0];
-          const dx = touch.clientX - touchStartX;
-          const dy = touch.clientY - touchStartY;
-          if (Math.abs(dy) > 10 && Math.abs(dy) > Math.abs(dx) * 1.15) {
-            const canMove = dy < 0 ? currentIndex() < sections.length - 1 : currentIndex() > 0;
-            if (canMove) {
-              verticalTouch = true;
+          const dx = touch.clientX - startX;
+          const dy = touch.clientY - startY;
+          if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx) * 1.15) {
+            const available = dy < 0 ? currentSection() === 0 : currentSection() === 1;
+            if (available) {
+              capturedVerticalSwipe = true;
               event.preventDefault();
             }
           }
         }, { passive: false });
 
         window.addEventListener("touchend", (event) => {
-          if (!verticalTouch) return;
+          if (!capturedVerticalSwipe) return;
           const touch = event.changedTouches[0];
-          const dy = touch.clientY - touchStartY;
-          if (Math.abs(dy) > 42) moveByDirection(dy < 0 ? 1 : -1);
-          verticalTouch = false;
+          const dy = touch.clientY - startY;
+          if (Math.abs(dy) > 28) moveOne(dy < 0 ? 1 : -1);
+          capturedVerticalSwipe = false;
         }, { passive: true });
 
         window.addEventListener("keydown", (event) => {
           if (event.altKey || event.ctrlKey || event.metaKey || event.shiftKey) return;
           const active = document.activeElement;
           if (active && /^(INPUT|TEXTAREA|SELECT|BUTTON)$/.test(active.tagName)) return;
-          if (["ArrowDown", "PageDown"].includes(event.key) || (event.key === " " && !active?.closest("a"))) {
-            if (moveByDirection(1)) event.preventDefault();
-          } else if (["ArrowUp", "PageUp"].includes(event.key)) {
-            if (moveByDirection(-1)) event.preventDefault();
-          }
-        });
 
-        window.addEventListener("resize", () => {
-          if (!locked) return;
-          window.clearTimeout(unlockTimer);
-          locked = false;
+          if (["ArrowDown", "PageDown"].includes(event.key) || (event.key === " " && !active?.closest("a"))) {
+            if (moveOne(1)) event.preventDefault();
+          } else if (["ArrowUp", "PageUp"].includes(event.key)) {
+            if (moveOne(-1)) event.preventDefault();
+          }
         });
       })();
     </script>
