@@ -334,6 +334,7 @@
           let suppressGalleryClickUntil = 0;
           let galleryMotionToken = 0;
           let galleryMotionBusy = false;
+          let pendingGalleryHoverShot = null;
           const galleryFlightRecords = new Set();
 
           const clearFigureLayout = (shot) => {
@@ -354,6 +355,7 @@
               record.element.remove();
             });
             galleryFlightRecords.clear();
+            pendingGalleryHoverShot = null;
             portfolioGalleryViewport.classList.remove("is-expanding");
           };
 
@@ -522,6 +524,13 @@
               galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden"));
               galleryMotionBusy = false;
               portfolioGalleryViewport.classList.remove("is-expanding");
+              const pendingHover = pendingGalleryHoverShot;
+              pendingGalleryHoverShot = null;
+              if (pendingHover && pendingHover.matches(":hover") && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+                window.requestAnimationFrame(() => {
+                  if (!galleryMotionBusy && pendingHover.matches(":hover")) expandGalleryShot(pendingHover);
+                });
+              }
             });
           };
 
@@ -575,7 +584,8 @@
           galleryShots.forEach((shot) => {
             shot.addEventListener("pointerenter", (event) => {
               if (event.pointerType === "mouse" && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-                if (!galleryMotionBusy) expandGalleryShot(shot);
+                if (galleryMotionBusy) pendingGalleryHoverShot = shot;
+                else expandGalleryShot(shot);
               }
             });
 
@@ -648,7 +658,7 @@
           portfolioGalleryViewport.addEventListener("lostpointercapture", endGalleryDrag);
 
           window.addEventListener("resize", () => {
-            if (activeExpandedShot) layoutExpandedGalleryShot(activeExpandedShot);
+            if (activeExpandedShot) setExpandedGalleryShot(activeExpandedShot, { force: true });
           }, { passive: true });
 
           portfolioGalleryViewport.addEventListener("keydown", (event) => {
