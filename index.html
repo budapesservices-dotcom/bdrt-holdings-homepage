@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-expand-smooth-33" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-expand-anchored-34" />
   </head>
   <body>
     <main class="page">
@@ -329,299 +329,191 @@
           const galleryPages = Array.from(portfolioGalleryViewport.querySelectorAll(".portfolio-gallery__page"));
           const galleryShots = Array.from(portfolioGalleryViewport.querySelectorAll(".portfolio-shot"));
           let activeExpandedShot = null;
+          let activeFlightImage = null;
+          let activeFlightAnimation = null;
           let galleryPointer = null;
-          let lastGalleryPointerType = "";
           let suppressGalleryClickUntil = 0;
-          let galleryMotionToken = 0;
-          let galleryMotionBusy = false;
-          let pendingGalleryHoverShot = null;
-          const galleryFlightRecords = new Set();
+          let galleryTransitionToken = 0;
 
-          const clearFigureLayout = (shot) => {
-            ["grid-column", "grid-row", "width", "height", "aspect-ratio", "align-self", "justify-self", "z-index"].forEach((property) => {
-              shot.style.removeProperty(property);
-            });
+          const stopGalleryFlight = () => {
+            galleryTransitionToken += 1;
+            try { activeFlightAnimation?.cancel(); } catch (_) {}
+            activeFlightAnimation = null;
+            activeFlightImage?.remove();
+            activeFlightImage = null;
+            galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden"));
           };
 
-          const cancelGalleryMotion = () => {
-            galleryMotionToken += 1;
-            galleryMotionBusy = false;
-            galleryShots.forEach((shot) => {
-              shot.getAnimations().forEach((animation) => animation.cancel());
-              shot.classList.remove("is-flight-hidden");
+          const makeGalleryFlight = (sourceImage, startRect) => {
+            const flight = sourceImage.cloneNode(false);
+            flight.classList.add("portfolio-gallery__flight");
+            flight.alt = "";
+            flight.setAttribute("aria-hidden", "true");
+            flight.style.left = `${startRect.left}px`;
+            flight.style.top = `${startRect.top}px`;
+            flight.style.width = `${startRect.width}px`;
+            flight.style.height = `${startRect.height}px`;
+            flight.style.objectFit = "cover";
+            flight.style.objectPosition = window.getComputedStyle(sourceImage).objectPosition;
+            flight.addEventListener("click", (event) => {
+              event.preventDefault();
+              event.stopPropagation();
+              closeGalleryShot();
             });
-            galleryFlightRecords.forEach((record) => {
-              try { record.animation?.cancel(); } catch (_) {}
-              record.element.remove();
-            });
-            galleryFlightRecords.clear();
-            pendingGalleryHoverShot = null;
-            portfolioGalleryViewport.classList.remove("is-expanding");
+            document.body.appendChild(flight);
+            return flight;
           };
 
-          const resetGalleryPage = (page) => {
-            page.classList.remove("has-expanded-shot");
-            page.style.removeProperty("grid-template-columns");
-            page.style.removeProperty("grid-template-rows");
-            page.querySelectorAll(".portfolio-shot").forEach((shot) => {
-              shot.classList.remove("is-expanded", "is-flight-hidden");
-              shot.setAttribute("aria-expanded", "false");
-              clearFigureLayout(shot);
-            });
-          };
+          const openGalleryShot = (shot) => {
+            const sourceImage = shot?.querySelector("img");
+            if (!sourceImage || !sourceImage.naturalWidth || !sourceImage.naturalHeight) return;
+            if (activeExpandedShot === shot) return;
 
-          const applyExpandedGalleryLayout = (shot) => {
-            const page = shot.closest(".portfolio-gallery__page");
-            const image = shot.querySelector("img");
-            if (!page || !image || !image.naturalWidth || !image.naturalHeight) return false;
+            stopGalleryFlight();
+            const previousShot = activeExpandedShot;
+            if (previousShot) {
+              previousShot.classList.remove("is-expanded");
+              previousShot.setAttribute("aria-expanded", "false");
+              previousShot.closest(".portfolio-gallery__page")?.classList.remove("has-focused-shot");
+            }
 
-            const mobileLayout = window.matchMedia("(max-width: 760px)").matches;
-            const columns = mobileLayout ? 6 : 12;
-            const rows = 6;
-            const pageWidth = page.clientWidth;
-            const pageHeight = page.clientHeight;
-            const computedPage = window.getComputedStyle(page);
-            const columnGap = Number.parseFloat(computedPage.columnGap) || 8;
-            const unitWidth = (pageWidth - columnGap * (columns - 1)) / columns;
-            const ratio = image.naturalWidth / image.naturalHeight;
-            if (!(pageWidth > 0 && pageHeight > 0 && ratio > 0)) return false;
+            const sourceRect = shot.getBoundingClientRect();
+            if (!(sourceRect.width > 0 && sourceRect.height > 0)) return;
 
-            page.style.gridTemplateColumns = `repeat(${columns}, minmax(0, 1fr))`;
-            page.style.gridTemplateRows = `repeat(${rows}, minmax(0, 1fr))`;
-            page.classList.add("has-expanded-shot");
+            const ratio = sourceImage.naturalWidth / sourceImage.naturalHeight;
+            const maxWidth = Math.min(window.innerWidth * 0.84, window.innerHeight * 0.78 * ratio);
+            const maxHeight = maxWidth / ratio;
+            const centerX = sourceRect.left + sourceRect.width / 2;
+            const centerY = sourceRect.top + sourceRect.height / 2;
+            const finalWidth = Math.min(maxWidth, window.innerWidth - 32, (window.innerHeight - 32) * ratio);
+            const finalHeight = finalWidth / ratio;
+            const finalLeft = Math.max(16, Math.min(centerX - finalWidth / 2, window.innerWidth - finalWidth - 16));
+            const finalTop = Math.max(16, Math.min(centerY - finalHeight / 2, window.innerHeight - finalHeight - 16));
 
-            const pageShots = Array.from(page.querySelectorAll(".portfolio-shot"));
-            const selectedIndex = pageShots.indexOf(shot);
-            const spanColumns = mobileLayout ? 3 : 6;
-            const expandedAreaWidth = spanColumns * unitWidth + (spanColumns - 1) * columnGap;
-            const expandedWidth = Math.min(expandedAreaWidth, pageHeight * ratio);
-            const expandedHeight = expandedWidth / ratio;
-            const startColumn = mobileLayout
-              ? (selectedIndex % 2 === 0 ? 1 : columns - spanColumns + 1)
-              : 4;
-
+            const flight = makeGalleryFlight(sourceImage, sourceRect);
+            activeExpandedShot = shot;
+            activeFlightImage = flight;
             shot.classList.add("is-expanded");
             shot.setAttribute("aria-expanded", "true");
-            shot.style.gridColumn = `${startColumn} / span ${spanColumns}`;
-            shot.style.gridRow = `1 / span ${rows}`;
-            shot.style.width = `${expandedWidth}px`;
-            shot.style.height = `${expandedHeight}px`;
-            shot.style.aspectRatio = `${image.naturalWidth} / ${image.naturalHeight}`;
-            shot.style.alignSelf = "center";
-            shot.style.justifySelf = "center";
-            shot.style.zIndex = "2";
+            shot.closest(".portfolio-gallery__page")?.classList.add("has-focused-shot");
 
-            const otherShots = pageShots.filter((candidate) => candidate !== shot);
-            if (mobileLayout) {
-              const sideStart = startColumn === 1 ? spanColumns + 1 : 1;
-              otherShots.forEach((candidate, index) => {
-                candidate.style.gridColumn = `${sideStart} / span ${columns - spanColumns}`;
-                candidate.style.gridRow = `${index + 1} / span 1`;
-                candidate.style.alignSelf = "stretch";
-                candidate.style.justifySelf = "stretch";
-                candidate.style.zIndex = "1";
-              });
-            } else {
-              otherShots.forEach((candidate, index) => {
-                const useLeft = index < 3;
-                const laneStart = useLeft ? 1 : 10;
-                const laneRow = useLeft ? index : index - 3;
-                candidate.style.gridColumn = `${laneStart} / span 3`;
-                candidate.style.gridRow = `${laneRow * 2 + 1} / span 2`;
-                candidate.style.alignSelf = "stretch";
-                candidate.style.justifySelf = "stretch";
-                candidate.style.zIndex = "1";
-              });
-            }
-            return true;
-          };
-
-          const captureGalleryRects = (pages) => {
-            const rects = new Map();
-            pages.forEach((page) => {
-              page.querySelectorAll(".portfolio-shot").forEach((shot) => {
-                rects.set(shot, shot.getBoundingClientRect());
-              });
+            const token = ++galleryTransitionToken;
+            activeFlightAnimation = flight.animate([
+              { left: `${sourceRect.left}px`, top: `${sourceRect.top}px`, width: `${sourceRect.width}px`, height: `${sourceRect.height}px` },
+              { left: `${finalLeft}px`, top: `${finalTop}px`, width: `${finalWidth}px`, height: `${finalHeight}px` }
+            ], {
+              duration: 620,
+              easing: "cubic-bezier(0.22, 1, 0.36, 1)",
+              fill: "both"
             });
-            return rects;
+
+            activeFlightAnimation.finished.then(() => {
+              if (token !== galleryTransitionToken || activeFlightImage !== flight) return;
+              flight.style.left = `${finalLeft}px`;
+              flight.style.top = `${finalTop}px`;
+              flight.style.width = `${finalWidth}px`;
+              flight.style.height = `${finalHeight}px`;
+              activeFlightAnimation = null;
+            }).catch(() => {});
           };
 
-          const rectChanged = (before, after) => before && after && (
-            Math.abs(before.left - after.left) > 1 ||
-            Math.abs(before.top - after.top) > 1 ||
-            Math.abs(before.width - after.width) > 1 ||
-            Math.abs(before.height - after.height) > 1
-          );
-
-          const animateGalleryLayout = (beforeRects, afterRects, specialShots, token) => {
-            const animations = [];
-            const specialElements = new Set();
-
-            afterRects.forEach((after, shot) => {
-              const before = beforeRects.get(shot);
-              if (!rectChanged(before, after)) return;
-
-              if (specialShots.has(shot)) {
-                const sourceImage = shot.querySelector("img");
-                if (sourceImage && sourceImage.naturalWidth > 0) {
-                  const flightImage = sourceImage.cloneNode(false);
-                  flightImage.classList.add("portfolio-gallery__flight");
-                  flightImage.alt = "";
-                  flightImage.setAttribute("aria-hidden", "true");
-                  flightImage.style.left = `${before.left}px`;
-                  flightImage.style.top = `${before.top}px`;
-                  flightImage.style.width = `${before.width}px`;
-                  flightImage.style.height = `${before.height}px`;
-                  flightImage.style.objectPosition = window.getComputedStyle(sourceImage).objectPosition;
-                  document.body.appendChild(flightImage);
-                  shot.classList.add("is-flight-hidden");
-                  specialElements.add(shot);
-
-                  const animation = flightImage.animate([
-                    { left: `${before.left}px`, top: `${before.top}px`, width: `${before.width}px`, height: `${before.height}px` },
-                    { left: `${after.left}px`, top: `${after.top}px`, width: `${after.width}px`, height: `${after.height}px` }
-                  ], {
-                    duration: 680,
-                    easing: "cubic-bezier(0.22, 1, 0.36, 1)",
-                    fill: "both"
-                  });
-                  const record = { element: flightImage, shot, animation, token };
-                  galleryFlightRecords.add(record);
-                  animations.push(animation);
-                  return;
-                }
+          const closeGalleryShot = (immediate = false) => {
+            const shot = activeExpandedShot;
+            const flight = activeFlightImage;
+            if (!shot || !flight) {
+              if (shot) {
+                shot.classList.remove("is-expanded");
+                shot.setAttribute("aria-expanded", "false");
+                shot.closest(".portfolio-gallery__page")?.classList.remove("has-focused-shot");
               }
-
-              const deltaX = before.left - after.left;
-              const deltaY = before.top - after.top;
-              const scaleX = before.width / after.width;
-              const scaleY = before.height / after.height;
-              const animation = shot.animate([
-                { transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`, transformOrigin: "top left" },
-                { transform: "translate(0px, 0px) scale(1, 1)", transformOrigin: "top left" }
-              ], {
-                duration: 680,
-                easing: "cubic-bezier(0.22, 1, 0.36, 1)"
-              });
-              animations.push(animation);
-            });
-
-            if (!animations.length) {
-              specialElements.forEach((shot) => shot.classList.remove("is-flight-hidden"));
+              activeExpandedShot = null;
+              stopGalleryFlight();
               return;
             }
 
-            galleryMotionBusy = true;
-            portfolioGalleryViewport.classList.add("is-expanding");
-            Promise.all(animations.map((animation) => animation.finished.catch(() => null))).then(() => {
-              if (token !== galleryMotionToken) return;
-              galleryFlightRecords.forEach((record) => {
-                if (record.token !== token) return;
-                record.element.remove();
-                record.shot.classList.remove("is-flight-hidden");
-                galleryFlightRecords.delete(record);
-              });
-              galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden"));
-              galleryMotionBusy = false;
-              portfolioGalleryViewport.classList.remove("is-expanding");
-              const pendingHover = pendingGalleryHoverShot;
-              pendingGalleryHoverShot = null;
-              if (pendingHover && pendingHover.matches(":hover") && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-                window.requestAnimationFrame(() => {
-                  if (!galleryMotionBusy && pendingHover.matches(":hover")) expandGalleryShot(pendingHover);
-                });
-              }
-            });
-          };
+            const sourceImage = shot.querySelector("img");
+            const targetRect = shot.getBoundingClientRect();
+            const currentRect = flight.getBoundingClientRect();
+            const token = ++galleryTransitionToken;
+            try { activeFlightAnimation?.cancel(); } catch (_) {}
+            activeFlightAnimation = null;
 
-          const setExpandedGalleryShot = (nextShot, options = {}) => {
-            const { toggle = false, onlyPage = null, force = false } = options;
-            const previousShot = activeExpandedShot;
-
-            if (toggle && nextShot && previousShot === nextShot) nextShot = null;
-            if (!toggle && !force && nextShot && previousShot === nextShot) return;
-            if (!nextShot && onlyPage && previousShot?.closest(".portfolio-gallery__page") !== onlyPage) return;
-            if (!nextShot && !onlyPage && !previousShot) return;
-
-            cancelGalleryMotion();
-
-            const affectedPages = new Set();
-            if (previousShot) affectedPages.add(previousShot.closest(".portfolio-gallery__page"));
-            if (nextShot) affectedPages.add(nextShot.closest(".portfolio-gallery__page"));
-            if (onlyPage) affectedPages.add(onlyPage);
-            affectedPages.delete(null);
-
-            const beforeRects = captureGalleryRects(affectedPages);
-            affectedPages.forEach(resetGalleryPage);
+            shot.classList.remove("is-expanded");
+            shot.setAttribute("aria-expanded", "false");
+            shot.closest(".portfolio-gallery__page")?.classList.remove("has-focused-shot");
             activeExpandedShot = null;
 
-            if (nextShot) {
-              if (!applyExpandedGalleryLayout(nextShot)) {
-                // If dimensions are not ready, leave the gallery in its stable default layout.
-                affectedPages.forEach(resetGalleryPage);
-                return;
-              }
-              activeExpandedShot = nextShot;
+            const finish = () => {
+              if (token !== galleryTransitionToken || activeFlightImage !== flight) return;
+              flight.remove();
+              activeFlightImage = null;
+              activeFlightAnimation = null;
+              if (sourceImage) sourceImage.style.removeProperty("opacity");
+            };
+
+            if (immediate || !targetRect.width || !targetRect.height) {
+              finish();
+              return;
             }
 
-            const afterRects = captureGalleryRects(affectedPages);
-            const specialShots = new Set([previousShot, nextShot].filter(Boolean));
-            const token = galleryMotionToken;
-            animateGalleryLayout(beforeRects, afterRects, specialShots, token);
-          };
-
-          const expandGalleryShot = (shot, toggle = false) => {
-            if (!shot) return;
-            const image = shot.querySelector("img");
-            if (!image || !image.naturalWidth || !image.naturalHeight) return;
-            setExpandedGalleryShot(shot, { toggle });
-          };
-
-          const clearExpandedGallery = (onlyPage = null) => {
-            setExpandedGalleryShot(null, { onlyPage });
+            activeFlightAnimation = flight.animate([
+              { left: `${currentRect.left}px`, top: `${currentRect.top}px`, width: `${currentRect.width}px`, height: `${currentRect.height}px` },
+              { left: `${targetRect.left}px`, top: `${targetRect.top}px`, width: `${targetRect.width}px`, height: `${targetRect.height}px` }
+            ], {
+              duration: 420,
+              easing: "cubic-bezier(0.4, 0, 0.2, 1)",
+              fill: "both"
+            });
+            activeFlightAnimation.finished.then(finish).catch(() => {});
           };
 
           galleryShots.forEach((shot) => {
-            shot.addEventListener("pointerenter", (event) => {
-              if (event.pointerType === "mouse" && window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-                if (galleryMotionBusy) pendingGalleryHoverShot = shot;
-                else expandGalleryShot(shot);
-              }
-            });
-
             shot.addEventListener("click", (event) => {
               if (performance.now() < suppressGalleryClickUntil) {
                 event.preventDefault();
                 event.stopPropagation();
                 return;
               }
-              if (lastGalleryPointerType === "touch" || lastGalleryPointerType === "pen") {
-                event.preventDefault();
-                expandGalleryShot(shot, true);
-              }
+              event.preventDefault();
+              if (activeExpandedShot === shot) closeGalleryShot();
+              else openGalleryShot(shot);
             });
 
             shot.addEventListener("keydown", (event) => {
               if (event.key !== "Enter" && event.key !== " ") return;
               event.preventDefault();
               event.stopPropagation();
-              expandGalleryShot(shot, true);
+              if (activeExpandedShot === shot) closeGalleryShot();
+              else openGalleryShot(shot);
             });
           });
 
-          galleryPages.forEach((page) => {
-            page.addEventListener("pointerleave", (event) => {
-              if (event.pointerType !== "mouse" || !window.matchMedia("(hover: hover) and (pointer: fine)").matches) return;
-              if (activeExpandedShot?.closest(".portfolio-gallery__page") === page) clearExpandedGallery(page);
-            });
+          document.addEventListener("pointerdown", (event) => {
+            if (!activeExpandedShot) return;
+            if (activeExpandedShot.contains(event.target) || activeFlightImage?.contains(event.target)) return;
+            if (event.target instanceof Element && event.target.closest(".portfolio-shot")) return;
+            closeGalleryShot();
           });
+
+          document.addEventListener("keydown", (event) => {
+            if (event.key === "Escape" && activeExpandedShot) {
+              event.preventDefault();
+              closeGalleryShot();
+            }
+          });
+
+          portfolioGalleryViewport.addEventListener("scroll", () => {
+            if (activeExpandedShot) closeGalleryShot(true);
+          }, { passive: true });
+
+          window.addEventListener("resize", () => {
+            if (activeExpandedShot) closeGalleryShot(true);
+          }, { passive: true });
 
           portfolioGalleryViewport.addEventListener("pointerdown", (event) => {
             if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
-            lastGalleryPointerType = event.pointerType;
             galleryPointer = {
               pointerId: event.pointerId,
-              pointerType: event.pointerType,
               startX: event.clientX,
               startY: event.clientY,
               startScrollLeft: portfolioGalleryViewport.scrollLeft,
@@ -656,10 +548,6 @@
           portfolioGalleryViewport.addEventListener("pointerup", endGalleryDrag);
           portfolioGalleryViewport.addEventListener("pointercancel", endGalleryDrag);
           portfolioGalleryViewport.addEventListener("lostpointercapture", endGalleryDrag);
-
-          window.addEventListener("resize", () => {
-            if (activeExpandedShot) setExpandedGalleryShot(activeExpandedShot, { force: true });
-          }, { passive: true });
 
           portfolioGalleryViewport.addEventListener("keydown", (event) => {
             const distance = Math.max(160, Math.round(portfolioGalleryViewport.clientWidth * 0.72));
