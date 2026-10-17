@@ -6491,3 +6491,109 @@ body.portal-closing .portal-sheet::before {
     transition: none !important;
   }
 }
+
+
+/* Client Login parity: mirror the Donor Portal card structure, palette and rhythm. */
+.portal-login-card--client {
+  overflow: hidden;
+  border: 1px solid rgba(204, 176, 127, 0.36);
+  background:
+    radial-gradient(ellipse at 100% 0%, rgba(160, 128, 78, 0.12), transparent 48%),
+    linear-gradient(145deg, #1D1B18 0%, #121212 70%);
+  color: var(--cream);
+  box-shadow: 0 25px 75px rgba(0, 0, 0, 0.28);
+}
+
+.portal-login-card--client::before {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, rgba(207, 179, 130, 0.88), transparent);
+  content: "";
+}
+
+.portal-login-card--client .portal-login-card__masthead {
+  border-bottom-color: rgba(207, 179, 130, 0.22);
+}
+
+.portal-login-card--client .portal-login-card__monogram {
+  color: #F0E8D9;
+  font-size: 25px;
+  letter-spacing: 0.11em;
+}
+
+.portal-login-card--client .portal-login-card__classification {
+  color: rgba(222, 203, 171, 0.52);
+}
+
+.portal-login-card--client .portal-login-card__heading > p {
+  color: #CBB185;
+}
+
+.portal-login-card--client .portal-login-card__heading h2 {
+  color: #F3EEE4;
+  font-size: clamp(22px, 2.1vw, 29px);
+}
+
+.portal-login-card--client .portal-login-card__description {
+  color: rgba(229, 216, 194, 0.68);
+}
+
+.portal-login-card--client .portal-login-field > span {
+  color: rgba(229, 216, 194, 0.68);
+}
+
+.portal-login-card--client .portal-login-field__surface {
+  border-color: rgba(207, 179, 130, 0.28);
+  background: rgba(255, 255, 255, 0.018);
+  color: rgba(243, 238, 228, 0.42);
+}
+
+.portal-login-card--client .portal-login-card__submit {
+  background: #D0B88F;
+  color: #171512;
+}
+
+.portal-login-card--client .portal-login-card__submit span {
+  color: #171512;
+}
+
+.portal-login-card--client .portal-login-card__note {
+  color: rgba(229, 216, 194, 0.43);
+}
+
+.portal-login-card--client .portal-login-card__note i {
+  color: #CBB185;
+}
+
+.portal-client-assurance {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top-color: rgba(207, 179, 130, 0.18);
+}
+
+@media (max-width: 1080px) and (min-width: 761px) {
+  .portal-client-assurance {
+    margin-top: 10px;
+    padding-top: 9px;
+  }
+}
+
+@media (max-width: 760px) {
+  .portal-login-card--client .portal-login-card__heading h2 {
+    font-size: 25px;
+  }
+
+  .portal-client-assurance {
+    margin-top: 10px;
+    padding-top: 9px;
+  }
+}
+
+@media (max-width: 420px) {
+  .portal-login-card--client .portal-login-card__heading h2 {
+    font-size: 22px;
+  }
+}
