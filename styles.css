@@ -452,6 +452,54 @@ body::-webkit-scrollbar,
   line-height: 0.7;
 }
 
+.portfolio-work-detail {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr);
+  align-items: center;
+  gap: clamp(18px, 3vw, 44px);
+  margin: 0 clamp(24px, 5.2vw, 80px);
+  padding: 9px 0 10px;
+  border-top: 1px solid rgba(15, 15, 17, 0.14);
+  border-bottom: 1px solid rgba(15, 15, 17, 0.14);
+}
+
+.portfolio-work-detail__heading {
+  min-width: 0;
+}
+
+.portfolio-work-detail__heading .portfolio-gallery__eyebrow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 6px;
+  margin: 0 0 4px;
+  font-size: 7px;
+  letter-spacing: 0.15em;
+}
+
+.portfolio-work-detail__heading h3 {
+  margin: 0;
+  color: var(--obsidian);
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(16px, 1.5vw, 22px);
+  font-weight: 500;
+  letter-spacing: -0.025em;
+  line-height: 1.05;
+}
+
+.portfolio-work-detail__description {
+  max-width: 720px;
+  margin: 0;
+  color: rgba(15, 15, 17, 0.72);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(10px, 0.78vw, 12px);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.45;
+}
+
 .portfolio-footer {
   display: flex;
   flex: 0 0 auto;
@@ -653,6 +701,58 @@ body::-webkit-scrollbar,
 .portfolio-shot {
   clip-path: inset(0);
   transition: clip-path 620ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.portfolio-shot__caption {
+  position: absolute;
+  z-index: 2;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: clamp(8px, 1vw, 14px);
+  color: var(--cream);
+  background: linear-gradient(180deg, rgba(15, 15, 17, 0) 0%, rgba(15, 15, 17, 0.7) 35%, rgba(15, 15, 17, 0.94) 100%);
+  opacity: 0;
+  transform: translateY(7px);
+  transition: opacity 180ms ease, transform 180ms ease;
+  pointer-events: none;
+}
+
+.portfolio-shot:hover .portfolio-shot__caption,
+.portfolio-shot:focus-visible .portfolio-shot__caption {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.portfolio-shot__caption-title {
+  display: block;
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(9px, 0.86vw, 13px);
+  font-weight: 500;
+  letter-spacing: -0.01em;
+  line-height: 1.08;
+}
+
+.portfolio-shot__caption-description {
+  display: -webkit-box;
+  overflow: hidden;
+  color: rgba(244, 241, 234, 0.86);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(7px, 0.62vw, 9px);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.35;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.portfolio-shot.is-expanded .portfolio-shot__caption,
+.portfolio-gallery__page.has-focused-shot .portfolio-shot:not(.is-expanded) .portfolio-shot__caption {
+  opacity: 0;
+  transform: translateY(7px);
 }
 
 .portfolio-shot.is-expanded,
@@ -911,6 +1011,35 @@ body::-webkit-scrollbar,
     font-size: clamp(23px, 6vw, 29px);
   }
 
+  .portfolio-work-detail {
+    grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr);
+    gap: 12px;
+    margin-right: 18px;
+    margin-left: 18px;
+    padding: 8px 0;
+  }
+
+  .portfolio-work-detail__heading .portfolio-gallery__eyebrow {
+    justify-content: flex-start;
+    margin-bottom: 4px;
+    font-size: 6px;
+    letter-spacing: 0.09em;
+  }
+
+  .portfolio-work-detail__heading h3 {
+    font-size: clamp(13px, 3.7vw, 17px);
+    line-height: 1.05;
+  }
+
+  .portfolio-work-detail__description {
+    font-size: 9px;
+    line-height: 1.38;
+  }
+
+  .portfolio-shot__caption {
+    display: none;
+  }
+
   .portfolio-gallery__instruction {
     gap: 6px;
     padding-bottom: 1px;
@@ -1001,7 +1130,8 @@ body::-webkit-scrollbar,
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .portfolio-shot img {
+  .portfolio-shot img,
+  .portfolio-shot__caption {
     transition: none;
   }
 }
