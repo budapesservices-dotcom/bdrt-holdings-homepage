@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-close-crossfade-42" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-gray-handoff-43" />
   </head>
   <body>
     <main class="page">
@@ -580,14 +580,15 @@
 
             const finish = () => {
               if (token !== galleryTransitionToken || activeFlightImage !== flight) return;
-              // Keep the two identical image layers crossfading until the last frame,
-              // then hand off to the original tile without a one-frame grayscale flash.
+              // The source has reached full opacity underneath an identical gray flight.
+              // Restore its base style and remove the flight in the same frame.
               if (sourceImage) sourceImage.style.removeProperty("opacity");
               try { activeSourceFadeAnimation?.cancel(); } catch (_) {}
+              try { activeFlightAnimation?.cancel(); } catch (_) {}
               activeSourceFadeAnimation = null;
+              activeFlightAnimation = null;
               flight.remove();
               activeFlightImage = null;
-              activeFlightAnimation = null;
               shot.classList.remove("is-closing");
             };
 
@@ -610,30 +611,62 @@
 
             activeFlightAnimation = flight.animate([
               {
-                offset: 0,
                 left: `${fromLeft}px`,
                 top: `${fromTop}px`,
                 width: `${currentRect.width}px`,
                 height: `${currentRect.height}px`,
-                filter: "grayscale(0%)",
-                opacity: 1
+                filter: "grayscale(0%)"
               },
-              { offset: 0.9, opacity: 1 },
               {
-                offset: 1,
                 left: `${toLeft}px`,
                 top: `${toTop}px`,
                 width: `${targetRect.width}px`,
                 height: `${targetRect.height}px`,
-                filter: "grayscale(100%)",
-                opacity: 0
+                filter: "grayscale(100%)"
               }
             ], {
               duration: 620,
               easing: "cubic-bezier(0.22, 1, 0.36, 1)",
               fill: "both"
             });
-            activeFlightAnimation.finished.then(finish).catch(() => {});
+
+            activeFlightAnimation.finished.then(() => {
+              if (token !== galleryTransitionToken || activeFlightImage !== flight) return;
+
+              // Pin the gray flight exactly over the original tile before crossfading.
+              flight.style.left = `${toLeft}px`;
+              flight.style.top = `${toTop}px`;
+              flight.style.width = `${targetRect.width}px`;
+              flight.style.height = `${targetRect.height}px`;
+              flight.style.filter = "grayscale(100%)";
+              try { activeFlightAnimation?.cancel(); } catch (_) {}
+              activeFlightAnimation = null;
+
+              // The remaining transition only swaps two matching grayscale layers;
+              // it does not move, resize, or recolor the image again.
+              activeFlightAnimation = flight.animate(
+                [{ opacity: 1 }, { opacity: 0 }],
+                {
+                  duration: 100,
+                  easing: "linear",
+                  fill: "both"
+                }
+              );
+              if (sourceImage) {
+                activeSourceFadeAnimation = sourceImage.animate(
+                  [{ opacity: 0 }, { opacity: 1 }],
+                  {
+                    duration: 100,
+                    easing: "linear",
+                    fill: "both"
+                  }
+                );
+              }
+
+              const crossfades = [activeFlightAnimation.finished];
+              if (activeSourceFadeAnimation) crossfades.push(activeSourceFadeAnimation.finished);
+              Promise.all(crossfades).then(finish).catch(() => {});
+            }).catch(() => {});
           };
 
           galleryShots.forEach((shot) => {
