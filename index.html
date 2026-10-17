@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-fixed-section-panels-1" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-dynamic-fixed-section-panels-2" />
   </head>
   <body>
     <main class="page">
@@ -37,7 +37,7 @@
       </header>
 
       <div class="magazine-stack">
-        <section class="hero is-active" id="home" aria-label="BDRT Holdings">
+        <section class="hero section-panel is-active" id="home" data-theme="dark" aria-label="BDRT Holdings">
           <video
             class="hero__video"
             autoplay
@@ -54,7 +54,7 @@
           </video>
         </section>
 
-        <section class="about-section" id="about" aria-label="About BDRT Holdings">
+        <section class="about-section section-panel" id="about" data-theme="light" aria-label="About BDRT Holdings">
           <div class="about-section__inner">
             <div class="about-section__story">
               <p class="about-section__text">BDRT Holdings represents the pinnacle of talent management and brand development. We provide exclusive representation for VOXA, a visionary content creator and entertainer, alongside the VOXA House brand. Our approach combines strategic partnerships, creative excellence, and uncompromising standards to deliver exceptional results for our clients and partners worldwide.</p>
@@ -71,30 +71,47 @@
           </div>
         </section>
 
-        <section class="businesses-section" id="businesses" aria-label="Our businesses and portfolio"></section>
+        <section class="businesses-section section-panel" id="businesses" data-theme="dark" aria-label="Our businesses and portfolio"></section>
       </div>
     </main>
 
     <script>
       (() => {
-        const hero = document.querySelector(".hero");
-        const about = document.querySelector(".about-section");
-        const businesses = document.querySelector(".businesses-section");
-        if (!hero || !about || !businesses) return;
+        const stack = document.querySelector(".magazine-stack");
+        const panels = Array.from(document.querySelectorAll(".section-panel"));
+        if (!stack || panels.length === 0) return;
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        const panels = [hero, about, businesses];
-        const updateActiveSection = () => {
-          const activeIndex = Math.max(0, Math.min(2, Math.round(window.scrollY / Math.max(1, window.innerHeight))));
-          panels.forEach((panel, index) => {
-            panel.classList.toggle("is-active", index === activeIndex);
-            panel.setAttribute("aria-hidden", index === activeIndex ? "false" : "true");
-          });
-          document.body.classList.toggle("header-over-light", activeIndex === 1);
-          document.body.classList.toggle("header-over-dark", activeIndex !== 1);
+        const sectionTarget = (index) =>
+          Math.max(0, Math.min(panels.length - 1, index)) * window.innerHeight;
+        const currentSection = () =>
+          Math.max(0, Math.min(panels.length - 1, Math.round(window.scrollY / Math.max(1, window.innerHeight))));
+
+        const syncScrollTrack = () => {
+          stack.style.height = `${panels.length * window.innerHeight}px`;
         };
+
+        const updateActiveSection = () => {
+          const activeIndex = currentSection();
+          panels.forEach((panel, index) => {
+            const isActive = index === activeIndex;
+            panel.classList.toggle("is-active", isActive);
+            panel.setAttribute("aria-hidden", isActive ? "false" : "true");
+            panel.style.zIndex = isActive ? "100" : String(index + 1);
+          });
+          const overLightSection = panels[activeIndex]?.dataset.theme === "light";
+          document.body.classList.toggle("header-over-light", overLightSection);
+          document.body.classList.toggle("header-over-dark", !overLightSection);
+        };
+
+        syncScrollTrack();
         window.addEventListener("scroll", updateActiveSection, { passive: true });
-        window.addEventListener("resize", updateActiveSection, { passive: true });
+        window.addEventListener("resize", () => {
+          const activeIndex = currentSection();
+          syncScrollTrack();
+          window.scrollTo(0, sectionTarget(activeIndex));
+          updateActiveSection();
+        }, { passive: true });
         updateActiveSection();
 
         let animating = false;
@@ -104,14 +121,8 @@
         let startY = 0;
         let capturedVerticalSwipe = false;
 
-        // The page height is a virtual scroll track; each visual section stays pinned to the viewport.
-        const sectionTarget = (index) => Math.max(0, Math.min(2, index)) * window.innerHeight;
-
-        const currentSection = () =>
-          Math.max(0, Math.min(2, Math.round(window.scrollY / Math.max(1, window.innerHeight))));
-
         const moveToSection = (index) => {
-          if (animating || index < 0 || index > 2) return false;
+          if (animating || index < 0 || index > panels.length - 1) return false;
           const start = window.scrollY;
           const target = sectionTarget(index);
           if (Math.abs(target - start) < 3) return false;
@@ -161,8 +172,8 @@
           link.addEventListener("click", (event) => {
             event.preventDefault();
             const targetId = link.getAttribute("href");
-            const targetIndex = targetId === "#home" ? 0 : targetId === "#about" ? 1 : 2;
-            moveToSection(targetIndex);
+            const targetIndex = panels.findIndex((panel) => `#${panel.id}` === targetId);
+            if (targetIndex >= 0) moveToSection(targetIndex);
           });
         });
 
@@ -188,7 +199,7 @@
           const dy = touch.clientY - startY;
           if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx) * 1.15) {
             const activeSection = currentSection();
-            const available = dy < 0 ? activeSection < 2 : activeSection > 0;
+            const available = dy < 0 ? activeSection < panels.length - 1 : activeSection > 0;
             if (available) {
               capturedVerticalSwipe = true;
               event.preventDefault();
