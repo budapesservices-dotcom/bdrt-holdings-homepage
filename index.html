@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-section3-background-cycle-dark-23" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-section3-background-brand-sync-24" />
   </head>
   <body>
     <main class="page">
@@ -335,6 +335,7 @@
               candidate.classList.remove("is-dropping", "is-rising");
             });
             if (portfolioCopy) portfolioCopy.classList.remove("is-changing");
+            updateBrandCopy(brand, button.dataset.brand);
             startPortfolioProgress(button);
             return;
           }
@@ -366,7 +367,7 @@
             button.classList.add("is-selected", "is-rising");
             button.setAttribute("aria-pressed", "true");
             activePortfolioButton = button;
-            updateBrandCopy(brand);
+            updateBrandCopy(brand, button.dataset.brand);
             portfolioSwitchTimer = 0;
 
             window.requestAnimationFrame(() => {
