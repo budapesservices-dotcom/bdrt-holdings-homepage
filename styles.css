@@ -399,6 +399,11 @@ body::-webkit-scrollbar,
   filter: brightness(0) invert(1);
 }
 
+.business-logo img[hidden],
+.business-logo__fallback[hidden] {
+  display: none !important;
+}
+
 .business-logo__fallback:not([hidden]) {
   display: flex;
   align-items: center;
