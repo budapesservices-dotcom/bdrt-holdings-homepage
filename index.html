@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-section3-brand-backgrounds-22" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-section3-background-cycle-dark-23" />
   </head>
   <body>
     <main class="page">
@@ -279,7 +279,6 @@
         const startPortfolioProgress = (button = activePortfolioButton) => {
           stopPortfolioProgress();
           if (
-            portfolioReduceMotion.matches ||
             !portfolioPlaybackActive ||
             document.hidden ||
             !businessesPanel?.classList.contains("is-active") ||
@@ -304,7 +303,6 @@
 
         const syncPortfolioPlayback = () => {
           const shouldPlay =
-            !portfolioReduceMotion.matches &&
             !document.hidden &&
             Boolean(businessesPanel?.classList.contains("is-active")) &&
             portfolioButtons.length > 1;
