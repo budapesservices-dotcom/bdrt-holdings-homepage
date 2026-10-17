@@ -961,17 +961,11 @@ body::-webkit-scrollbar,
     transform: scale(1.035);
   }
 
-  .portfolio-shot:not(.is-expanded):hover::before,
-  .portfolio-shot:not(.is-expanded):hover::after,
-  .portfolio-shot:not(.is-expanded):focus-visible::before,
-  .portfolio-shot:not(.is-expanded):focus-visible::after {
-    opacity: 1;
-  }
-
-  .portfolio-shot:not(.is-expanded):hover::before,
-  .portfolio-shot:not(.is-expanded):hover::after,
-  .portfolio-shot:not(.is-expanded):focus-visible::before,
-  .portfolio-shot:not(.is-expanded):focus-visible::after {
+  /* The editorial caption replaces the smaller "CLICK TO EXPAND" overlay. */
+  .portfolio-shot:not(.is-expanded):not(.is-broken):hover::before,
+  .portfolio-shot:not(.is-expanded):not(.is-broken):hover::after,
+  .portfolio-shot:not(.is-expanded):not(.is-broken):focus-visible::before,
+  .portfolio-shot:not(.is-expanded):not(.is-broken):focus-visible::after {
     opacity: 0 !important;
   }
 }
