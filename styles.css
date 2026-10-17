@@ -155,7 +155,7 @@ body {
   left: 50%;
   display: block;
   width: 146px;
-  height: 100px;
+  height: 118px;
   overflow: visible;
   pointer-events: none;
   transform: translateX(-50%);
@@ -236,7 +236,7 @@ body {
 
   .wordmark-frame {
     width: 140px;
-    height: 100px;
+    height: 118px;
   }
 
   .wordmark__sub {
@@ -264,7 +264,7 @@ body {
 
   .wordmark-frame {
     width: 138px;
-    height: 98px;
+    height: 116px;
   }
 
   .wordmark__main {
