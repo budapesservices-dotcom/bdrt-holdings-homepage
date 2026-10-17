@@ -705,16 +705,16 @@ body::-webkit-scrollbar,
 
 .portfolio-shot__caption {
   position: absolute;
-  z-index: 2;
+  z-index: 4;
   right: 0;
   bottom: 0;
   left: 0;
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  padding: clamp(8px, 1vw, 14px);
+  gap: 5px;
+  padding: clamp(9px, 1.05vw, 15px);
   color: var(--cream);
-  background: linear-gradient(180deg, rgba(15, 15, 17, 0) 0%, rgba(15, 15, 17, 0.7) 35%, rgba(15, 15, 17, 0.94) 100%);
+  background: linear-gradient(180deg, rgba(15, 15, 17, 0) 0%, rgba(15, 15, 17, 0.7) 35%, rgba(15, 15, 17, 0.96) 100%);
   opacity: 0;
   transform: translateY(7px);
   transition: opacity 180ms ease, transform 180ms ease;
@@ -730,27 +730,58 @@ body::-webkit-scrollbar,
 .portfolio-shot__caption-title {
   display: block;
   font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
-  font-size: clamp(9px, 0.86vw, 13px);
+  font-size: clamp(11px, 0.95vw, 15px);
   font-weight: 500;
   letter-spacing: -0.01em;
-  line-height: 1.08;
+  line-height: 1.1;
 }
 
 .portfolio-shot__caption-description {
   display: -webkit-box;
   overflow: hidden;
-  color: rgba(244, 241, 234, 0.86);
+  color: rgba(244, 241, 234, 0.9);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: clamp(7px, 0.62vw, 9px);
+  font-size: clamp(9px, 0.7vw, 11px);
   font-weight: 400;
   letter-spacing: 0;
-  line-height: 1.35;
+  line-height: 1.4;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
 }
 
-.portfolio-shot.is-expanded .portfolio-shot__caption,
-.portfolio-gallery__page.has-focused-shot .portfolio-shot:not(.is-expanded) .portfolio-shot__caption {
+.portfolio-gallery__flight-caption {
+  position: absolute;
+  z-index: 4;
+  right: auto;
+  bottom: auto;
+  left: 0;
+  display: flex !important;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: clamp(6px, 0.75vw, 12px);
+  padding: clamp(12px, 1.8vw, 28px);
+  background: linear-gradient(180deg, rgba(15, 15, 17, 0) 0%, rgba(15, 15, 17, 0.18) 34%, rgba(15, 15, 17, 0.82) 72%, rgba(15, 15, 17, 0.96) 100%);
+  opacity: 0;
+  transform: none;
+  transition: none;
+  pointer-events: none;
+  will-change: left, top, width, height, opacity;
+}
+
+.portfolio-gallery__flight-caption .portfolio-shot__caption-title {
+  font-size: clamp(16px, 1.5vw, 27px);
+  line-height: 1.06;
+}
+
+.portfolio-gallery__flight-caption .portfolio-shot__caption-description {
+  max-width: 900px;
+  color: rgba(244, 241, 234, 0.93);
+  font-size: clamp(11px, 0.92vw, 16px);
+  line-height: 1.42;
+  -webkit-line-clamp: 3;
+}
+
+.portfolio-shot.is-expanded .portfolio-shot__caption {
   opacity: 0;
   transform: translateY(7px);
 }
@@ -936,6 +967,13 @@ body::-webkit-scrollbar,
   .portfolio-shot:not(.is-expanded):focus-visible::after {
     opacity: 1;
   }
+
+  .portfolio-shot:not(.is-expanded):hover::before,
+  .portfolio-shot:not(.is-expanded):hover::after,
+  .portfolio-shot:not(.is-expanded):focus-visible::before,
+  .portfolio-shot:not(.is-expanded):focus-visible::after {
+    opacity: 0 !important;
+  }
 }
 
 .portfolio-shot.is-opening img.is-loaded {
@@ -1038,6 +1076,23 @@ body::-webkit-scrollbar,
 
   .portfolio-shot__caption {
     display: none;
+  }
+
+  .portfolio-gallery__flight-caption {
+    display: flex !important;
+    gap: 5px;
+    padding: clamp(10px, 3vw, 18px);
+  }
+
+  .portfolio-gallery__flight-caption .portfolio-shot__caption-title {
+    font-size: clamp(14px, 4.4vw, 20px);
+    line-height: 1.08;
+  }
+
+  .portfolio-gallery__flight-caption .portfolio-shot__caption-description {
+    font-size: clamp(10px, 2.8vw, 13px);
+    line-height: 1.38;
+    -webkit-line-clamp: 4;
   }
 
   .portfolio-gallery__instruction {
