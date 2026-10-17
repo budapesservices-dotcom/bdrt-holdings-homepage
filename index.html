@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=magnet-snap-8" />
+    <link rel="stylesheet" href="./styles.css?v=magnet-snap-9" />
   </head>
   <body>
     <main class="page">
@@ -107,20 +107,27 @@
             return true;
           }
 
-          const duration = 430;
+          const duration = 380;
           const startedAt = performance.now();
-          const easeOutCubic = (progress) => 1 - Math.pow(1 - progress, 3);
+          const easeOutQuint = (progress) => 1 - Math.pow(1 - progress, 5);
+          const root = document.documentElement;
+          const previousScrollBehavior = root.style.scrollBehavior;
+          const previousSnapType = root.style.scrollSnapType;
+          root.style.scrollBehavior = "auto";
+          root.style.scrollSnapType = "none";
 
           const animate = (now) => {
             const progress = Math.min(1, (now - startedAt) / duration);
-            const eased = easeOutCubic(progress);
+            const eased = easeOutQuint(progress);
             window.scrollTo(0, start + (target - start) * eased);
 
             if (progress < 1) {
               animationFrame = window.requestAnimationFrame(animate);
             } else {
               window.scrollTo(0, target);
-              unlockTimer = window.setTimeout(() => { animating = false; }, 90);
+              root.style.scrollBehavior = previousScrollBehavior;
+              root.style.scrollSnapType = previousSnapType;
+              unlockTimer = window.setTimeout(() => { animating = false; }, 50);
             }
           };
 
