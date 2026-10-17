@@ -331,7 +331,7 @@
             activeFlightAnimation = null;
             activeFlightImage?.remove();
             activeFlightImage = null;
-            galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden"));
+            galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden", "is-closing"));
           };
 
           const clearFocusedPageShrink = (page) => {
@@ -380,7 +380,7 @@
               const options = [];
               const addOption = (axis, freeSpace, dimension, origin) => {
                 // Scale is based on the tile's original bounds and the original grid gap,
-                // not on whether the tile happens to be portrait, square, or landscape.
+                // regardless of the tile's aspect ratio.
                 const scale = Math.max(0.025, Math.min(0.985, freeSpace / dimension));
                 options.push({ axis, scale, origin });
               };
