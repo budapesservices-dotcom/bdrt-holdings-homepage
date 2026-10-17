@@ -2,6 +2,7 @@
   color-scheme: dark;
   --obsidian: #0F0F11;
   --cream: #F4F1EA;
+  --hero-image: url("https://unsplash.com/photos/s3VxCT4p8FM/download?force=true&w=2400");
 }
 
 * {
@@ -27,6 +28,7 @@ body {
 
 .hero {
   position: relative;
+  isolation: isolate;
   width: 100%;
   height: 100vh;
   height: 100svh;
@@ -35,11 +37,27 @@ body {
   background: var(--obsidian);
 }
 
+/* Extend the same photograph behind the full uncropped image so the viewport
+   stays visually filled even when the screen and source image ratios differ. */
+.hero::before {
+  position: absolute;
+  z-index: -1;
+  inset: -28px;
+  background-image: var(--hero-image);
+  background-position: center;
+  background-size: cover;
+  content: "";
+  filter: brightness(0.62) blur(24px);
+  transform: scale(1.04);
+}
+
 .hero__image {
+  position: relative;
+  z-index: 0;
   display: block;
   width: 100%;
   height: 100%;
-  object-fit: cover;
+  object-fit: contain;
   object-position: center;
 }
 
@@ -99,5 +117,11 @@ body {
     font-size: 8px;
     letter-spacing: 0.68em;
     padding-left: 0.68em;
+  }
+}
+
+@media (prefers-reduced-transparency: reduce) {
+  .hero::before {
+    filter: brightness(0.62) blur(14px);
   }
 }
