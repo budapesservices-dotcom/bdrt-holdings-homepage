@@ -482,6 +482,20 @@ body::-webkit-scrollbar,
   isolation: isolate;
 }
 
+.portfolio-shot[role="button"] {
+  -webkit-tap-highlight-color: transparent;
+}
+
+.portfolio-shot:focus-visible {
+  outline: 1px solid rgba(15, 15, 17, 0.76);
+  outline-offset: -3px;
+}
+
+.portfolio-shot.is-expanded {
+  border-color: rgba(15, 15, 17, 0.22);
+  box-shadow: 0 7px 22px rgba(15, 15, 17, 0.10);
+}
+
 .portfolio-shot img {
   display: block;
   width: 100%;
@@ -552,6 +566,11 @@ body::-webkit-scrollbar,
     filter: brightness(0.86);
     transform: scale(1.045);
   }
+}
+
+.portfolio-shot.is-expanded img.is-loaded {
+  filter: brightness(0.9);
+  transform: scale(1.015);
 }
 
 @media (max-width: 900px) {
