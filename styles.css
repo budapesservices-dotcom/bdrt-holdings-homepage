@@ -4553,3 +4553,46 @@ body.header-over-light .site-nav a:focus-visible {
     visibility: hidden;
   }
 }
+
+
+/* Restore the original arch geometry; move it only as part of the portal sheet. */
+.portal-sheet {
+  overflow: visible;
+  clip-path: none;
+}
+
+.portal-sheet__surface {
+  inset: auto;
+  top: auto;
+  right: auto;
+  bottom: 0;
+  left: 50%;
+  width: 146px;
+  height: 118px;
+  transform: translateX(-50%);
+}
+
+.portal-sheet__surface-fill {
+  fill: rgba(244, 241, 234, 0.28);
+}
+
+.portal-sheet__surface-stroke {
+  stroke: rgba(244, 241, 234, 0.28);
+  stroke-width: 1;
+  vector-effect: non-scaling-stroke;
+}
+
+.portal-sheet__brand {
+  bottom: 36px;
+}
+
+@media (max-width: 760px) {
+  .portal-sheet__surface {
+    width: 138px;
+    height: 116px;
+  }
+
+  .portal-sheet__brand {
+    bottom: 34px;
+  }
+}
