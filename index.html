@@ -1621,6 +1621,7 @@
         let startX = 0;
         let startY = 0;
         let capturedVerticalSwipe = false;
+        let touchScrollPanel = null;
 
         const sectionTarget = (index) =>
           Math.max(0, Math.min(panels.length - 1, index)) * window.innerHeight;
@@ -1768,6 +1769,31 @@
 
         const moveOne = (direction) => moveToSection(activePanelIndex + direction);
 
+        const contactInquiryForm = document.getElementById("contact-inquiry-form");
+        const contactFormNotice = document.getElementById("contact-form-notice");
+        const contactFormFallback = document.getElementById("contact-form-fallback");
+
+        contactInquiryForm?.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const selectedInterests = Array.from(contactInquiryForm.querySelectorAll('input[name="interest"]:checked'));
+
+          if (contactFormNotice) {
+            contactFormNotice.hidden = false;
+            contactFormNotice.textContent = selectedInterests.length
+              ? "This preview form is not connected to an inquiry inbox yet. Use the official BDRT page to send your details."
+              : "Please select VOXA, VOXA House, or both so we can direct your inquiry.";
+          }
+
+          if (contactFormFallback) {
+            contactFormFallback.hidden = selectedInterests.length === 0;
+          }
+
+          if (selectedInterests.length === 0) {
+            contactInquiryForm.querySelector('input[name="interest"]')?.focus({ preventScroll: true });
+          }
+        });
+
+
         const sectionAliases = {
           "#client-login": "#portfolio",
           "#donor-portal": "#portfolio"
@@ -1786,11 +1812,27 @@
 
         window.addEventListener("wheel", (event) => {
           if (event.ctrlKey || Math.abs(event.deltaY) < 2.5) return;
+
+          const contactScroller = event.target instanceof Element
+            ? event.target.closest(".contact-section")
+            : null;
+          if (contactScroller) {
+            const canScrollInsideContact = event.deltaY < 0
+              ? contactScroller.scrollTop > 0
+              : contactScroller.scrollTop + contactScroller.clientHeight < contactScroller.scrollHeight - 1;
+            if (canScrollInsideContact) return;
+          }
+
           if (animating) {
             event.preventDefault();
             return;
           }
-          if (moveOne(event.deltaY > 0 ? 1 : -1)) event.preventDefault();
+          const direction = event.deltaY > 0 ? 1 : -1;
+          if (moveOne(direction)) {
+            event.preventDefault();
+          } else if (activePanelIndex === panels.length - 1 && direction > 0) {
+            event.preventDefault();
+          }
         }, { passive: false });
 
         window.addEventListener("touchstart", (event) => {
@@ -1798,12 +1840,23 @@
           startX = touch.clientX;
           startY = touch.clientY;
           capturedVerticalSwipe = false;
+          touchScrollPanel = event.target instanceof Element
+            ? event.target.closest(".contact-section")
+            : null;
         }, { passive: true });
 
         window.addEventListener("touchmove", (event) => {
           const touch = event.changedTouches[0];
           const dx = touch.clientX - startX;
           const dy = touch.clientY - startY;
+
+          if (touchScrollPanel && Math.abs(dy) > 8) {
+            const canScrollInsideContact = dy < 0
+              ? touchScrollPanel.scrollTop + touchScrollPanel.clientHeight < touchScrollPanel.scrollHeight - 1
+              : touchScrollPanel.scrollTop > 0;
+            if (canScrollInsideContact) return;
+          }
+
           if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx) * 1.15) {
             const available = dy < 0 ? activePanelIndex < panels.length - 1 : activePanelIndex > 0;
             if (available || animating) {
@@ -1814,11 +1867,13 @@
         }, { passive: false });
 
         window.addEventListener("touchend", (event) => {
-          if (!capturedVerticalSwipe) return;
-          const touch = event.changedTouches[0];
-          const dy = touch.clientY - startY;
-          if (Math.abs(dy) > 28 && !animating) moveOne(dy < 0 ? 1 : -1);
+          if (capturedVerticalSwipe) {
+            const touch = event.changedTouches[0];
+            const dy = touch.clientY - startY;
+            if (Math.abs(dy) > 28 && !animating) moveOne(dy < 0 ? 1 : -1);
+          }
           capturedVerticalSwipe = false;
+          touchScrollPanel = null;
         }, { passive: true });
 
         window.addEventListener("keydown", (event) => {
