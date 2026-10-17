@@ -390,6 +390,11 @@ body::-webkit-scrollbar,
   pointer-events: auto;
 }
 
+/* Hold a forward-entering panel below the viewport for one committed frame. */
+.section-panel.is-entering {
+  transform: translateY(100%);
+}
+
 .section-panel.is-leaving-down {
   transform: translateY(100%);
 }
