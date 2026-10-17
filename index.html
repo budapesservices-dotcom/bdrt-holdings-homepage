@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portal-empty-clean-81" />
+    <link rel="stylesheet" href="./styles.css?v=portal-shared-header-continuity-82" />
   </head>
   <body>
     <main class="page">
@@ -39,16 +39,6 @@
 
       <div class="portal-experience" id="portal-experience" aria-hidden="true" inert>
         <div class="portal-sheet" id="portal-sheet">
-          <svg class="portal-sheet__surface" viewBox="0 0 130 116" preserveAspectRatio="none" aria-hidden="true">
-            
-            <path class="portal-sheet__surface-fill" d="M1 0 H129 V31 C129 76 100.346 113 65 113 C29.654 113 1 76 1 31 Z" />
-
-          </svg>
-
-          <div class="portal-sheet__brand" aria-label="BDRT Holdings">
-            <span class="portal-sheet__brand-main">BDRT</span>
-            <span class="portal-sheet__brand-sub">HOLDINGS</span>
-          </div>
 
         <button class="portal-experience__close" type="button" data-portal-close aria-label="Close portal preview and return to BDRT">
           <span class="portal-experience__close-icon" aria-hidden="true">↖</span>
@@ -1902,11 +1892,12 @@
           portalExperience.classList.remove("is-open");
           portalExperience.setAttribute("aria-hidden", "true");
           portalExperience.inert = true;
+          document.body.classList.add("portal-closing");
 
           const returnFocus = portalReturnFocus;
           portalReturnFocus = null;
           const finishClose = () => {
-            document.body.classList.remove("portal-open", "portal-open--client", "portal-open--donor");
+            document.body.classList.remove("portal-open", "portal-open--client", "portal-open--donor", "portal-closing");
             if (returnFocus instanceof HTMLElement) returnFocus.focus({ preventScroll: true });
           };
 
