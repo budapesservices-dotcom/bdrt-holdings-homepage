@@ -168,12 +168,13 @@
 
         const moveOne = (direction) => moveToSection(currentSection() + direction);
 
-        document.querySelectorAll('.site-header a[href="#home"], .site-header a[href="#about"], .site-header a[href="#businesses"]').forEach((link) => {
+        document.querySelectorAll('.site-header a[href^="#"]').forEach((link) => {
           link.addEventListener("click", (event) => {
-            event.preventDefault();
             const targetId = link.getAttribute("href");
             const targetIndex = panels.findIndex((panel) => `#${panel.id}` === targetId);
-            if (targetIndex >= 0) moveToSection(targetIndex);
+            if (targetIndex < 0) return;
+            event.preventDefault();
+            moveToSection(targetIndex);
           });
         });
 
