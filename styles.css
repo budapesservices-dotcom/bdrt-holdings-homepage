@@ -145,10 +145,10 @@ body {
 .wordmark::before {
   position: absolute;
   z-index: -1;
-  top: -12px;
+  top: -50px;
   left: 50%;
-  width: 174px;
-  height: 72px;
+  width: 122px;
+  height: 156px;
   border: 1.5px solid rgba(120, 85, 34, 0.95);
   border-radius: 50%;
   background: rgba(194, 165, 110, 0.32);
@@ -227,9 +227,9 @@ body {
   }
 
   .wordmark::before {
-    top: -10px;
-    width: 164px;
-    height: 70px;
+    top: -47px;
+    width: 116px;
+    height: 148px;
     border-width: 1.5px;
     border-color: rgba(120, 85, 34, 0.95);
     background: rgba(194, 165, 110, 0.32);
