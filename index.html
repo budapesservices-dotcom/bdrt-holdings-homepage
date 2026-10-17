@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-drag-release-48" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-drag-release-49" />
   </head>
   <body>
     <main class="page">
@@ -530,6 +530,9 @@
             activeFlightClickHandler = (event) => {
               event.preventDefault();
               event.stopPropagation();
+              // A pointer release after a drag can synthesize a click on the moved image.
+              // Ignore that click so dragging never dismisses the expanded image.
+              if (performance.now() < suppressGalleryClickUntil) return;
               closeGalleryShot();
             };
             flight.addEventListener("click", activeFlightClickHandler);
