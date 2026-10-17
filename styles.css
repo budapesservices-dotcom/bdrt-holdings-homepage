@@ -102,8 +102,8 @@ body {
 
 .site-nav--right {
   justify-content: stretch;
-  color: var(--espresso, #1C120C);
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.2);
+  color: var(--cream);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.62);
 }
 
 .site-nav a {
