@@ -7577,30 +7577,30 @@ body.portal-closing .portal-sheet::before {
   }
 }
 
-/* Strongly raise the Businesses logo content without moving its panel or duration rail. */
+/* Refined vertical position for Businesses logo content; leave the panel and duration rail fixed. */
 .businesses-section--companies .business-logo img,
 .businesses-section--companies .business-logo__fallback:not([hidden]) {
-  transform: translateY(-58px);
+  transform: translateY(-28px);
 }
 
 @media (max-width: 900px) {
   .businesses-section--companies .business-logo img,
   .businesses-section--companies .business-logo__fallback:not([hidden]) {
-    transform: translateY(-44px);
+    transform: translateY(-20px);
   }
 }
 
 @media (max-width: 640px) {
   .businesses-section--companies .business-logo img,
   .businesses-section--companies .business-logo__fallback:not([hidden]) {
-    transform: translateY(-28px);
+    transform: translateY(-12px);
   }
 }
 
 @media (max-width: 360px) {
   .businesses-section--companies .business-logo img,
   .businesses-section--companies .business-logo__fallback:not([hidden]) {
-    transform: translateY(-22px);
+    transform: translateY(-8px);
   }
 }
 
