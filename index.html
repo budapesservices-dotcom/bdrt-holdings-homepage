@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-single-handoff-fade-44" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-hover-handoff-match-45" />
   </head>
   <body>
     <main class="page">
@@ -556,7 +556,9 @@
             const sourceImage = shot.querySelector("img");
             const page = shot.closest(".portfolio-gallery__page");
             const pageRect = page?.getBoundingClientRect();
-            const targetRect = shot.getBoundingClientRect();
+            // Match the actual image content box, not the figure's border box,
+            // so the final handoff cannot jump by the tile border thickness.
+            const targetRect = sourceImage ? sourceImage.getBoundingClientRect() : shot.getBoundingClientRect();
             const currentRect = flight.getBoundingClientRect();
             const fromLeft = pageRect ? currentRect.left - pageRect.left : 0;
             const fromTop = pageRect ? currentRect.top - pageRect.top : 0;
