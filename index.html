@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-section3-background-brand-sync-24" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-section3-background-smoothfade-zoom-25" />
   </head>
   <body>
     <main class="page">
@@ -186,6 +186,8 @@
         const businessesPanel = document.getElementById("businesses");
         const discoverButton = document.getElementById("business-discover");
         const portfolioBackdropLayers = Array.from(document.querySelectorAll(".businesses-backdrop[data-background]"));
+        const portfolioBackdropFadeDuration = 1350;
+        const portfolioBackdropPauseTimers = new Map();
 
         const restartPortfolioImageZoom = (image) => {
           if (!image) return;
@@ -203,14 +205,30 @@
             const video = layer.querySelector("video");
             if (!video) return;
 
+            const pendingPause = portfolioBackdropPauseTimers.get(video);
             if (layer === activeLayer && shouldPlay) {
+              if (pendingPause) {
+                window.clearTimeout(pendingPause);
+                portfolioBackdropPauseTimers.delete(video);
+              }
               if (restart) {
                 try { video.currentTime = 0; } catch (_) {}
               }
               const playPromise = video.play();
               if (playPromise && typeof playPromise.catch === "function") playPromise.catch(() => {});
-            } else {
+            } else if (!shouldPlay) {
+              if (pendingPause) {
+                window.clearTimeout(pendingPause);
+                portfolioBackdropPauseTimers.delete(video);
+              }
               video.pause();
+            } else if (!video.paused && !portfolioBackdropPauseTimers.has(video)) {
+              // Keep the outgoing video moving while its layer dissolves away.
+              const pauseTimer = window.setTimeout(() => {
+                video.pause();
+                portfolioBackdropPauseTimers.delete(video);
+              }, portfolioBackdropFadeDuration + 80);
+              portfolioBackdropPauseTimers.set(video, pauseTimer);
             }
           });
 
@@ -225,10 +243,6 @@
             const selected = layer.dataset.background === brandKey;
             layer.classList.toggle("is-active", selected);
             if (selected) activeLayer = layer;
-            else {
-              const video = layer.querySelector("video");
-              if (video) video.pause();
-            }
           });
 
           if (!activeLayer) return;
