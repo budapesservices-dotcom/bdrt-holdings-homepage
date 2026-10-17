@@ -54,7 +54,6 @@ button {
   height: 100vh;
   height: 100svh;
   height: 100dvh;
-  min-height: 540px;
   overflow: hidden;
   background: #b7b4ad;
   color: var(--ink);
@@ -69,6 +68,10 @@ button {
 .hero__image-wrap {
   z-index: -2;
   background: #85837d;
+}
+
+.hero__image-wrap.is-unavailable {
+  background: linear-gradient(128deg, #454448 0%, #aaa69e 49%, #777b7a 100%);
 }
 
 .hero__image {
@@ -391,10 +394,6 @@ button {
 }
 
 @media (max-width: 760px) {
-  .hero {
-    min-height: 560px;
-  }
-
   .hero__image {
     object-position: 43% center;
   }
@@ -631,6 +630,39 @@ button {
 
   .hero__brands-label {
     letter-spacing: 0.1em;
+  }
+}
+
+
+@media (max-width: 760px) and (max-height: 660px) {
+  .hero__copy {
+    bottom: 9%;
+  }
+
+  .eyebrow {
+    margin-bottom: 13px;
+  }
+
+  .hero h1 {
+    font-size: clamp(2.6rem, 9vw, 3.6rem);
+  }
+
+  .hero__intro {
+    margin-top: 13px;
+    font-size: 10px;
+  }
+
+  .hero__cta {
+    min-height: 40px;
+    margin-top: 13px;
+  }
+
+  .hero__brands {
+    margin-top: 13px;
+  }
+
+  .hero__index {
+    bottom: 16px;
   }
 }
 
