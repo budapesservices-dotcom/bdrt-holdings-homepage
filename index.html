@@ -339,8 +339,37 @@
             });
           };
 
+          const animateGalleryReflow = (beforeRects, shotsToAnimate) => {
+            window.requestAnimationFrame(() => {
+              shotsToAnimate.forEach((shot) => {
+                const before = beforeRects.get(shot);
+                const after = shot.getBoundingClientRect();
+                if (!before || !before.width || !before.height || !after.width || !after.height) return;
+
+                const deltaX = before.left - after.left;
+                const deltaY = before.top - after.top;
+                const scaleX = before.width / after.width;
+                const scaleY = before.height / after.height;
+                if (Math.abs(deltaX) < 1 && Math.abs(deltaY) < 1 && Math.abs(scaleX - 1) < 0.01 && Math.abs(scaleY - 1) < 0.01) return;
+
+                if (typeof shot.animate === "function") {
+                  shot.animate([
+                    { transform: `translate(${deltaX}px, ${deltaY}px) scale(${scaleX}, ${scaleY})`, transformOrigin: "top left" },
+                    { transform: "translate(0px, 0px) scale(1, 1)", transformOrigin: "top left" }
+                  ], {
+                    duration: 680,
+                    easing: "cubic-bezier(0.22, 1, 0.36, 1)"
+                  });
+                }
+              });
+            });
+          };
+
           const clearExpandedGallery = (onlyPage = null) => {
             const pagesToClear = onlyPage ? [onlyPage] : galleryPages;
+            const shotsToAnimate = onlyPage ? Array.from(onlyPage.querySelectorAll(".portfolio-shot")) : galleryShots;
+            const beforeRects = new Map(shotsToAnimate.map((shot) => [shot, shot.getBoundingClientRect()]));
+
             pagesToClear.forEach((page) => {
               page.classList.remove("has-expanded-shot");
               page.style.removeProperty("grid-template-columns");
@@ -354,6 +383,7 @@
             if (!onlyPage || activeExpandedShot?.closest(".portfolio-gallery__page") === onlyPage) {
               activeExpandedShot = null;
             }
+            animateGalleryReflow(beforeRects, shotsToAnimate);
           };
 
           const layoutExpandedGalleryShot = (shot) => {
