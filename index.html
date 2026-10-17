@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css" />
+    <link rel="stylesheet" href="./styles.css?v=magazine-stack-2" />
   </head>
   <body>
     <main class="page">
@@ -66,8 +66,9 @@
 
     <script>
       (() => {
-        const page = document.querySelector(".about-section");
-        if (!page) return;
+        const stack = document.querySelector(".magazine-stack");
+        const cover = document.querySelector(".hero");
+        if (!stack || !cover) return;
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let framePending = false;
@@ -75,12 +76,13 @@
         const updatePageTurn = () => {
           framePending = false;
           const viewportHeight = window.innerHeight || document.documentElement.clientHeight;
-          const top = page.getBoundingClientRect().top;
-          const progress = Math.min(1, Math.max(0, 1 - top / viewportHeight));
-          const remaining = reduceMotion.matches ? 0 : 1 - progress;
+          const top = stack.getBoundingClientRect().top;
+          const progress = Math.min(1, Math.max(0, -top / Math.max(1, viewportHeight)));
+          const angle = reduceMotion.matches ? 0 : -7 * progress;
 
-          page.style.setProperty("--page-rotation", `${(-5 * remaining).toFixed(2)}deg`);
-          page.style.setProperty("--page-lift", `${(14 * remaining).toFixed(2)}px`);
+          cover.style.setProperty("--hero-turn-y", `${(-progress * 100).toFixed(2)}%`);
+          cover.style.setProperty("--hero-turn-angle", `${angle.toFixed(2)}deg`);
+          cover.style.setProperty("--hero-turn-shadow", `${(0.32 * progress).toFixed(3)}`);
         };
 
         const requestPageTurnUpdate = () => {
