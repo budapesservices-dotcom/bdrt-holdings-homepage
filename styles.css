@@ -7468,3 +7468,49 @@ body.portal-closing .portal-sheet::before {
     max-height: none;
   }
 }
+
+
+/* VOXA House logo emphasis for Our Brands (section 4). */
+.business-logo[data-brand="voxa-house"] img {
+  width: min(100%, 220px);
+  height: 64px;
+  max-width: min(100%, 220px);
+  max-height: none;
+  object-fit: contain;
+  object-position: center;
+}
+
+@media (max-width: 900px) {
+  .business-logo[data-brand="voxa-house"] img {
+    width: min(100%, 190px);
+    height: 56px;
+    max-width: min(100%, 190px);
+  }
+}
+
+@media (max-width: 640px) {
+  .businesses-section--brands .business-logo[data-brand="voxa-house"] {
+    flex: 0 0 124px;
+    width: 124px;
+  }
+
+  .businesses-section--brands .business-logo[data-brand="voxa-house"] img {
+    width: min(100%, 122px);
+    height: 46px;
+    max-width: min(100%, 122px);
+    margin-top: 23px;
+  }
+}
+
+@media (max-width: 360px) {
+  .businesses-section--brands .business-logo[data-brand="voxa-house"] {
+    flex-basis: 116px;
+    width: 116px;
+  }
+
+  .businesses-section--brands .business-logo[data-brand="voxa-house"] img {
+    width: min(100%, 114px);
+    height: 43px;
+    max-width: min(100%, 114px);
+  }
+}
