@@ -52,13 +52,32 @@ body {
 }
 
 .wordmark {
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   align-items: center;
+  padding: 2px 17px 10px;
   color: var(--obsidian);
   text-decoration: none;
   line-height: 1;
   white-space: nowrap;
+}
+
+.wordmark::before {
+  position: absolute;
+  z-index: -1;
+  top: -12px;
+  left: 50%;
+  width: 158px;
+  height: 76px;
+  border: 1px solid currentColor;
+  border-bottom: 0;
+  border-radius: 100% 100% 0 0 / 100% 100% 0 0;
+  content: "";
+  opacity: 0.68;
+  pointer-events: none;
+  transform: translateX(-50%);
 }
 
 .wordmark__main {
@@ -89,6 +108,13 @@ body {
 
   .wordmark {
     color: var(--cream);
+  }
+
+  .wordmark::before {
+    width: 148px;
+    height: 73px;
+    top: -11px;
+    opacity: 0.76;
   }
 
   .wordmark__main {
