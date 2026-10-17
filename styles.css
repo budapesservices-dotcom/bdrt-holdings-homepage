@@ -345,6 +345,11 @@ body::-webkit-scrollbar,
   }
 }
 
+.portfolio-section {
+  background: var(--cream);
+  color: var(--obsidian);
+}
+
 .businesses-section {
   position: relative;
   z-index: 2;
