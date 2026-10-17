@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=magnet-snap-7" />
+    <link rel="stylesheet" href="./styles.css?v=magnet-snap-8" />
   </head>
   <body>
     <main class="page">
@@ -71,6 +71,12 @@
         if (!hero || !about) return;
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        const updateHeaderContrast = () => {
+          document.body.classList.toggle("header-over-dark", window.scrollY > window.innerHeight * 0.48);
+        };
+        window.addEventListener("scroll", updateHeaderContrast, { passive: true });
+        updateHeaderContrast();
+
         let animating = false;
         let animationFrame = 0;
         let unlockTimer = 0;
