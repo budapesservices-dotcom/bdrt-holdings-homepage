@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-scroll-snap-fix-3" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-magazine-page-transition-4" />
   </head>
   <body>
     <main class="page">
@@ -82,70 +82,109 @@
         if (!stack || panels.length === 0) return;
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+        let activePanelIndex = 0;
+        let animationFrame = 0;
+        let unlockTimer = 0;
+        let animating = false;
+        let transitionDirection = 1;
+        let transitionStartIndex = 0;
+        let transitionTargetIndex = 0;
+        let startX = 0;
+        let startY = 0;
+        let capturedVerticalSwipe = false;
+
         const sectionTarget = (index) =>
           Math.max(0, Math.min(panels.length - 1, index)) * window.innerHeight;
-        const currentSection = () =>
-          Math.max(0, Math.min(panels.length - 1, Math.round(window.scrollY / Math.max(1, window.innerHeight))));
+
+        const currentSectionFromScroll = () =>
+          Math.max(0, Math.min(
+            panels.length - 1,
+            Math.round(window.scrollY / Math.max(1, window.innerHeight))
+          ));
 
         const syncScrollTrack = () => {
           stack.style.height = `${panels.length * window.innerHeight}px`;
         };
 
-        const updateActiveSection = () => {
-          const activeIndex = currentSection();
-          panels.forEach((panel, index) => {
-            const isActive = index === activeIndex;
+        const renderPanels = (index, direction = 1, leavingIndex = -1) => {
+          panels.forEach((panel, panelIndex) => {
+            const isActive = panelIndex === index;
             panel.classList.toggle("is-active", isActive);
+            panel.classList.toggle("is-before", panelIndex < index);
+            panel.classList.toggle("is-after", panelIndex > index);
+            panel.classList.toggle("is-leaving-down", panelIndex === leavingIndex);
             panel.setAttribute("aria-hidden", isActive ? "false" : "true");
-            panel.style.zIndex = isActive ? "100" : String(index + 1);
+            panel.style.zIndex = String(panelIndex + 1);
           });
-          const overLightSection = panels[activeIndex]?.dataset.theme === "light";
+
+          if (animating && direction < 0 && leavingIndex >= 0) {
+            panels[leavingIndex].style.zIndex = "200";
+            panels[index].style.zIndex = "100";
+          } else if (animating && direction > 0) {
+            panels[index].style.zIndex = "200";
+          }
+
+          const overLightSection = panels[index]?.dataset.theme === "light";
           document.body.classList.toggle("header-over-light", overLightSection);
           document.body.classList.toggle("header-over-dark", !overLightSection);
         };
 
+        const updateFromScroll = () => {
+          if (animating) return;
+          activePanelIndex = currentSectionFromScroll();
+          renderPanels(activePanelIndex);
+        };
+
         syncScrollTrack();
-        window.addEventListener("scroll", updateActiveSection, { passive: true });
+        renderPanels(activePanelIndex);
+        window.addEventListener("scroll", updateFromScroll, { passive: true });
         window.addEventListener("resize", () => {
-          const activeIndex = currentSection();
+          const keepIndex = animating ? transitionTargetIndex : activePanelIndex;
           syncScrollTrack();
-          window.scrollTo(0, sectionTarget(activeIndex));
-          updateActiveSection();
+          window.scrollTo(0, sectionTarget(keepIndex));
+          if (!animating) {
+            activePanelIndex = keepIndex;
+            renderPanels(activePanelIndex);
+          }
         }, { passive: true });
-        updateActiveSection();
 
-        let animating = false;
-        let animationFrame = 0;
-        let unlockTimer = 0;
-        let startX = 0;
-        let startY = 0;
-        let capturedVerticalSwipe = false;
+        const moveToSection = (requestedIndex) => {
+          const targetIndex = Math.max(0, Math.min(panels.length - 1, requestedIndex));
+          if (animating || targetIndex === activePanelIndex) return false;
 
-        const moveToSection = (index) => {
-          if (animating || index < 0 || index > panels.length - 1) return false;
+          const startIndex = activePanelIndex;
           const start = window.scrollY;
-          const target = sectionTarget(index);
-          if (Math.abs(target - start) < 3) return false;
+          const target = sectionTarget(targetIndex);
+          transitionStartIndex = startIndex;
+          transitionTargetIndex = targetIndex;
+          transitionDirection = targetIndex > startIndex ? 1 : -1;
+          animating = true;
 
           window.cancelAnimationFrame(animationFrame);
           window.clearTimeout(unlockTimer);
-          animating = true;
 
           if (reduceMotion.matches) {
             window.scrollTo(0, target);
-            updateActiveSection();
+            activePanelIndex = targetIndex;
             animating = false;
+            renderPanels(activePanelIndex);
             return true;
           }
 
-          const duration = 460;
+          // Forward: the next panel rises over the current one.
+          // Backward: the current panel drops away to reveal the previous panel.
+          renderPanels(
+            transitionDirection > 0 ? targetIndex : startIndex,
+            transitionDirection,
+            transitionDirection < 0 ? startIndex : -1
+          );
+
+          const duration = 620;
           const startedAt = performance.now();
           const easeOutQuint = (progress) => 1 - Math.pow(1 - progress, 5);
           const root = document.documentElement;
           const previousScrollBehavior = root.style.scrollBehavior;
-          const previousSnapType = root.style.scrollSnapType;
           root.style.scrollBehavior = "auto";
-          root.style.scrollSnapType = "none";
 
           const animate = (now) => {
             const progress = Math.min(1, (now - startedAt) / duration);
@@ -154,19 +193,24 @@
 
             if (progress < 1) {
               animationFrame = window.requestAnimationFrame(animate);
-            } else {
-              window.scrollTo(0, target);
-              root.style.scrollBehavior = previousScrollBehavior;
-              root.style.scrollSnapType = previousSnapType;
-              unlockTimer = window.setTimeout(() => { animating = false; }, 50);
+              return;
             }
+
+            window.scrollTo(0, target);
+            root.style.scrollBehavior = previousScrollBehavior;
+            activePanelIndex = targetIndex;
+            animating = false;
+            renderPanels(activePanelIndex);
+            unlockTimer = window.setTimeout(() => {
+              animating = false;
+            }, 60);
           };
 
           animationFrame = window.requestAnimationFrame(animate);
           return true;
         };
 
-        const moveOne = (direction) => moveToSection(currentSection() + direction);
+        const moveOne = (direction) => moveToSection(activePanelIndex + direction);
 
         document.querySelectorAll('.site-header a[href^="#"]').forEach((link) => {
           link.addEventListener("click", (event) => {
@@ -199,9 +243,8 @@
           const dx = touch.clientX - startX;
           const dy = touch.clientY - startY;
           if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx) * 1.15) {
-            const activeSection = currentSection();
-            const available = dy < 0 ? activeSection < panels.length - 1 : activeSection > 0;
-            if (available) {
+            const available = dy < 0 ? activePanelIndex < panels.length - 1 : activePanelIndex > 0;
+            if (available || animating) {
               capturedVerticalSwipe = true;
               event.preventDefault();
             }
@@ -212,7 +255,7 @@
           if (!capturedVerticalSwipe) return;
           const touch = event.changedTouches[0];
           const dy = touch.clientY - startY;
-          if (Math.abs(dy) > 28) moveOne(dy < 0 ? 1 : -1);
+          if (Math.abs(dy) > 28 && !animating) moveOne(dy < 0 ? 1 : -1);
           capturedVerticalSwipe = false;
         }, { passive: true });
 
