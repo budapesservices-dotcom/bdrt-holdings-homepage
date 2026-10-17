@@ -144,21 +144,21 @@ body {
   top: calc(0px - var(--header-top));
   left: 50%;
   display: block;
-  width: 140px;
-  height: 118px;
+  width: 130px;
+  height: 90px;
   overflow: visible;
   pointer-events: none;
   transform: translateX(-50%);
 }
 
 .wordmark-frame__fill {
-  fill: rgba(15, 15, 17, 0.18);
+  fill: rgba(15, 15, 17, 0.28);
 }
 
 .wordmark-frame__stroke {
   fill: none;
-  stroke: rgba(15, 15, 17, 0.82);
-  stroke-width: 1.5;
+  stroke: rgba(15, 15, 17, 0.28);
+  stroke-width: 1.35;
   stroke-linecap: butt;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
@@ -225,8 +225,8 @@ body {
   }
 
   .wordmark-frame {
-    width: 128px;
-    height: 118px;
+    width: 124px;
+    height: 90px;
   }
 
   .wordmark__sub {
@@ -253,8 +253,8 @@ body {
   }
 
   .wordmark-frame {
-    width: 128px;
-    height: 116px;
+    width: 126px;
+    height: 88px;
   }
 
   .wordmark__main {
