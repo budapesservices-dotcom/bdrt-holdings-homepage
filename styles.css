@@ -505,8 +505,7 @@ body::-webkit-scrollbar,
   box-shadow: none;
 }
 
-.portfolio-shot.is-expanded img.is-loaded,
-.portfolio-shot.is-closing img.is-loaded {
+.portfolio-shot.is-expanded img.is-loaded {
   opacity: 0 !important;
 }
 
