@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-single-image-no-handoff-46" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-gallery-same-node-fade-clean-47" />
   </head>
   <body>
     <main class="page">
@@ -383,7 +383,7 @@
             activeFlightAnimation = null;
             clearGalleryHandoffSuppression();
             if (activeFlightImage) restoreFlightImageToShot(activeFlightShot);
-            galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden", "is-closing"));
+            galleryShots.forEach((shot) => shot.classList.remove("is-flight-hidden", "is-closing", "is-opening"));
             portfolioGalleryViewport.classList.remove("has-expanded-shot");
             portfolioGalleryViewport.querySelectorAll(".portfolio-gallery__page.has-focused-shot").forEach((page) => {
               clearFocusedPageShrink(page);
@@ -551,7 +551,12 @@
 
             const page = shot.closest(".portfolio-gallery__page");
             if (!page) return;
+
+            // Measure the same neutral image scale used at the close handoff.
+            // A hovered image is temporarily locked to its normal crop before moving.
+            shot.classList.add("is-opening");
             const sourceRect = sourceImage.getBoundingClientRect();
+            shot.classList.remove("is-opening");
             const pageRect = page.getBoundingClientRect();
             if (!(sourceRect.width > 0 && sourceRect.height > 0 && pageRect.width > 0 && pageRect.height > 0)) return;
 
