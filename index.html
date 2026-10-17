@@ -1952,11 +1952,16 @@
         const portalExperience = document.getElementById("portal-experience");
         const portalPages = Array.from(portalExperience?.querySelectorAll("[data-portal-page]") ?? []);
         const portalTargets = new Set(["#client-login", "#donor-portal"]);
+        let portalReturnFocus = null;
 
         const openPortalExperience = (targetId, updateHash = true) => {
           const portalKey = targetId.slice(1);
           const targetPage = portalPages.find((page) => page.dataset.portalPage === portalKey);
           if (!portalExperience || !targetPage) return false;
+
+          if (!portalExperience.classList.contains("is-open") && document.activeElement instanceof HTMLElement) {
+            portalReturnFocus = document.activeElement;
+          }
 
           portalPages.forEach((page) => {
             const isTarget = page === targetPage;
@@ -1971,6 +1976,7 @@
           document.body.classList.toggle("portal-open--client", portalKey === "client-login");
           document.body.classList.toggle("portal-open--donor", portalKey === "donor-portal");
           portalExperience.scrollTop = 0;
+          portalExperience.querySelector("[data-portal-close]")?.focus({ preventScroll: true });
 
           if (updateHash) {
             window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}${targetId}`);
@@ -1984,6 +1990,9 @@
           portalExperience.setAttribute("aria-hidden", "true");
           portalExperience.inert = true;
           document.body.classList.remove("portal-open", "portal-open--client", "portal-open--donor");
+          const returnFocus = portalReturnFocus;
+          portalReturnFocus = null;
+          if (returnFocus instanceof HTMLElement) returnFocus.focus({ preventScroll: true });
 
           if (updateHash && portalTargets.has(window.location.hash)) {
             window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}`);
