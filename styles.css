@@ -134,7 +134,7 @@ body {
 
 .site-nav a:hover,
 .site-nav a:focus-visible {
-  color: var(--champagne-glow);
+  color: var(--champagne);
 }
 
 .site-nav a:hover::after,
