@@ -5924,3 +5924,215 @@ body.portal-closing .site-nav {
     font-size: 22px;
   }
 }
+
+
+/* Portal motion refinement: restore the larger, lower-set original wordmark treatment and give the access page more room. */
+:root {
+  --portal-sheet-height: 86dvh;
+  --portal-arch-height: 166px;
+  --portal-join-inset: 122px;
+}
+
+.portal-sheet {
+  height: var(--portal-sheet-height);
+  transform: translateY(calc(var(--portal-arch-height) - var(--portal-sheet-height)));
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-sheet::before {
+  bottom: var(--portal-join-inset);
+}
+
+.portal-page {
+  inset: 0 0 var(--portal-join-inset);
+  padding-top: clamp(84px, 10.5vh, 104px);
+}
+
+.portal-access__content {
+  gap: 17px;
+}
+
+.portal-access__layout {
+  gap: clamp(40px, 6.2vw, 94px);
+  padding-top: 12px;
+  padding-bottom: 18px;
+}
+
+.portal-access__story {
+  padding-left: clamp(0px, 1.2vw, 18px);
+}
+
+.portal-access__story h1 {
+  font-size: clamp(46px, 5.2vw, 74px);
+}
+
+.portal-access__intro {
+  max-width: 410px;
+  margin-top: clamp(18px, 2.5vh, 27px);
+  line-height: 1.72;
+}
+
+.portal-access__signature {
+  margin-top: clamp(26px, 3.5vh, 38px);
+}
+
+.portal-login-card {
+  padding: clamp(25px, 2.6vw, 37px);
+}
+
+.portal-login-card__heading {
+  margin-top: clamp(19px, 2.5vh, 28px);
+  margin-bottom: clamp(18px, 2.3vh, 25px);
+}
+
+.portal-login-card__fields {
+  gap: 15px;
+}
+
+.portal-login-field__surface {
+  min-height: 39px;
+}
+
+.portal-login-card__options {
+  margin-top: 15px;
+  margin-bottom: 19px;
+}
+
+.portal-login-card__submit {
+  min-height: 43px;
+}
+
+.portal-donor-assurance {
+  margin-top: 17px;
+  padding-top: 14px;
+}
+
+body.portal-open .site-header {
+  top: calc(var(--header-top) + var(--portal-sheet-height) - var(--portal-arch-height));
+}
+
+body.portal-open .wordmark-frame {
+  top: calc(0px - var(--header-top));
+  width: clamp(168px, 19vw, 224px);
+  height: var(--portal-arch-height);
+}
+
+body.portal-open .wordmark {
+  transform: translateY(clamp(74px, 9vh, 105px));
+}
+
+.portal-experience.is-open .portal-sheet {
+  transform: translateY(0);
+}
+
+body.portal-closing .site-header {
+  top: var(--header-top);
+}
+
+@media (max-width: 1080px) and (min-width: 761px) {
+  .portal-access__layout {
+    gap: 31px;
+  }
+
+  .portal-login-card {
+    padding: 22px;
+  }
+}
+
+@media (max-width: 760px) {
+  :root {
+    --portal-sheet-height: 90dvh;
+    --portal-arch-height: 116px;
+    --portal-join-inset: 85px;
+  }
+
+  .portal-sheet {
+    height: var(--portal-sheet-height);
+    transform: translateY(calc(var(--portal-arch-height) - var(--portal-sheet-height)));
+  }
+
+  .portal-sheet::before {
+    bottom: var(--portal-join-inset);
+  }
+
+  .portal-page {
+    inset: 0 0 var(--portal-join-inset);
+    padding-top: 65px;
+  }
+
+  .portal-access__layout {
+    gap: 20px;
+    padding-top: 16px;
+    padding-bottom: 18px;
+  }
+
+  .portal-access__story h1 {
+    font-size: clamp(39px, 9.8vw, 55px);
+  }
+
+  .portal-access__intro {
+    margin-top: 12px;
+    line-height: 1.62;
+  }
+
+  .portal-access__signature {
+    margin-top: 17px;
+  }
+
+  .portal-login-card {
+    padding: 20px;
+  }
+
+  .portal-login-card__heading {
+    margin: 15px 0;
+  }
+
+  .portal-login-card__fields {
+    gap: 11px;
+  }
+
+  .portal-login-field__surface {
+    min-height: 35px;
+  }
+
+  .portal-login-card__options {
+    margin: 11px 0 14px;
+  }
+
+  .portal-login-card__submit {
+    min-height: 39px;
+  }
+
+  .portal-donor-assurance {
+    margin-top: 12px;
+    padding-top: 10px;
+  }
+
+  body.portal-open .site-header {
+    top: calc(var(--header-top) + var(--portal-sheet-height) - var(--portal-arch-height));
+  }
+
+  body.portal-open .wordmark-frame {
+    width: 138px;
+    height: var(--portal-arch-height);
+  }
+
+  body.portal-open .wordmark {
+    transform: translateY(50px);
+  }
+
+  .portal-experience.is-open .portal-sheet {
+    transform: translateY(0);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portal-sheet,
+  .site-header,
+  .wordmark-frame__fill,
+  .wordmark-frame__stroke,
+  .portal-open .wordmark,
+  .portal-closing .site-nav {
+    transition: none !important;
+  }
+}
