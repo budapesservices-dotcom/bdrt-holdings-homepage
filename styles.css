@@ -322,7 +322,7 @@ body::-webkit-scrollbar,
 }
 
 body.header-over-dark {
-  --wordmark-frame-tint: rgba(212, 197, 185, 0.3);
+  --wordmark-frame-tint: rgba(244, 241, 234, 0.28);
 }
 
 body.header-over-dark .wordmark__main {
