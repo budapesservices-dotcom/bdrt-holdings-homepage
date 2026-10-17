@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-editorial-header-contrast-nohyphen-2" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-section-three-blank-1" />
   </head>
   <body>
     <main class="page">
@@ -29,7 +29,7 @@
         </a>
 
         <nav class="site-nav site-nav--right" aria-label="Secondary navigation">
-          <a href="#portfolio">PORTFOLIO</a>
+          <a href="#businesses">PORTFOLIO</a>
           <a href="#contact">CONTACT</a>
           <a href="#client-login">CLIENT LOGIN</a>
           <a href="#donor-portal">DONOR PORTAL</a>
@@ -71,17 +71,23 @@
           </div>
         </section>
       </div>
+
+      <section class="businesses-section" id="businesses" aria-label="Our businesses and portfolio"></section>
     </main>
 
     <script>
       (() => {
         const hero = document.querySelector(".hero");
         const about = document.querySelector(".about-section");
-        if (!hero || !about) return;
+        const businesses = document.querySelector(".businesses-section");
+        if (!hero || !about || !businesses) return;
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         const updateHeaderContrast = () => {
-          const overLightSection = window.scrollY > window.innerHeight * 0.48;
+          const scrollY = window.scrollY;
+          const lightSectionTop = window.innerHeight * 0.48;
+          const darkSectionTop = businesses.getBoundingClientRect().top + window.scrollY;
+          const overLightSection = scrollY > lightSectionTop && scrollY < darkSectionTop - window.innerHeight * 0.52;
           document.body.classList.toggle("header-over-light", overLightSection);
           document.body.classList.toggle("header-over-dark", !overLightSection);
         };
@@ -97,13 +103,26 @@
 
         const sectionTarget = (index) => {
           if (index <= 0) return 0;
-          return Math.max(0, about.getBoundingClientRect().top + window.scrollY);
+          const section = index === 1 ? about : businesses;
+          return Math.max(0, section.getBoundingClientRect().top + window.scrollY);
         };
 
-        const currentSection = () => window.scrollY > window.innerHeight * 0.48 ? 1 : 0;
+        const currentSection = () => {
+          const positions = [0, sectionTarget(1), sectionTarget(2)];
+          let activeIndex = 0;
+          let nearestDistance = Infinity;
+          positions.forEach((position, index) => {
+            const distance = Math.abs(window.scrollY - position);
+            if (distance < nearestDistance) {
+              nearestDistance = distance;
+              activeIndex = index;
+            }
+          });
+          return activeIndex;
+        };
 
         const moveToSection = (index) => {
-          if (animating || index < 0 || index > 1) return false;
+          if (animating || index < 0 || index > 2) return false;
           const start = window.scrollY;
           const target = sectionTarget(index);
           if (Math.abs(target - start) < 3) return false;
@@ -169,7 +188,8 @@
           const dx = touch.clientX - startX;
           const dy = touch.clientY - startY;
           if (Math.abs(dy) > 8 && Math.abs(dy) > Math.abs(dx) * 1.15) {
-            const available = dy < 0 ? currentSection() === 0 : currentSection() === 1;
+            const activeSection = currentSection();
+            const available = dy < 0 ? activeSection < 2 : activeSection > 0;
             if (available) {
               capturedVerticalSwipe = true;
               event.preventDefault();
