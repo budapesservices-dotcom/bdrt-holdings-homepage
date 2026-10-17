@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-magazine-page-transition-4" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-header-reverse-sync-5" />
   </head>
   <body>
     <main class="page">
@@ -124,6 +124,9 @@
             panels[index].style.zIndex = "200";
           }
 
+        };
+
+        const updateHeaderTheme = (index) => {
           const overLightSection = panels[index]?.dataset.theme === "light";
           document.body.classList.toggle("header-over-light", overLightSection);
           document.body.classList.toggle("header-over-dark", !overLightSection);
@@ -133,10 +136,12 @@
           if (animating) return;
           activePanelIndex = currentSectionFromScroll();
           renderPanels(activePanelIndex);
+          updateHeaderTheme(activePanelIndex);
         };
 
         syncScrollTrack();
         renderPanels(activePanelIndex);
+        updateHeaderTheme(activePanelIndex);
         window.addEventListener("scroll", updateFromScroll, { passive: true });
         window.addEventListener("resize", () => {
           const keepIndex = animating ? transitionTargetIndex : activePanelIndex;
@@ -145,6 +150,7 @@
           if (!animating) {
             activePanelIndex = keepIndex;
             renderPanels(activePanelIndex);
+            updateHeaderTheme(activePanelIndex);
           }
         }, { passive: true });
 
@@ -160,6 +166,9 @@
           transitionDirection = targetIndex > startIndex ? 1 : -1;
           animating = true;
 
+          // Apply destination contrast at the start, regardless of navigation direction.
+          updateHeaderTheme(targetIndex);
+
           window.cancelAnimationFrame(animationFrame);
           window.clearTimeout(unlockTimer);
 
@@ -168,6 +177,7 @@
             activePanelIndex = targetIndex;
             animating = false;
             renderPanels(activePanelIndex);
+            updateHeaderTheme(activePanelIndex);
             return true;
           }
 
@@ -201,6 +211,7 @@
             activePanelIndex = targetIndex;
             animating = false;
             renderPanels(activePanelIndex);
+            updateHeaderTheme(activePanelIndex);
             unlockTimer = window.setTimeout(() => {
               animating = false;
             }, 60);
