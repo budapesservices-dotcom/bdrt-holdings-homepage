@@ -3096,3 +3096,386 @@ body.header-over-light .site-nav a:focus-visible {
     transition: none;
   }
 }
+
+
+/* The final footer is a half-height editorial reveal over the Contact panel. */
+.site-footer-section {
+  isolation: isolate;
+  top: auto;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 50vh;
+  height: 50svh;
+  height: 50dvh;
+  overflow: hidden;
+  padding: 0;
+  background: #08090A;
+  color: var(--cream);
+}
+
+.site-footer-section::before {
+  position: absolute;
+  z-index: 0;
+  right: -0.04em;
+  bottom: -0.34em;
+  color: rgba(244, 241, 234, 0.025);
+  content: "BDRT";
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(180px, 29vw, 430px);
+  font-weight: 500;
+  letter-spacing: -0.105em;
+  line-height: 0.95;
+  pointer-events: none;
+  user-select: none;
+}
+
+.site-footer {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  height: 100%;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: clamp(23px, 4vh, 42px) clamp(24px, 5.1vw, 82px) clamp(17px, 2.4vh, 26px);
+}
+
+.site-footer__top {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: clamp(16px, 2.4vw, 36px);
+  padding-bottom: clamp(16px, 2.5vh, 26px);
+  border-bottom: 1px solid rgba(244, 241, 234, 0.17);
+}
+
+.site-footer__brand {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 10px;
+  width: fit-content;
+  color: var(--cream);
+  text-decoration: none;
+}
+
+.site-footer__brand-main {
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(32px, 3.1vw, 46px);
+  font-weight: 500;
+  letter-spacing: -0.095em;
+  line-height: 0.9;
+}
+
+.site-footer__brand-sub {
+  color: var(--champagne);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+}
+
+.site-footer__statement {
+  margin: 0;
+  color: rgba(244, 241, 234, 0.86);
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(20px, 2vw, 30px);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+  text-align: center;
+  text-wrap: balance;
+}
+
+.site-footer__statement em {
+  color: var(--champagne);
+  font-weight: 400;
+}
+
+.site-footer__inquiry {
+  position: relative;
+  isolation: isolate;
+  display: inline-flex;
+  min-height: 43px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 0 19px;
+  overflow: hidden;
+  border: 1px solid rgba(244, 241, 234, 0.72);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: color 360ms ease, border-color 360ms ease;
+}
+
+.site-footer__inquiry::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--cream);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 520ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-footer__inquiry > span {
+  position: relative;
+  z-index: 1;
+}
+
+.site-footer__inquiry-arrow {
+  font-size: 16px;
+  font-weight: 400;
+  transition: transform 280ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.site-footer__inquiry:hover,
+.site-footer__inquiry:focus-visible {
+  border-color: var(--cream);
+  color: var(--obsidian);
+}
+
+.site-footer__inquiry:hover::before,
+.site-footer__inquiry:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.site-footer__inquiry:hover .site-footer__inquiry-arrow,
+.site-footer__inquiry:focus-visible .site-footer__inquiry-arrow {
+  transform: translate(3px, -3px);
+}
+
+.site-footer__inquiry:focus-visible,
+.site-footer__brand:focus-visible,
+.site-footer__nav a:focus-visible {
+  outline: 1px solid var(--champagne);
+  outline-offset: 4px;
+}
+
+.site-footer__bottom {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 16px clamp(16px, 2vw, 28px);
+  padding-top: clamp(15px, 2vh, 22px);
+}
+
+.site-footer__copyright,
+.site-footer__note {
+  color: rgba(244, 241, 234, 0.48);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.11em;
+  line-height: 1.5;
+  white-space: nowrap;
+}
+
+.site-footer__nav {
+  display: flex;
+  min-width: 0;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 9px clamp(10px, 1.35vw, 20px);
+}
+
+.site-footer__nav a {
+  color: rgba(244, 241, 234, 0.78);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  line-height: 1.5;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+
+.site-footer__nav a:hover,
+.site-footer__nav a:focus-visible {
+  color: var(--champagne);
+}
+
+.site-footer__note {
+  text-align: right;
+  font-size: 8px;
+  letter-spacing: 0.09em;
+}
+
+@media (max-width: 1080px) {
+  .site-footer {
+    padding-right: 28px;
+    padding-left: 28px;
+  }
+
+  .site-footer__top {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: 13px;
+  }
+
+  .site-footer__statement {
+    text-align: right;
+  }
+
+  .site-footer__inquiry {
+    grid-column: 1 / -1;
+    justify-self: end;
+    min-height: 39px;
+  }
+
+  .site-footer__bottom {
+    grid-template-columns: auto minmax(0, 1fr);
+    row-gap: 13px;
+  }
+
+  .site-footer__nav {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    justify-content: flex-start;
+  }
+
+  .site-footer__copyright {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .site-footer__note {
+    grid-column: 2;
+    grid-row: 2;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-footer {
+    padding: 22px 18px 15px;
+  }
+
+  .site-footer-section::before {
+    right: -0.05em;
+    bottom: -0.12em;
+    font-size: 53vw;
+  }
+
+  .site-footer__top {
+    grid-template-columns: minmax(0, 1fr) auto;
+    align-items: center;
+    gap: 15px 10px;
+    padding-bottom: 14px;
+  }
+
+  .site-footer__brand {
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+
+  .site-footer__brand-main {
+    font-size: 34px;
+  }
+
+  .site-footer__brand-sub {
+    font-size: 7px;
+    letter-spacing: 0.14em;
+  }
+
+  .site-footer__statement {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    max-width: 100%;
+    font-size: clamp(21px, 5.7vw, 28px);
+    text-align: left;
+  }
+
+  .site-footer__inquiry {
+    grid-column: 2;
+    grid-row: 1;
+    min-height: 36px;
+    gap: 10px;
+    padding: 0 12px;
+    font-size: 8px;
+    letter-spacing: 0.09em;
+  }
+
+  .site-footer__inquiry-arrow {
+    font-size: 14px;
+  }
+
+  .site-footer__bottom {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 10px;
+    padding-top: 12px;
+  }
+
+  .site-footer__nav {
+    grid-column: 1;
+    grid-row: 1;
+    gap: 7px 13px;
+    justify-content: flex-start;
+  }
+
+  .site-footer__nav a {
+    font-size: 8px;
+    letter-spacing: 0.07em;
+  }
+
+  .site-footer__copyright {
+    grid-column: 1;
+    grid-row: 2;
+    font-size: 8px;
+  }
+
+  .site-footer__note {
+    display: none;
+  }
+}
+
+@media (max-height: 600px) and (min-width: 641px) {
+  .site-footer {
+    padding-top: 17px;
+    padding-bottom: 13px;
+  }
+
+  .site-footer__brand-main {
+    font-size: 30px;
+  }
+
+  .site-footer__statement {
+    font-size: 19px;
+  }
+
+  .site-footer__inquiry {
+    min-height: 36px;
+    font-size: 8px;
+  }
+
+  .site-footer__top {
+    padding-bottom: 13px;
+  }
+
+  .site-footer__bottom {
+    padding-top: 12px;
+  }
+
+  .site-footer__nav {
+    gap: 6px 12px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__inquiry,
+  .site-footer__inquiry::before,
+  .site-footer__inquiry-arrow,
+  .site-footer__nav a {
+    transition: none;
+  }
+}
