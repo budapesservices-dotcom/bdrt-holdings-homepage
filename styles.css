@@ -89,7 +89,7 @@ body {
   background: var(--obsidian);
   color: var(--cream);
   text-align: center;
-  transform: perspective(1600px) rotateX(var(--page-rotation, -5deg)) translateY(var(--page-lift, 14px));
+  transform: perspective(1600px) rotateX(var(--page-rotation, 0deg)) translateY(var(--page-lift, 0px));
   transform-origin: 50% 0%;
   backface-visibility: hidden;
   will-change: transform;
