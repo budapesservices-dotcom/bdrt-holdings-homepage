@@ -11,6 +11,7 @@
   --deep-bronze: #8C7B6C;
   --hairline: rgba(244, 241, 234, 0.08);
   --focus-border: rgba(212, 197, 185, 0.35);
+  --wordmark-frame-tint: rgba(15, 15, 17, 0.28);
 }
 
 * {
@@ -152,13 +153,13 @@ body {
 }
 
 .wordmark-frame__fill {
-  fill: rgba(15, 15, 17, 0.28);
+  fill: var(--wordmark-frame-tint);
 }
 
 .wordmark-frame__stroke {
   fill: none;
-  stroke: rgba(15, 15, 17, 0.28);
-  stroke-width: 1.35;
+  stroke: var(--wordmark-frame-tint);
+  stroke-width: 1;
   stroke-linecap: butt;
   stroke-linejoin: round;
   vector-effect: non-scaling-stroke;
