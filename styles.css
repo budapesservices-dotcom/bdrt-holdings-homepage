@@ -2,6 +2,9 @@
   color-scheme: dark;
   --obsidian: #0F0F11;
   --cream: #F4F1EA;
+  --espresso: #2B211B;
+  --antique-gold: #86643B;
+  --soft-gold: #B59A70;
 }
 
 * {
@@ -74,13 +77,13 @@ body {
 .site-nav--left {
   justify-content: stretch;
   color: var(--cream);
-  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.48);
+  text-shadow: 0 1px 5px rgba(0, 0, 0, 0.62);
 }
 
 .site-nav--right {
   justify-content: stretch;
-  color: var(--obsidian);
-  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.12);
+  color: var(--espresso);
+  text-shadow: 0 1px 3px rgba(255, 255, 255, 0.2);
 }
 
 .site-nav a {
@@ -92,25 +95,26 @@ body {
   text-align: center;
   color: inherit;
   text-decoration: none;
-  transition: opacity 180ms ease;
+  transition: color 180ms ease, opacity 180ms ease;
 }
 
 .site-nav a::after {
   position: absolute;
-  right: 0;
+  right: 10%;
   bottom: 0;
-  left: 0;
+  left: 10%;
   height: 1px;
-  background: currentColor;
+  background: var(--antique-gold);
   content: "";
-  opacity: 0.8;
+  opacity: 0.95;
   transform: scaleX(0);
-  transform-origin: left;
+  transform-origin: center;
   transition: transform 180ms ease;
 }
 
-.site-nav a:hover {
-  opacity: 1;
+.site-nav a:hover,
+.site-nav a:focus-visible {
+  color: var(--antique-gold);
 }
 
 .site-nav a:hover::after,
@@ -131,10 +135,11 @@ body {
   flex-direction: column;
   align-items: center;
   padding: 2px 17px 10px;
-  color: var(--obsidian);
+  color: var(--espresso);
   text-decoration: none;
   line-height: 1;
   white-space: nowrap;
+  text-shadow: 0 1px 1px rgba(244, 241, 234, 0.22);
 }
 
 .wordmark::before {
@@ -144,11 +149,11 @@ body {
   left: 50%;
   width: 130px;
   height: 130px;
-  border: 1px solid currentColor;
+  border: 1px solid var(--antique-gold);
   border-radius: 50%;
   clip-path: inset(50% 0 0 0);
   content: "";
-  opacity: 0.68;
+  opacity: 0.95;
   pointer-events: none;
   transform: translateX(-50%);
 }
@@ -164,14 +169,16 @@ body {
 .wordmark__sub {
   display: block;
   margin-top: 7px;
-  padding-left: 0.72em;
+  padding-left: 0.96em;
+  color: var(--antique-gold);
   font-family: Arial, Helvetica, sans-serif;
-  font-size: 8px;
-  font-weight: 400;
-  letter-spacing: 0.72em;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.96em;
   line-height: 1;
-  transform: scaleY(0.78);
+  transform: scaleY(0.8);
   transform-origin: center top;
+  text-shadow: none;
 }
 
 @media (max-width: 1100px) and (min-width: 761px) {
@@ -195,6 +202,12 @@ body {
     height: 118px;
     top: -68px;
   }
+
+  .wordmark__sub {
+    font-size: 8px;
+    letter-spacing: 0.84em;
+    padding-left: 0.84em;
+  }
 }
 
 @media (max-width: 760px) {
@@ -209,14 +222,14 @@ body {
   .wordmark {
     grid-column: 1;
     grid-row: 1;
-    color: var(--cream);
+    color: var(--espresso);
   }
 
   .wordmark::before {
     top: -68px;
     width: 124px;
     height: 124px;
-    opacity: 0.76;
+    opacity: 0.95;
   }
 
   .wordmark__main {
@@ -224,9 +237,9 @@ body {
   }
 
   .wordmark__sub {
-    font-size: 8px;
-    letter-spacing: 0.68em;
-    padding-left: 0.68em;
+    font-size: 9px;
+    letter-spacing: 0.84em;
+    padding-left: 0.84em;
   }
 
   .site-nav {
@@ -250,6 +263,7 @@ body {
   .site-nav--right {
     grid-column: 1;
     grid-row: 3;
+    color: var(--cream);
   }
 
   .site-nav a {
