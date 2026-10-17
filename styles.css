@@ -6136,3 +6136,15 @@ body.portal-closing .site-header {
     transition: none !important;
   }
 }
+
+
+/* Keep the shared BDRT wordmark legible on the dark portal sheet, regardless of the section underneath. */
+body.portal-open.header-over-light .wordmark__main,
+body.portal-open.header-over-dark .wordmark__main {
+  color: var(--cream);
+}
+
+body.portal-open.header-over-light .wordmark__sub,
+body.portal-open.header-over-dark .wordmark__sub {
+  color: var(--champagne);
+}
