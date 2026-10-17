@@ -511,6 +511,7 @@ body::-webkit-scrollbar,
 
 .portfolio-shot.is-closing img.is-loaded {
   filter: grayscale(1) !important;
+  transform: scale(1.001) !important;
   transition: none !important;
 }
 
