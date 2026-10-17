@@ -7519,3 +7519,54 @@ body.portal-closing .portal-sheet::before {
     margin-top: 15px;
   }
 }
+
+
+/* Standardized logo sizing and alignment for the Businesses section above Our Brands. */
+.businesses-section--companies .business-logo {
+  align-items: center;
+}
+
+.businesses-section--companies .business-logo img {
+  width: min(100%, 172px);
+  height: 44px;
+  max-width: min(100%, 172px);
+  max-height: 44px;
+  margin-top: clamp(25px, 3vh, 34px);
+  object-fit: contain;
+  object-position: center;
+}
+
+.businesses-section--companies .business-logo__fallback:not([hidden]) {
+  align-self: center;
+  margin-top: clamp(25px, 3vh, 34px);
+  text-align: center;
+}
+
+@media (max-width: 900px) {
+  .businesses-section--companies .business-logo img {
+    width: min(100%, 150px);
+    height: 38px;
+    max-width: min(100%, 150px);
+    max-height: 38px;
+  }
+}
+
+@media (max-width: 640px) {
+  .businesses-section--companies .business-logo {
+    flex: 0 0 122px;
+    width: 122px;
+    align-items: center;
+  }
+
+  .businesses-section--companies .business-logo img {
+    width: 100%;
+    height: 32px;
+    max-width: 100%;
+    max-height: 32px;
+    margin-top: 23px;
+  }
+
+  .businesses-section--companies .business-logo__fallback:not([hidden]) {
+    margin-top: 23px;
+  }
+}
