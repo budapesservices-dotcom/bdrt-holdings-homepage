@@ -145,15 +145,16 @@ body {
 .wordmark::before {
   position: absolute;
   z-index: -1;
-  top: -58px;
+  top: -70px;
   left: 50%;
-  width: 130px;
-  height: 130px;
-  border: 1px solid var(--antique-gold);
+  width: 140px;
+  height: 140px;
+  border: 1px solid rgba(120, 85, 34, 0.66);
   border-radius: 50%;
+  background: rgba(194, 165, 110, 0.10);
   clip-path: inset(50% 0 0 0);
   content: "";
-  opacity: 0.95;
+  opacity: 1;
   pointer-events: none;
   transform: translateX(-50%);
 }
@@ -227,10 +228,12 @@ body {
   }
 
   .wordmark::before {
-    top: -58px;
-    width: 124px;
-    height: 124px;
-    opacity: 0.95;
+    top: -67px;
+    width: 134px;
+    height: 134px;
+    border-color: rgba(120, 85, 34, 0.66);
+    background: rgba(194, 165, 110, 0.10);
+    opacity: 1;
   }
 
   .wordmark__main {
