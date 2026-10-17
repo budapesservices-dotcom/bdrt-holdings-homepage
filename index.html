@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-portfolio-selector-11" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-portfolio-editorial-select-12" />
   </head>
   <body>
     <main class="page">
@@ -73,14 +73,9 @@
 
         <section class="businesses-section section-panel" id="businesses" data-theme="dark" aria-label="Our businesses and portfolio">
           <div class="businesses-section__intro">
-            <div class="businesses-section__eyebrow">
-              <span>BDRT HOLDINGS / PORTFOLIO</span>
-              <span class="businesses-section__index" data-brand-index>01 / 06</span>
-            </div>
             <div class="businesses-section__copy" aria-live="polite" aria-atomic="true">
-              <p class="businesses-section__kicker" data-brand-kicker>TALENT · CULTURE · COMMERCIAL</p>
               <h2 class="businesses-section__title" id="business-detail-title">VOXA Brand</h2>
-              <p class="businesses-section__description" id="business-detail-description">Personal branding, fashion, media, and creative commercial opportunities.</p>
+              <p class="businesses-section__description" id="business-detail-description">Turning a distinctive personal identity into culture, content, and brand partnerships that move people and markets.</p>
             </div>
           </div>
 
@@ -124,39 +119,31 @@
         const portfolioBrandContent = {
           "voxa": {
             title: "VOXA Brand",
-            description: "Personal branding, fashion, media, and creative commercial opportunities.",
-            kicker: "TALENT · CULTURE · COMMERCIAL"
+            description: "Turning a distinctive personal identity into culture, content, and brand partnerships that move people and markets."
           },
           "voxa-house": {
             title: "VOXA House",
-            description: "Creator development, fashion, media production, brand partnerships, and premium experiences.",
-            kicker: "CREATOR CULTURE · MEDIA · EXPERIENCES"
+            description: "A home for creators, fashion, and media where bold ideas become standout experiences and partnerships brands want to be part of."
           },
           "imerge": {
             title: "iMERGE Advertising",
-            description: "Advertising, branding, marketing, and commercial creative services.",
-            kicker: "ADVERTISING · BRAND STRATEGY · GROWTH"
+            description: "Turning brand ambition into attention and attention into action through sharp strategy, standout creative, and marketing built to move business forward."
           },
           "involia": {
             title: "Involia",
-            description: "Construction management, commercial development, and project execution.",
-            kicker: "DEVELOPMENT · DELIVERY · EXECUTION"
+            description: "Bringing commercial spaces to life with disciplined project leadership, thoughtful development, and execution that turns plans into progress."
           },
           "academic-elements": {
             title: "Academic Elements",
-            description: "Nonprofit programs, education, workforce development, and community impact.",
-            kicker: "EDUCATION · WORKFORCE · COMMUNITY"
+            description: "Opening doors through education, workforce pathways, and community-led programs that turn potential into lasting opportunity."
           },
           "emerging": {
             title: "Emerging Brands & Ventures",
-            description: "Additional creative and commercial businesses being developed for 2027 and beyond.",
-            kicker: "NEW VENTURES · NEXT CHAPTER"
+            description: "The next chapter is already in motion: developing fresh creative and commercial ventures designed to shape what comes next from 2027 onward."
           }
         };
         const portfolioTitle = document.getElementById("business-detail-title");
         const portfolioDescription = document.getElementById("business-detail-description");
-        const portfolioKicker = document.querySelector("[data-brand-kicker]");
-        const portfolioIndex = document.querySelector("[data-brand-index]");
 
         const activatePortfolioBrand = (button) => {
           const brand = portfolioBrandContent[button.dataset.brand];
@@ -168,11 +155,6 @@
           });
           if (portfolioTitle) portfolioTitle.textContent = brand.title;
           if (portfolioDescription) portfolioDescription.textContent = brand.description;
-          if (portfolioKicker) portfolioKicker.textContent = brand.kicker;
-          if (portfolioIndex) {
-            const index = portfolioButtons.indexOf(button) + 1;
-            portfolioIndex.textContent = `${String(index).padStart(2, "0")} / ${String(portfolioButtons.length).padStart(2, "0")}`;
-          }
         };
 
         portfolioButtons.forEach((button) => {
