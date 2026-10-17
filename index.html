@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=gallery-no-expand-hint-57" />
+    <link rel="stylesheet" href="./styles.css?v=gallery-no-selection-panel-58" />
   </head>
   <body>
     <main class="page">
@@ -153,13 +153,6 @@
               <h2 class="portfolio-gallery__title">Selected Work</h2>
             </div>
             <p class="portfolio-gallery__instruction">HOVER OR SELECT AN IMAGE <span class="portfolio-gallery__instruction-arrow" aria-hidden="true">↘</span></p>
-          </div>
-          <div class="portfolio-work-detail" aria-live="polite" aria-atomic="true">
-            <div class="portfolio-work-detail__heading">
-              <p class="portfolio-gallery__eyebrow">CURRENT SELECTION <span id="portfolio-work-number">01 / 41</span></p>
-              <h3 id="portfolio-work-title">Photographers</h3>
-            </div>
-            <p class="portfolio-work-detail__description" id="portfolio-work-description">Photography-led visuals showcasing the image-making discipline within the creative portfolio.</p>
           </div>
           <div class="portfolio-gallery__viewport" id="portfolio-gallery-viewport" tabindex="0" role="region" aria-label="Horizontal portfolio gallery. Drag sideways or use the left and right arrow keys to explore 41 images.">
             <div class="portfolio-gallery__track">
@@ -983,26 +976,8 @@
             activeFlightAnimation.finished.then(finish).catch(() => {});
           };
 
-                    const portfolioWorkNumber = document.getElementById("portfolio-work-number");
-          const portfolioWorkTitle = document.getElementById("portfolio-work-title");
-          const portfolioWorkDescription = document.getElementById("portfolio-work-description");
-
-          const updatePortfolioWorkDetails = (shot) => {
-            if (!shot) return;
-            if (portfolioWorkNumber) portfolioWorkNumber.textContent = shot.dataset.workNumber || "";
-            if (portfolioWorkTitle) portfolioWorkTitle.textContent = shot.dataset.workTitle || shot.querySelector("img")?.alt || "Selected Work";
-            if (portfolioWorkDescription) portfolioWorkDescription.textContent = shot.dataset.workDescription || "Selected visual from the BDRT portfolio collection.";
-          };
-
           galleryShots.forEach((shot) => {
-            shot.addEventListener("pointerenter", (event) => {
-              if (event.pointerType !== "mouse" || galleryPointer?.dragging) return;
-              updatePortfolioWorkDetails(shot);
-            }, { passive: true });
-            shot.addEventListener("focus", () => updatePortfolioWorkDetails(shot));
-
             shot.addEventListener("click", (event) => {
-              updatePortfolioWorkDetails(shot);
               if (performance.now() < suppressGalleryClickUntil) {
                 event.preventDefault();
                 event.stopPropagation();
@@ -1017,7 +992,6 @@
               if (event.key !== "Enter" && event.key !== " ") return;
               event.preventDefault();
               event.stopPropagation();
-              updatePortfolioWorkDetails(shot);
               if (activeExpandedShot === shot) closeGalleryShot();
               else openGalleryShot(shot);
             });
