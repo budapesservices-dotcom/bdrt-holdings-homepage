@@ -1,0 +1,15 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 520 100" role="img" aria-labelledby="title desc">
+  <title id="title">Academic Elements</title>
+  <desc id="desc">Original monochrome Academic Elements wordmark with a minimal open-book emblem.</desc>
+  <g fill="none" stroke="#F4F1EA" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M16 25c13-5 27-2 38 7v43C43 66 29 64 16 69z"/>
+    <path d="M54 32c11-9 25-12 38-7v44c-13-5-27-3-38 6z"/>
+    <path d="M54 32v43"/>
+    <path d="M26 39c7-1 14 1 20 5M26 49c7-1 14 1 20 5M66 44c6-4 13-6 20-5M66 54c6-4 13-6 20-5"/>
+  </g>
+  <path d="M119 54h34" stroke="#D4C5B9" stroke-width="1.5"/>
+  <g fill="#F4F1EA" font-family="Arial, Helvetica, sans-serif" font-weight="600">
+    <text x="171" y="43" font-size="24" letter-spacing="5.4">ACADEMIC</text>
+    <text x="171" y="73" font-size="24" letter-spacing="7.1">ELEMENTS</text>
+  </g>
+</svg>
