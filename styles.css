@@ -496,6 +496,26 @@ body::-webkit-scrollbar,
   box-shadow: 0 7px 22px rgba(15, 15, 17, 0.10);
 }
 
+.portfolio-shot.is-flight-hidden {
+  visibility: hidden !important;
+}
+
+.portfolio-gallery__flight {
+  position: fixed;
+  z-index: 20001;
+  display: block;
+  max-width: none;
+  max-height: none;
+  margin: 0;
+  border: 1px solid rgba(15, 15, 17, 0.055);
+  object-fit: cover;
+  object-position: center;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+  will-change: top, left, width, height;
+}
+
 .portfolio-shot img {
   display: block;
   width: 100%;
