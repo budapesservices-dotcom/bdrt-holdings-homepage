@@ -392,12 +392,12 @@ body::-webkit-scrollbar,
   content: "";
 }
 
-.businesses-backdrop[data-background="voxa"] { --portfolio-backdrop-shade: 0.44; }
+.businesses-backdrop[data-background="voxa"] { --portfolio-backdrop-shade: 0.64; }
 .businesses-backdrop[data-background="voxa-house"] { --portfolio-backdrop-shade: 0.36; }
 .businesses-backdrop[data-background="imerge"] { --portfolio-backdrop-shade: 0.39; }
 .businesses-backdrop[data-background="involia"] { --portfolio-backdrop-shade: 0.43; }
-.businesses-backdrop[data-background="academic-elements"] { --portfolio-backdrop-shade: 0.42; }
-.businesses-backdrop[data-background="emerging"] { --portfolio-backdrop-shade: 0.49; }
+.businesses-backdrop[data-background="academic-elements"] { --portfolio-backdrop-shade: 0.64; }
+.businesses-backdrop[data-background="emerging"] { --portfolio-backdrop-shade: 0.68; }
 
 .businesses-backdrop img,
 .businesses-backdrop video {
@@ -834,6 +834,10 @@ body::-webkit-scrollbar,
   .business-logo::after,
   .business-logo__duration {
     transition: none;
+  }
+
+  .businesses-backdrop.is-active img {
+    animation: none;
   }
 
   .business-logo.is-selected.is-timing .business-logo__duration::before {
