@@ -681,6 +681,20 @@ body::-webkit-scrollbar,
   }
 }
 
+.portfolio-gallery__viewport.is-gallery-handoff .portfolio-shot:hover img.is-loaded,
+.portfolio-gallery__viewport.is-gallery-handoff .portfolio-shot:focus-visible img.is-loaded {
+  filter: grayscale(1) !important;
+  transform: scale(1.001) !important;
+  transition: none !important;
+}
+
+.portfolio-gallery__viewport.is-gallery-handoff .portfolio-shot:hover::before,
+.portfolio-gallery__viewport.is-gallery-handoff .portfolio-shot:hover::after,
+.portfolio-gallery__viewport.is-gallery-handoff .portfolio-shot:focus-visible::before,
+.portfolio-gallery__viewport.is-gallery-handoff .portfolio-shot:focus-visible::after {
+  opacity: 0 !important;
+}
+
 .portfolio-shot.is-expanded,
 .portfolio-shot.is-closing {
   border-color: transparent !important;
