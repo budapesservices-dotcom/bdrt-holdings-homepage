@@ -6681,3 +6681,135 @@ body.portal-closing .portal-sheet::before {
 .portal-login-card--client .portal-donor-assurance b {
   color: #B9CDDD;
 }
+
+
+/* Larger, cleaner typography for the actual login fields in both portal menus. */
+.portal-login-card__classification {
+  font-size: 7px;
+  line-height: 1.65;
+  letter-spacing: 0.11em;
+}
+
+.portal-login-card__heading > p {
+  margin-bottom: 9px;
+  font-size: 8px;
+  letter-spacing: 0.14em;
+}
+
+.portal-login-card--client .portal-login-card__heading h2,
+.portal-login-card--donor .portal-login-card__heading h2 {
+  font-size: clamp(24px, 2.2vw, 31px);
+  line-height: 1.06;
+}
+
+.portal-login-card__description {
+  margin-top: 10px;
+  font-size: 11px;
+  line-height: 1.55;
+}
+
+.portal-login-card__fields {
+  gap: 14px;
+}
+
+.portal-login-field {
+  gap: 7px;
+}
+
+.portal-login-card--client .portal-login-field > span,
+.portal-login-card--donor .portal-login-field > span {
+  font-size: 8px;
+  letter-spacing: 0.11em;
+  line-height: 1.45;
+}
+
+.portal-login-card--client .portal-login-field__surface,
+.portal-login-card--donor .portal-login-field__surface {
+  min-height: 42px;
+  padding-right: 13px;
+  padding-left: 13px;
+  font-size: 12px;
+  line-height: 1.45;
+}
+
+.portal-login-card--client .portal-login-field__surface {
+  color: rgba(226, 235, 242, 0.76);
+}
+
+.portal-login-card--donor .portal-login-field__surface {
+  color: rgba(243, 238, 228, 0.64);
+}
+
+.portal-login-card--client .portal-login-card__submit,
+.portal-login-card--donor .portal-login-card__submit {
+  min-height: 45px;
+  font-size: 8.5px;
+  letter-spacing: 0.11em;
+}
+
+@media (max-width: 760px) {
+  .portal-login-card__classification {
+    font-size: 6.8px;
+  }
+
+  .portal-login-card__heading > p {
+    font-size: 7.2px;
+  }
+
+  .portal-login-card--client .portal-login-card__heading h2,
+  .portal-login-card--donor .portal-login-card__heading h2 {
+    font-size: 24px;
+  }
+
+  .portal-login-card__description {
+    font-size: 10.5px;
+  }
+
+  .portal-login-card--client .portal-login-field > span,
+  .portal-login-card--donor .portal-login-field > span {
+    font-size: 7.2px;
+  }
+
+  .portal-login-card--client .portal-login-field__surface,
+  .portal-login-card--donor .portal-login-field__surface {
+    min-height: 39px;
+    font-size: 11px;
+  }
+
+  .portal-login-card--client .portal-login-card__submit,
+  .portal-login-card--donor .portal-login-card__submit {
+    min-height: 42px;
+    font-size: 7.5px;
+  }
+}
+
+@media (max-width: 420px) {
+  .portal-login-card__classification {
+    font-size: 6.4px;
+  }
+
+  .portal-login-card__heading > p {
+    font-size: 6.8px;
+  }
+
+  .portal-login-card--client .portal-login-card__heading h2,
+  .portal-login-card--donor .portal-login-card__heading h2 {
+    font-size: 22.5px;
+  }
+
+  .portal-login-card--client .portal-login-field > span,
+  .portal-login-card--donor .portal-login-field > span {
+    font-size: 6.8px;
+  }
+
+  .portal-login-card--client .portal-login-field__surface,
+  .portal-login-card--donor .portal-login-field__surface {
+    font-size: 10.5px;
+  }
+
+  .portal-login-card--client .portal-login-card__submit,
+  .portal-login-card--donor .portal-login-card__submit {
+    font-size: 7px;
+    letter-spacing: 0.085em;
+  }
+}
