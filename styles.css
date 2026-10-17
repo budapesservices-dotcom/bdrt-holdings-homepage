@@ -5206,3 +5206,131 @@ body.header-over-light .site-nav a:focus-visible {
     gap: 6px;
   }
 }
+
+
+/* Shared header continuity: reuse the original BDRT wordmark and arch for portal transitions. */
+.site-header {
+  transition: top 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.wordmark-frame__fill,
+.wordmark-frame__stroke {
+  transition: fill 260ms ease, stroke 260ms ease;
+}
+
+body.portal-open .site-header {
+  top: calc(var(--header-top) + 76dvh - 118px);
+  transition: top 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.portal-open .wordmark-frame,
+body.portal-open .wordmark {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: none;
+}
+
+body.portal-open .wordmark-frame {
+  top: calc(0px - var(--header-top));
+  width: 146px;
+  height: 118px;
+  transform: translateX(-50%);
+}
+
+body.portal-open .wordmark {
+  transform: none;
+}
+
+body.portal-open .wordmark-frame__fill {
+  fill: var(--obsidian);
+}
+
+body.portal-open .wordmark-frame__stroke {
+  stroke: transparent;
+}
+
+body.portal-open.header-over-dark .wordmark__main {
+  color: var(--cream);
+}
+
+body.portal-open.header-over-dark .wordmark__sub {
+  color: var(--champagne);
+}
+
+body.portal-open.header-over-light .wordmark__main {
+  color: var(--obsidian);
+}
+
+body.portal-open.header-over-light .wordmark__sub {
+  color: var(--deep-bronze);
+}
+
+body.portal-open .site-nav {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-8px);
+  transition:
+    opacity 220ms ease,
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 420ms;
+}
+
+body.portal-closing .site-header {
+  top: var(--header-top);
+  transition: top 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+body.portal-closing .site-nav {
+  visibility: visible;
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+  transition:
+    opacity 260ms ease 320ms,
+    transform 420ms cubic-bezier(0.16, 1, 0.3, 1),
+    visibility 0s linear 0s;
+}
+
+.portal-sheet {
+  transform: translateY(calc(118px - 76dvh));
+  transition: transform 900ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.portal-experience.is-open .portal-sheet {
+  transform: translateY(0);
+}
+
+@media (max-width: 760px) {
+  body.portal-open .site-header {
+    top: calc(var(--header-top) + 86dvh - 116px);
+  }
+
+  body.portal-open .wordmark-frame {
+    width: 138px;
+    height: 116px;
+  }
+
+  .portal-sheet {
+    transform: translateY(calc(116px - 86dvh));
+  }
+
+  .portal-experience.is-open .portal-sheet {
+    transform: translateY(0);
+  }
+
+  body.portal-closing .site-header {
+    top: var(--header-top);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-header,
+  .wordmark-frame__fill,
+  .wordmark-frame__stroke,
+  .portal-sheet,
+  body.portal-open .site-nav,
+  body.portal-closing .site-nav {
+    transition: none !important;
+  }
+}
