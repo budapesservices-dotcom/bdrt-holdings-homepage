@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=voxa-background-start-at-5-54" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-contest-fit-55" />
   </head>
   <body>
     <main class="page">
@@ -19,7 +19,7 @@
         <nav class="site-nav site-nav--left" aria-label="Main navigation">
           <a href="#home" aria-current="page">HOME</a>
           <a href="#about">ABOUT</a>
-          <a href="#our-brands">OUR BRANDS</a>
+          <a href="#our-brands">BUSINESSES</a>
           <a href="#portfolio">PORTFOLIO</a>
         </nav>
 
@@ -29,7 +29,7 @@
         </a>
 
         <nav class="site-nav site-nav--right" aria-label="Secondary navigation">
-          <a href="#about">BUSINESSES</a>
+          <a href="#our-brands">OUR BRANDS</a>
           <a href="#contact">CONTACT</a>
           <a href="#client-login">CLIENT LOGIN</a>
           <a href="#donor-portal">DONOR PORTAL</a>
@@ -57,7 +57,9 @@
         <section class="about-section section-panel" id="about" data-theme="light" aria-label="About BDRT Holdings">
           <div class="about-section__inner">
             <div class="about-section__story">
-              <p class="about-section__text">BDRT Holdings represents the pinnacle of talent management and brand development. We provide exclusive representation for VOXA, a visionary content creator and entertainer, alongside the VOXA House brand. Our approach combines strategic partnerships, creative excellence, and uncompromising standards to deliver exceptional results for our clients and partners worldwide.</p>
+              <p class="about-section__eyebrow">A CONNECTED COMMERCIAL ECOSYSTEM</p>
+              <h2 class="about-section__headline">A growing ecosystem of businesses, brands &amp; ventures.</h2>
+              <p class="about-section__text">BDRT Holdings connects commercial strategy, creative brands, project execution, and community-focused initiatives through a growing network of businesses and strategic relationships. From VOXA and VOXA House to advertising, development, and education, we bring distinct capabilities together to build lasting value.</p>
               <div class="about-section__links" aria-label="Our brands">
                 <a href="https://vvoxaa.com/" target="_blank" rel="noopener noreferrer">VVOXAA.COM <span aria-hidden="true">↗</span></a>
                 <a href="https://voxahouse.com/" target="_blank" rel="noopener noreferrer">VOXAHOUSE.COM <span aria-hidden="true">↗</span></a>
@@ -144,7 +146,14 @@
           </div>
         </section>
 
-        <section class="portfolio-section section-panel" id="portfolio" data-theme="light" aria-label="Portfolio gallery">
+        <section class="portfolio-section section-panel" id="portfolio" data-theme="light" aria-label="Selected work and commercial portfolio">
+          <div class="portfolio-gallery__header">
+            <div class="portfolio-gallery__heading">
+              <p class="portfolio-gallery__eyebrow">SELECTED WORK · CREATIVE &amp; COMMERCIAL</p>
+              <h2 class="portfolio-gallery__title">Selected Work</h2>
+            </div>
+            <p class="portfolio-gallery__instruction">EXPLORE THE PORTFOLIO <span class="portfolio-gallery__instruction-arrow" aria-hidden="true">↘</span></p>
+          </div>
           <div class="portfolio-gallery__viewport" id="portfolio-gallery-viewport" tabindex="0" role="region" aria-label="Horizontal portfolio gallery. Drag sideways or use the left and right arrow keys to explore 41 images.">
             <div class="portfolio-gallery__track">
 
@@ -285,6 +294,37 @@
               </div>
             </div>
           </div>
+          <footer class="portfolio-footer" id="contact" aria-label="Connect with BDRT Holdings">
+            <div class="portfolio-footer__top">
+              <div class="portfolio-footer__message">
+                <p class="portfolio-gallery__eyebrow">CONNECT WITH BDRT</p>
+                <h2>Building what’s next, together.</h2>
+              </div>
+              <a class="portfolio-footer__cta" href="https://bdrt.net/" target="_blank" rel="noopener noreferrer">BUSINESS INQUIRIES <span aria-hidden="true">↗</span></a>
+            </div>
+            <div class="portfolio-footer__bottom">
+              <nav class="portfolio-footer__nav" aria-label="Footer navigation">
+                <a href="#home">HOME</a>
+                <a href="#about">ABOUT</a>
+                <a href="#our-brands">BUSINESSES</a>
+                <a href="#portfolio">PORTFOLIO</a>
+                <a href="#our-brands">OUR BRANDS</a>
+                <a href="#contact">CONTACT</a>
+              </nav>
+              <nav class="portfolio-footer__businesses" aria-label="Business websites">
+                <a href="https://vvoxaa.com/" target="_blank" rel="noopener noreferrer">VOXA</a>
+                <a href="https://voxahouse.com/" target="_blank" rel="noopener noreferrer">VOXA HOUSE</a>
+                <a href="https://imergeadv.com/" target="_blank" rel="noopener noreferrer">iMERGE</a>
+                <a href="https://involia.com/" target="_blank" rel="noopener noreferrer">INVOLIA</a>
+                <a href="https://academicelements.com/" target="_blank" rel="noopener noreferrer">ACADEMIC ELEMENTS</a>
+                <a href="https://emerging.vc/" target="_blank" rel="noopener noreferrer">EMERGING VENTURES</a>
+              </nav>
+              <nav class="portfolio-footer__portals" aria-label="Portal access">
+                <a href="#client-login">CLIENT LOGIN</a>
+                <a href="#donor-portal">DONOR PORTAL</a>
+              </nav>
+            </div>
+          </footer>
         </section>
       </div>
     </main>
@@ -1392,10 +1432,17 @@
 
         const moveOne = (direction) => moveToSection(activePanelIndex + direction);
 
-        document.querySelectorAll('.site-header a[href^="#"]').forEach((link) => {
+        const sectionAliases = {
+          "#contact": "#portfolio",
+          "#client-login": "#portfolio",
+          "#donor-portal": "#portfolio"
+        };
+
+        document.querySelectorAll('a[href^="#"]').forEach((link) => {
           link.addEventListener("click", (event) => {
             const targetId = link.getAttribute("href");
-            const targetIndex = panels.findIndex((panel) => `#${panel.id}` === targetId);
+            const resolvedTargetId = sectionAliases[targetId] || targetId;
+            const targetIndex = panels.findIndex((panel) => `#${panel.id}` === resolvedTargetId);
             if (targetIndex < 0) return;
             event.preventDefault();
             moveToSection(targetIndex);
