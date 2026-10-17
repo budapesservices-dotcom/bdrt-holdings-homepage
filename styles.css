@@ -501,6 +501,7 @@ body::-webkit-scrollbar,
 }
 
 .business-logo {
+  position: relative;
   appearance: none;
   display: flex;
   width: 100%;
@@ -528,6 +529,33 @@ body::-webkit-scrollbar,
   border-color: rgba(244, 241, 234, 0.96);
   background: var(--cream);
   color: var(--obsidian);
+}
+
+/* A bright, edge-hugging timer indicates how long the selected brand remains active. */
+.business-logo.is-selected::before {
+  position: absolute;
+  z-index: 3;
+  top: 0;
+  right: 0;
+  left: 0;
+  height: 3px;
+  background: #FFFFFF;
+  box-shadow: 0 0 9px rgba(255, 255, 255, 0.88);
+  content: "";
+  opacity: 0;
+  pointer-events: none;
+  transform: scaleX(0);
+  transform-origin: left center;
+}
+
+.business-logo.is-selected.is-timing::before {
+  opacity: 1;
+  animation: portfolio-duration-fill 4800ms linear forwards;
+}
+
+@keyframes portfolio-duration-fill {
+  from { transform: scaleX(0); }
+  to { transform: scaleX(1); }
 }
 
 .business-logo.is-dropping {
@@ -707,6 +735,7 @@ body::-webkit-scrollbar,
     transition: none;
   }
 
+  .business-logo.is-selected.is-timing::before,
   .business-logo.is-discovered {
     animation: none;
   }
