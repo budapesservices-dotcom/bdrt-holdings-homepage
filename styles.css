@@ -362,21 +362,21 @@ body::-webkit-scrollbar,
 .businesses-section__logo-rail {
   position: absolute;
   right: 0;
-  bottom: clamp(30px, 5.6vh, 66px);
+  bottom: clamp(26px, 4.2vh, 48px);
   left: 0;
   display: grid;
-  width: min(88%, 1360px);
+  width: min(82%, 1080px);
   margin: 0 auto;
   grid-template-columns: repeat(6, minmax(0, 1fr));
   align-items: center;
   justify-items: center;
-  gap: clamp(14px, 2.4vw, 38px);
+  gap: clamp(8px, 1.3vw, 18px);
 }
 
 .business-logo {
   display: flex;
   width: 100%;
-  height: clamp(36px, 4.4vw, 54px);
+  height: clamp(26px, 2.7vw, 34px);
   min-width: 0;
   align-items: center;
   justify-content: center;
@@ -393,7 +393,7 @@ body::-webkit-scrollbar,
   display: block;
   width: 100%;
   height: 100%;
-  max-width: 180px;
+  max-width: 124px;
   object-fit: contain;
   object-position: center;
   filter: brightness(0) invert(1);
@@ -454,7 +454,7 @@ body::-webkit-scrollbar,
     display: flex;
     width: calc(100% - 36px);
     justify-content: flex-start;
-    gap: 24px;
+    gap: 14px;
     margin: 0 18px;
     padding: 0 0 8px;
     overflow-x: auto;
@@ -465,14 +465,14 @@ body::-webkit-scrollbar,
   }
 
   .business-logo {
-    flex: 0 0 96px;
-    width: 96px;
-    height: 38px;
+    flex: 0 0 74px;
+    width: 74px;
+    height: 28px;
     scroll-snap-align: center;
   }
 
   .business-logo__wordmark {
-    font-size: 22px;
+    font-size: 18px;
   }
 }
 
