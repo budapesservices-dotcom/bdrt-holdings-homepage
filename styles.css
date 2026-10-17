@@ -933,7 +933,7 @@ body::-webkit-scrollbar,
   bottom: 10px;
   left: 10px;
   color: #fff;
-  content: "CLICK TO EXPAND";
+  content: "";
   font-family: Arial, Helvetica, sans-serif;
   font-size: 8px;
   font-weight: 700;
@@ -961,7 +961,7 @@ body::-webkit-scrollbar,
     transform: scale(1.035);
   }
 
-  /* The editorial caption replaces the smaller "CLICK TO EXPAND" overlay. */
+  /* The editorial caption is the only hover label on gallery tiles. */
   .portfolio-shot:not(.is-expanded):not(.is-broken):hover::before,
   .portfolio-shot:not(.is-expanded):not(.is-broken):hover::after,
   .portfolio-shot:not(.is-expanded):not(.is-broken):focus-visible::before,
