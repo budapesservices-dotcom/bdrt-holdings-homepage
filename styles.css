@@ -7373,3 +7373,80 @@ body.portal-closing .portal-sheet::before {
     max-height: 38px;
   }
 }
+
+
+/* Stronger VOXA House emphasis: substantially larger mark in the right footer column. */
+.site-footer__brand-directory {
+  min-width: 0;
+}
+
+.site-footer__brand-links {
+  width: min(100%, 310px);
+}
+
+.site-footer__brand-link[href="https://voxahouse.com/"] {
+  min-height: 88px;
+}
+
+.site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame {
+  min-height: 78px;
+  width: 100%;
+}
+
+.site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+  width: min(100%, 290px);
+  height: 74px;
+  max-height: 74px;
+}
+
+.site-footer__brand-link[href="https://voxahouse.com/"]:hover .site-footer__logo-frame img {
+  transform: translateX(3px) scale(1.06);
+}
+
+@media (max-width: 1080px) {
+  .site-footer__brand-links {
+    width: min(100%, 280px);
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] {
+    min-height: 78px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame {
+    min-height: 68px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 260px);
+    height: 64px;
+    max-height: 64px;
+  }
+}
+
+@media (max-width: 640px) {
+  .site-footer__brand-links {
+    width: min(100%, 250px);
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] {
+    min-height: 65px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame {
+    min-height: 58px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 230px);
+    height: 54px;
+    max-height: 54px;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 210px);
+    height: 47px;
+    max-height: 47px;
+  }
+}
