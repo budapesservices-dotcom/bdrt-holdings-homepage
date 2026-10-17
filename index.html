@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=bdrt-voxahouse-hero-video-20" />
+    <link rel="stylesheet" href="./styles.css?v=bdrt-section3-brand-backgrounds-21" />
   </head>
   <body>
     <main class="page">
@@ -72,13 +72,39 @@
         </section>
 
         <section class="businesses-section section-panel" id="businesses" data-theme="dark" aria-label="Our businesses and portfolio">
+          <div class="businesses-section__backdrops" aria-hidden="true">
+            <div class="businesses-backdrop is-active" data-background="voxa">
+              <img src="https://voxahouse.com/images/homepage/cta-city-night.png" alt="" decoding="async" fetchpriority="high" />
+            </div>
+            <div class="businesses-backdrop" data-background="voxa-house">
+              <video muted loop playsinline preload="none">
+                <source src="https://voxahouse.com/images/homepage/cercles-prive-yacht.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="businesses-backdrop" data-background="imerge">
+              <video muted loop playsinline preload="none">
+                <source src="https://imergeadv.com/assets/458193_City_Town_1920x1080_%281%29_1765252509741-DHoNiypL.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="businesses-backdrop" data-background="involia">
+              <video muted loop playsinline preload="none">
+                <source src="https://involia.com/assets/0_Setting_Display_1920x1080_1775151976455-BhDUd3TS.mp4" type="video/mp4" />
+              </video>
+            </div>
+            <div class="businesses-backdrop" data-background="academic-elements">
+              <img src="https://images.pexels.com/photos/7551442/pexels-photo-7551442.jpeg?auto=compress&amp;cs=tinysrgb&amp;w=1920" alt="" decoding="async" />
+            </div>
+            <div class="businesses-backdrop" data-background="emerging">
+              <img src="https://images.ctfassets.net/wbpgehc06y9m/23xNWI6rg8a6vuyOEpCQ39/a19dc1c3469dd47ddc4012158f0160e4/ev-home-our-appraoch.png?w=828&amp;q=75&amp;fm=webp" alt="" decoding="async" />
+            </div>
+          </div>
           <div class="businesses-section__intro">
             <div class="businesses-section__copy" aria-live="polite" aria-atomic="true">
               <h2 class="businesses-section__title" id="business-detail-title">VOXA Brand</h2>
               <p class="businesses-section__description" id="business-detail-description">Turning a distinctive personal identity into culture, content, and brand partnerships that move people and markets.</p>
-              <button type="button" class="businesses-section__discover" id="business-discover">
+              <a class="businesses-section__discover" id="business-discover" href="https://vvoxaa.com/" target="_blank" rel="noopener noreferrer">
                 <span>DISCOVER <span class="businesses-section__discover-arrow" aria-hidden="true">↗</span></span>
-              </button>
+              </a>
             </div>
           </div>
 
@@ -128,29 +154,87 @@
         const portfolioBrandContent = {
           "voxa": {
             title: "VOXA Brand",
+            url: "https://vvoxaa.com/",
             description: "Turning a distinctive personal identity into culture, content, and brand partnerships that move people and markets."
           },
           "voxa-house": {
             title: "VOXA House",
+            url: "https://voxahouse.com/",
             description: "A home for creators, fashion, and media where bold ideas become standout experiences and partnerships brands want to be part of."
           },
           "imerge": {
             title: "iMERGE Advertising",
+            url: "https://imergeadv.com/",
             description: "Turning brand ambition into attention and attention into action through sharp strategy, standout creative, and marketing built to move business forward."
           },
           "involia": {
             title: "Involia",
+            url: "https://involia.com/",
             description: "Bringing commercial spaces to life with disciplined project leadership, thoughtful development, and execution that turns plans into progress."
           },
           "academic-elements": {
             title: "Academic Elements",
+            url: "https://academicelements.com/",
             description: "Opening doors through education, workforce pathways, and community-led programs that turn potential into lasting opportunity."
           },
           "emerging": {
             title: "Emerging Brands & Ventures",
+            url: "https://emerging.vc/",
             description: "The next chapter is already in motion: developing fresh creative and commercial ventures designed to shape what comes next from 2027 onward."
           }
         };
+        const businessesPanel = document.getElementById("businesses");
+        const discoverButton = document.getElementById("business-discover");
+        const portfolioBackdropLayers = Array.from(document.querySelectorAll(".businesses-backdrop[data-background]"));
+
+        const restartPortfolioImageZoom = (image) => {
+          if (!image) return;
+          image.style.animation = "none";
+          void image.offsetWidth;
+          image.style.animation = "";
+        };
+
+        const syncActiveBackdropMedia = (restart = false) => {
+          const activeLayer = portfolioBackdropLayers.find((layer) => layer.classList.contains("is-active"));
+          if (!activeLayer) return;
+
+          const shouldPlay = !document.hidden && businessesPanel?.classList.contains("is-active");
+          portfolioBackdropLayers.forEach((layer) => {
+            const video = layer.querySelector("video");
+            if (!video) return;
+
+            if (layer === activeLayer && shouldPlay) {
+              if (restart) {
+                try { video.currentTime = 0; } catch (_) {}
+              }
+              const playPromise = video.play();
+              if (playPromise && typeof playPromise.catch === "function") playPromise.catch(() => {});
+            } else {
+              video.pause();
+            }
+          });
+
+          if (restart && activeLayer.classList.contains("is-active")) {
+            restartPortfolioImageZoom(activeLayer.querySelector("img"));
+          }
+        };
+
+        const updatePortfolioBackdrop = (brandKey) => {
+          let activeLayer = null;
+          portfolioBackdropLayers.forEach((layer) => {
+            const selected = layer.dataset.background === brandKey;
+            layer.classList.toggle("is-active", selected);
+            if (selected) activeLayer = layer;
+            else {
+              const video = layer.querySelector("video");
+              if (video) video.pause();
+            }
+          });
+
+          if (!activeLayer) return;
+          syncActiveBackdropMedia(true);
+        };
+
         const portfolioTitle = document.getElementById("business-detail-title");
         const portfolioDescription = document.getElementById("business-detail-description");
 
@@ -164,6 +248,8 @@
           });
           if (portfolioTitle) portfolioTitle.textContent = brand.title;
           if (portfolioDescription) portfolioDescription.textContent = brand.description;
+          if (discoverButton && brand.url) discoverButton.href = brand.url;
+          updatePortfolioBackdrop(button.dataset.brand);
         };
 
         const defaultPortfolioButton = portfolioButtons.find((button) => button.dataset.brand === "voxa");
@@ -176,13 +262,14 @@
         const portfolioAutoplayDelay = 7000;
         let activePortfolioButton = defaultPortfolioButton || null;
         let portfolioSwitchTimer = 0;
-        let portfolioDiscoverTimer = 0;
         let portfolioAutoplayTimer = 0;
         let portfolioPlaybackActive = false;
 
-        const updateBrandCopy = (brand) => {
+        const updateBrandCopy = (brand, brandKey) => {
           if (portfolioTitle) portfolioTitle.textContent = brand.title;
           if (portfolioDescription) portfolioDescription.textContent = brand.description;
+          if (discoverButton && brand.url) discoverButton.href = brand.url;
+          if (brandKey) updatePortfolioBackdrop(brandKey);
         };
 
         const stopPortfolioProgress = () => {
@@ -227,11 +314,13 @@
           if (!shouldPlay) {
             portfolioPlaybackActive = false;
             stopPortfolioProgress();
+            syncActiveBackdropMedia(false);
             return;
           }
 
           if (!portfolioPlaybackActive) {
             portfolioPlaybackActive = true;
+            syncActiveBackdropMedia(true);
             startPortfolioProgress(activePortfolioButton);
           }
         };
@@ -265,7 +354,7 @@
               candidate.setAttribute("aria-pressed", String(selected));
             });
             activePortfolioButton = button;
-            updateBrandCopy(brand);
+            updateBrandCopy(brand, button.dataset.brand);
             startPortfolioProgress(button);
             return;
           }
@@ -305,30 +394,15 @@
             attributeFilter: ["class"]
           });
         }
-        document.addEventListener("visibilitychange", syncPortfolioPlayback);
+        document.addEventListener("visibilitychange", () => {
+          syncPortfolioPlayback();
+          syncActiveBackdropMedia(false);
+        });
         if (typeof portfolioReduceMotion.addEventListener === "function") {
           portfolioReduceMotion.addEventListener("change", syncPortfolioPlayback);
         }
         syncPortfolioPlayback();
 
-        if (discoverButton) {
-          discoverButton.addEventListener("click", () => {
-            const selected = activePortfolioButton;
-            if (!selected) return;
-
-            window.clearTimeout(portfolioDiscoverTimer);
-            selected.classList.remove("is-discovered");
-            void selected.offsetWidth;
-            selected.classList.add("is-discovered");
-            if (portfolioReduceMotion.matches) {
-              selected.classList.remove("is-discovered");
-              return;
-            }
-            portfolioDiscoverTimer = window.setTimeout(() => {
-              selected.classList.remove("is-discovered");
-            }, 720);
-          });
-        }
 
         const reduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         let activePanelIndex = 0;
