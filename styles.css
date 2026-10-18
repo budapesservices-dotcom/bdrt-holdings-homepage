@@ -8886,3 +8886,158 @@ body.portal-closing .portal-sheet::before {
     bottom: 21px;
   }
 }
+
+/* Mobile footer composition: stacked BDRT Holdings, right-aligned tagline, compact vertical brand marks. */
+@media (max-width: 640px) {
+  .site-footer__main {
+    grid-template-columns: minmax(0, 1fr);
+    align-content: start;
+    align-items: start;
+    gap: 14px;
+    padding-bottom: 12px;
+  }
+
+  .site-footer__identity {
+    display: grid;
+    width: 100%;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: start;
+    column-gap: clamp(10px, 3.4vw, 18px);
+    row-gap: 0;
+  }
+
+  .site-footer__brand {
+    flex-direction: column;
+    align-items: center;
+    justify-self: start;
+    gap: 3px;
+  }
+
+  .site-footer__brand-main {
+    font-size: 29px;
+    line-height: 0.9;
+  }
+
+  .site-footer__brand-sub {
+    margin-top: 1px;
+    padding-left: 0.34em;
+    font-size: 6.4px;
+    letter-spacing: 0.34em;
+    line-height: 1;
+  }
+
+  .site-footer__statement {
+    align-self: start;
+    justify-self: end;
+    width: 100%;
+    max-width: 205px;
+    margin: 0;
+    font-size: clamp(12.5px, 3.6vw, 15px);
+    line-height: 1.15;
+    text-align: right;
+    text-wrap: pretty;
+  }
+
+  .site-footer__brand-directory {
+    width: 100%;
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0;
+    margin: 0;
+  }
+
+  .site-footer__brand-links {
+    display: grid;
+    width: min(100%, 182px);
+    grid-template-columns: minmax(0, 1fr);
+    justify-items: stretch;
+    align-self: flex-start;
+    row-gap: 2px;
+    column-gap: 0;
+    margin: 0;
+  }
+
+  .site-footer__brand-link {
+    width: 100%;
+    min-height: 38px;
+    padding: 0;
+  }
+
+  .site-footer__logo-frame {
+    width: 100%;
+    min-height: 34px;
+  }
+
+  .site-footer__logo-frame img {
+    width: auto;
+    max-width: 100%;
+    height: 28px;
+    max-height: 28px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] {
+    min-height: 64px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame {
+    min-height: 58px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: auto;
+    height: 56px;
+    max-width: min(100%, 182px);
+    max-height: 56px;
+    object-fit: contain;
+    object-position: center;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-footer__identity {
+    column-gap: 9px;
+  }
+
+  .site-footer__brand-main {
+    font-size: 27px;
+  }
+
+  .site-footer__brand-sub {
+    font-size: 6px;
+    letter-spacing: 0.29em;
+  }
+
+  .site-footer__statement {
+    font-size: 12px;
+  }
+
+  .site-footer__brand-links {
+    width: min(100%, 166px);
+    row-gap: 1px;
+  }
+
+  .site-footer__brand-link {
+    min-height: 34px;
+  }
+
+  .site-footer__logo-frame img {
+    height: 25px;
+    max-height: 25px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] {
+    min-height: 56px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame {
+    min-height: 50px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    height: 49px;
+    max-width: min(100%, 166px);
+    max-height: 49px;
+  }
+}
