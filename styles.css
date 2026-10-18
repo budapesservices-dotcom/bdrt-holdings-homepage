@@ -7659,7 +7659,6 @@ body.portal-closing .portal-sheet::before {
 @media (max-width: 760px) {
   body.mobile-menu-open {
     overflow: hidden;
-    touch-action: none;
   }
 
   .site-header {
