@@ -11439,3 +11439,12 @@ input[type="reset"]:active {
 .about-section .about-section__identity-label span {
   word-spacing: 0.14em;
 }
+
+
+/* Final spacing correction: slightly tighter vertical stack, restore prior word spacing. */
+.about-section .about-section__identity-label {
+  row-gap: 0.16em;
+}
+.about-section .about-section__identity-label span {
+  word-spacing: 0.28em;
+}
