@@ -11580,3 +11580,35 @@ input[type="reset"]:active {
     hyphens: auto;
   }
 }
+
+
+/* Compose the long-form About copy as a deliberate editorial text block. */
+@media (min-width: 1000px) {
+  .about-section .about-carousel__copy .about-section__text--editorial {
+    text-align: justify;
+    text-align-last: justify;
+    text-justify: inter-word;
+    max-width: 680px;
+  }
+  .about-section .about-carousel__copy .about-section__text--editorial .about-editorial-line {
+    display: block;
+    width: 100%;
+    text-align: justify;
+    text-align-last: justify;
+    text-justify: inter-word;
+    white-space: normal;
+  }
+}
+@media (max-width: 999px) {
+  .about-section .about-carousel__copy .about-section__text--editorial .about-editorial-line {
+    display: inline;
+    width: auto;
+    text-align: inherit;
+    text-align-last: inherit;
+    white-space: normal;
+  }
+  .about-section .about-carousel__copy .about-section__text--editorial {
+    text-align: justify !important;
+    text-align-last: left !important;
+  }
+}
