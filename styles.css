@@ -8673,3 +8673,19 @@ body.portal-closing .portal-sheet::before {
     transform: translateY(12px);
   }
 }
+
+
+/* Move the Section 2 story through layout spacing, not only a visual transform. */
+@media (max-width: 640px) {
+  .about-section__story {
+    margin-top: 36px;
+    transform: none !important;
+  }
+}
+
+@media (max-width: 640px) and (max-height: 740px) {
+  .about-section__story {
+    margin-top: 24px;
+    transform: none !important;
+  }
+}
