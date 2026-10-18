@@ -12342,3 +12342,39 @@ input[type="reset"]:active {
     padding-bottom: max(100px, calc(env(safe-area-inset-bottom) + 88px));
   }
 }
+
+
+/* Mobile Section 2: make non-logo carousel titles more editorial and prominent. */
+@media (max-width: 760px) {
+  .about-section .about-section__identity-label {
+    font-size: clamp(60px, 16vw, 84px) !important;
+    line-height: 0.8;
+    letter-spacing: -0.115em;
+    row-gap: 0.04em;
+  }
+
+  .about-section .about-section__identity-label span {
+    font-size: inherit;
+    letter-spacing: inherit;
+    line-height: inherit;
+  }
+
+  .about-section .about-carousel__copy .about-section__eyebrow {
+    font-size: 10px;
+    letter-spacing: 0.13em;
+    line-height: 1.45;
+    margin-bottom: 16px;
+  }
+}
+
+@media (max-width: 380px) {
+  .about-section .about-section__identity-label {
+    font-size: 54px !important;
+    line-height: 0.82;
+  }
+
+  .about-section .about-carousel__copy .about-section__eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.1em;
+  }
+}
