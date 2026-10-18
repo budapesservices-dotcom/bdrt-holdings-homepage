@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-type-181" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-type-182" />
   </head>
   <body>
     <main class="page">
@@ -2571,8 +2571,42 @@
         ];
         let active = 0;
         let animating = false;
+        let pendingViewportSnapshot = null;
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
-        const show = (next) => {
+        const controls = section.querySelector(".about-carousel__controls");
+        const readViewportSnapshot = () => ({
+          pageY: window.scrollY,
+          panelTop: section.scrollTop
+        });
+        const restoreViewportSnapshot = (snapshot) => {
+          if (!snapshot) return;
+          window.requestAnimationFrame(() => {
+            const maxPanelTop = Math.max(0, section.scrollHeight - section.clientHeight);
+            section.scrollTop = Math.min(snapshot.panelTop, maxPanelTop);
+            if (Math.abs(window.scrollY - snapshot.pageY) > 1) {
+              const root = document.documentElement;
+              const previousBehavior = root.style.scrollBehavior;
+              root.style.scrollBehavior = "auto";
+              window.scrollTo(0, snapshot.pageY);
+              root.style.scrollBehavior = previousBehavior;
+            }
+          });
+        };
+        controls?.addEventListener("pointerdown", () => {
+          pendingViewportSnapshot = readViewportSnapshot();
+        }, { passive: true });
+        controls?.addEventListener("pointercancel", () => {
+          pendingViewportSnapshot = null;
+        }, { passive: true });
+        controls?.addEventListener("keydown", () => {
+          pendingViewportSnapshot = readViewportSnapshot();
+        }, true);
+        const takeViewportSnapshot = () => {
+          const snapshot = pendingViewportSnapshot || readViewportSnapshot();
+          pendingViewportSnapshot = null;
+          return snapshot;
+        };
+        const show = (next, viewportSnapshot = readViewportSnapshot()) => {
           if (animating || next === active || next < 0 || next >= slides.length) return;
           animating = true;
           const previous = slides[active];
@@ -2612,11 +2646,27 @@
             dot.setAttribute("aria-current", selected ? "true" : "false");
           });
           active = next;
-          window.setTimeout(() => { animating = false; }, reducedMotion.matches ? 0 : 520);
+          restoreViewportSnapshot(viewportSnapshot);
+          window.setTimeout(() => {
+            restoreViewportSnapshot(viewportSnapshot);
+            animating = false;
+          }, reducedMotion.matches ? 0 : 520);
         };
-        section.querySelector("[data-about-prev]")?.addEventListener("click", () => show((active - 1 + slides.length) % slides.length));
-        section.querySelector("[data-about-next]")?.addEventListener("click", () => show((active + 1) % slides.length));
-        dots.forEach((dot) => dot.addEventListener("click", () => show(Number(dot.dataset.aboutDot))));
+        section.querySelector("[data-about-prev]")?.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.currentTarget.focus({ preventScroll: true });
+          show((active - 1 + slides.length) % slides.length, takeViewportSnapshot());
+        });
+        section.querySelector("[data-about-next]")?.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.currentTarget.focus({ preventScroll: true });
+          show((active + 1) % slides.length, takeViewportSnapshot());
+        });
+        dots.forEach((dot) => dot.addEventListener("click", (event) => {
+          event.preventDefault();
+          event.currentTarget.focus({ preventScroll: true });
+          show(Number(dot.dataset.aboutDot), takeViewportSnapshot());
+        }));
         if (tagline) requestAnimationFrame(() => tagline.classList.add("is-visible"));
       })();
     </script>
