@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=mobile-oval-liquid-tap-stay-142" />
+    <link rel="stylesheet" href="./styles.css?v=mobile-nav-actions-touch-polish-143" />
   </head>
   <body>
     <main class="page">
@@ -52,11 +52,7 @@
       <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
         <button class="mobile-menu__backdrop" type="button" data-mobile-menu-close tabindex="-1" aria-label="Close navigation menu"></button>
         <section class="mobile-menu__panel" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
-          <div class="mobile-menu__masthead">
-            <button class="mobile-menu__close" type="button" data-mobile-menu-close aria-label="Close navigation menu">
-              <span aria-hidden="true"></span><span aria-hidden="true"></span>
-            </button>
-          </div>
+          <div class="mobile-menu__masthead" aria-hidden="true"></div>
 
           <div class="mobile-menu__intro">
             <p class="mobile-menu__kicker">EXPLORE BDRT <span>／</span> 01—07</p>
@@ -2097,7 +2093,7 @@
           document.body.classList.add("mobile-menu-open");
           mobileMenuToggle?.setAttribute("aria-expanded", "true");
           mobileMenuToggle?.setAttribute("aria-label", "Close navigation menu");
-          mobileMenu.querySelector(".mobile-menu__close")?.focus({ preventScroll: true });
+          mobileMenu.querySelector(".mobile-menu__nav a")?.focus({ preventScroll: true });
         };
 
         mobileMenuToggle?.addEventListener("click", () => {
@@ -2284,13 +2280,100 @@
           ".portal-login-card--donor .portal-login-card__submit"
         ].join(", ");
 
+        const mobileOvalPending = new WeakSet();
+        const mobileOvalMotionReduced = () => window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        const mobileOvalFillDuration = () => mobileOvalMotionReduced() ? 0 : 570;
+        const resetMobileOval = (control, delay = 0) => {
+          window.setTimeout(() => {
+            control.classList.remove("is-mobile-activated");
+            control.removeAttribute("aria-busy");
+          }, delay);
+        };
+
         document.addEventListener("click", (event) => {
           if (!window.matchMedia("(max-width: 760px)").matches) return;
           const source = event.target;
           const control = source instanceof Element ? source.closest(mobileOvalControlSelector) : null;
           if (!control) return;
+
+          // Navigation and submission must wait for the fill animation to finish.
+          event.preventDefault();
+          event.stopPropagation();
+          if (mobileOvalPending.has(control)) return;
+          mobileOvalPending.add(control);
+          control.setAttribute("aria-busy", "true");
           control.classList.add("is-mobile-activated");
-        });
+
+          window.setTimeout(() => {
+            const finishPending = () => {
+              mobileOvalPending.delete(control);
+              control.removeAttribute("aria-busy");
+            };
+
+            if (control.matches(".site-header .mobile-login")) {
+              const targetId = control.getAttribute("href");
+              const opened = portalTargets.has(targetId) && openPortalExperience(targetId);
+              finishPending();
+              if (opened) {
+                // The destination portal is now visible, so restore the source button state.
+                control.classList.remove("is-mobile-activated");
+              } else {
+                resetMobileOval(control);
+              }
+              return;
+            }
+
+            if (control.matches(".businesses-section__discover")) {
+              const destination = control.href;
+              const target = (control.getAttribute("target") || "_self").toLowerCase();
+              finishPending();
+              if (target === "_blank") {
+                const openedWindow = window.open(destination, "_blank");
+                if (openedWindow) {
+                  try { openedWindow.opener = null; } catch (_) {}
+                  control.classList.remove("is-mobile-activated");
+                } else {
+                  control.classList.remove("is-mobile-activated");
+                  window.location.assign(destination);
+                }
+              } else {
+                control.classList.remove("is-mobile-activated");
+                window.location.assign(destination);
+              }
+              return;
+            }
+
+            if (control.matches(".contact-form__submit")) {
+              const form = control.form;
+              finishPending();
+              if (!form) {
+                resetMobileOval(control);
+                return;
+              }
+              if (!form.checkValidity()) {
+                form.reportValidity();
+                resetMobileOval(control);
+                return;
+              }
+              form.requestSubmit(control);
+              // The form's confirmation message has been updated synchronously by submit.
+              resetMobileOval(control, mobileOvalMotionReduced() ? 0 : 180);
+              return;
+            }
+
+            if (control.matches(".portal-experience__close")) {
+              finishPending();
+              closePortalExperience();
+              // The portal sheet takes about 940ms to close; reset after it returns.
+              resetMobileOval(control, mobileOvalMotionReduced() ? 0 : 960);
+              return;
+            }
+
+            // Static portal-preview actions have no connected destination or sign-in backend.
+            // Keep their fill visible rather than pretending a login or registration succeeded.
+            finishPending();
+          }, mobileOvalFillDuration());
+        }, true);
 
         if (portalTargets.has(window.location.hash)) {
           openPortalExperience(window.location.hash, false);
