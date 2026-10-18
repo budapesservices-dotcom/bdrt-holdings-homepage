@@ -13907,3 +13907,57 @@ input[type="reset"]:active {
     gap: 13px !important;
   }
 }
+
+
+/* Global arrow cleanup: remove diagonal arrow glyphs; keep only a straight left arrow for Back. */
+.mobile-menu__arrow,
+.businesses-section__discover-arrow,
+.portfolio-gallery__instruction-arrow,
+.contact-form__submit-arrow {
+  display: none !important;
+}
+
+/* With mobile-menu arrows removed, let each label use the full remaining row. */
+@media (max-width: 760px) {
+  .mobile-menu__nav a {
+    grid-template-columns: 30px minmax(0, 1fr) !important;
+    column-gap: clamp(10px, 2vw, 16px) !important;
+  }
+}
+
+/* Text-only CTA after removing its diagonal arrow. */
+.contact-section.section-panel .contact-section__page-link {
+  justify-content: center !important;
+  gap: 0 !important;
+}
+
+.contact-section.section-panel .contact-section__page-link:hover,
+.contact-section.section-panel .contact-section__page-link:focus-visible {
+  transform: none !important;
+}
+
+.contact-section.section-panel .contact-section__page-link > span:last-child,
+.contact-section.section-panel .contact-section__page-link:hover > span:last-child,
+.contact-section.section-panel .contact-section__page-link:focus-visible > span:last-child {
+  color: inherit !important;
+  font-size: inherit !important;
+  transform: none !important;
+}
+
+/* Submit stays balanced without the old icon occupying the right side. */
+.contact-section.section-panel .contact-form__submit {
+  justify-content: center !important;
+  gap: 0 !important;
+}
+
+.contact-section__back-link > span:first-child,
+.contact-section__back-link:hover > span:first-child,
+.contact-section__back-link:focus-visible > span:first-child {
+  display: inline-block;
+  transform: none !important;
+}
+
+.contact-section__back-link:hover > span:first-child,
+.contact-section__back-link:focus-visible > span:first-child {
+  transform: translateX(-2px) !important;
+}
