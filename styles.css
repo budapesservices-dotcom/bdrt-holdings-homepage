@@ -9185,3 +9185,197 @@ body.portal-closing .portal-sheet::before {
     max-width: 106px;
   }
 }
+
+/* Mobile footer final pass: use the full footer height and balance both brand marks on a shared grid. */
+@media (max-width: 640px) {
+  .site-footer {
+    padding: 18px 18px 12px;
+  }
+
+  .site-footer-section::before {
+    right: -0.02em;
+    bottom: -0.2em;
+    font-size: 45vw;
+    opacity: 0.72;
+  }
+
+  .site-footer__main {
+    display: grid;
+    flex: 1 1 auto;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-rows: auto auto;
+    align-content: space-between;
+    align-items: start;
+    gap: 12px;
+    padding-bottom: 11px;
+  }
+
+  .site-footer__identity {
+    grid-row: 1;
+    grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+    align-items: center;
+    column-gap: 10px;
+    row-gap: 5px;
+  }
+
+  .site-footer__brand {
+    align-items: flex-start;
+    justify-self: start;
+    gap: 3px;
+  }
+
+  .site-footer__brand-main {
+    font-size: 27px;
+    line-height: 0.88;
+  }
+
+  .site-footer__brand-sub {
+    margin-top: 1px;
+    padding-left: 0.3em;
+    font-size: 6.2px;
+    letter-spacing: 0.3em;
+    line-height: 1;
+  }
+
+  .site-footer__statement {
+    align-self: center;
+    justify-self: end;
+    width: 100%;
+    max-width: 188px;
+    margin: 0;
+    font-size: clamp(12px, 3.3vw, 14px);
+    line-height: 1.16;
+    text-align: right;
+    text-wrap: pretty;
+  }
+
+  .site-footer__signature {
+    grid-column: 1 / -1;
+    grid-row: 2;
+    margin-top: 2px;
+    font-size: 6.2px;
+    letter-spacing: 0.14em;
+  }
+
+  .site-footer__brand-directory {
+    grid-row: 2;
+    width: 100%;
+    align-self: end;
+    margin: 0;
+    padding-bottom: 1px;
+  }
+
+  .site-footer__brand-links {
+    display: grid;
+    width: min(100%, 226px);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    align-items: center;
+    justify-items: center;
+    gap: 10px;
+    margin: 0;
+  }
+
+  .site-footer__brand-link,
+  .site-footer__brand-link[href="https://voxahouse.com/"] {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 34px;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .site-footer__logo-frame,
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame {
+    display: flex;
+    width: 100%;
+    min-width: 0;
+    min-height: 30px;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .site-footer__logo-frame img,
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    display: block;
+    width: 100%;
+    height: 24px;
+    max-height: 24px;
+    object-fit: contain;
+    object-position: center;
+  }
+
+  .site-footer__brand-link:not([href="https://voxahouse.com/"]) .site-footer__logo-frame img {
+    max-width: 88px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    height: 30px;
+    max-height: 30px;
+    max-width: 102px;
+  }
+
+  .site-footer__bottom {
+    flex: 0 0 auto;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 8px 12px;
+    padding-top: 9px;
+  }
+
+  .site-footer__copyright,
+  .site-footer__note {
+    font-size: 6.3px;
+    line-height: 1.4;
+    letter-spacing: 0.035em;
+  }
+
+  .site-footer__note {
+    max-width: 44%;
+    text-align: right;
+    white-space: normal;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-footer {
+    padding-right: 15px;
+    padding-left: 15px;
+  }
+
+  .site-footer__identity {
+    grid-template-columns: minmax(0, 0.8fr) minmax(0, 1.2fr);
+    column-gap: 7px;
+  }
+
+  .site-footer__brand-main {
+    font-size: 25px;
+  }
+
+  .site-footer__brand-sub {
+    font-size: 5.8px;
+    letter-spacing: 0.28em;
+  }
+
+  .site-footer__statement {
+    font-size: 11.5px;
+  }
+
+  .site-footer__brand-links {
+    width: min(100%, 210px);
+    gap: 7px;
+  }
+
+  .site-footer__brand-link:not([href="https://voxahouse.com/"]) .site-footer__logo-frame img {
+    max-width: 80px;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    max-width: 94px;
+    height: 28px;
+    max-height: 28px;
+  }
+}
+
