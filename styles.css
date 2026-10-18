@@ -9559,3 +9559,32 @@ input[type="reset"]:active {
   -webkit-tap-highlight-color: transparent !important;
 }
 
+/* Mobile portal brand crossfade: blend the sheet wordmark into the navbar mark. */
+@media (max-width: 760px) {
+  body.portal-closing .site-header .wordmark-frame,
+  body.portal-closing .site-header .wordmark {
+    visibility: visible !important;
+    opacity: 1 !important;
+    pointer-events: none !important;
+    transition:
+      opacity 540ms cubic-bezier(0.22, 1, 0.36, 1) 300ms,
+      visibility 0s linear 0s !important;
+  }
+
+  body.portal-closing .portal-sheet__wordmark {
+    visibility: visible !important;
+    opacity: 0 !important;
+    transition:
+      opacity 500ms cubic-bezier(0.22, 1, 0.36, 1) 250ms,
+      bottom 900ms cubic-bezier(0.16, 1, 0.3, 1) !important;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  body.portal-closing .site-header .wordmark-frame,
+  body.portal-closing .site-header .wordmark,
+  body.portal-closing .portal-sheet__wordmark {
+    transition: none !important;
+  }
+}
+
