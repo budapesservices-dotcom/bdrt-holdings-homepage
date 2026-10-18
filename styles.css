@@ -11720,3 +11720,158 @@ input[type="reset"]:active {
   border-top: 0;
   padding-top: 0;
 }
+
+
+/* Footer layout refinement: centered stacked brand marks and two vertical nav columns. */
+.site-footer__main {
+  grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+  align-items: center;
+  gap: clamp(32px, 6vw, 88px);
+}
+.site-footer__brand-directory {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: stretch;
+  align-content: center;
+  gap: clamp(20px, 3vh, 30px);
+}
+.site-footer__brand-links {
+  display: flex;
+  width: min(100%, 220px);
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: clamp(14px, 2vh, 20px);
+  margin-inline: auto;
+}
+.site-footer__brand-link,
+.site-footer__brand-link[href="https://voxahouse.com/"] {
+  width: 100%;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  align-items: center;
+  justify-content: center;
+}
+.site-footer__brand-link .site-footer__logo-frame {
+  width: 100%;
+  min-height: 0;
+  justify-content: center;
+}
+.site-footer__brand-link[href="https://vvoxaa.com/"] img {
+  width: min(100%, 158px);
+  max-height: 40px;
+  object-fit: contain;
+}
+.site-footer__brand-link[href="https://voxahouse.com/"] img {
+  width: min(100%, 190px);
+  max-height: 42px;
+  object-fit: contain;
+}
+.site-footer__navigation {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: start;
+  gap: clamp(22px, 3.5vw, 48px);
+  width: 100%;
+}
+.site-footer__navigation-column {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: clamp(13px, 1.9vh, 20px);
+  min-width: 0;
+}
+.site-footer__navigation-column a {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  max-width: 100%;
+  color: rgba(244, 241, 234, 0.76);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(9px, 0.78vw, 11px);
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  line-height: 1.4;
+  text-decoration: none;
+  transition: color 180ms ease;
+}
+.site-footer__navigation-column a:hover {
+  color: var(--cream);
+}
+.site-footer__utility-links {
+  display: none;
+}
+@media (max-width: 760px) {
+  .site-footer__main {
+    grid-template-columns: minmax(0, 0.78fr) minmax(0, 1.22fr);
+    grid-template-rows: auto;
+    align-items: center;
+    gap: clamp(16px, 4vw, 28px);
+    padding-bottom: 16px;
+  }
+  .site-footer__identity {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 10px;
+  }
+  .site-footer__brand-directory {
+    grid-row: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0;
+  }
+  .site-footer__brand-links {
+    width: min(100%, 170px);
+    gap: 12px;
+    margin: 0 auto 18px;
+  }
+  .site-footer__brand-link[href="https://vvoxaa.com/"] img {
+    width: min(100%, 118px);
+    max-height: 32px;
+  }
+  .site-footer__brand-link[href="https://voxahouse.com/"] img {
+    width: min(100%, 150px);
+    max-height: 34px;
+  }
+  .site-footer__navigation {
+    gap: 14px;
+  }
+  .site-footer__navigation-column {
+    gap: 15px;
+  }
+  .site-footer__navigation-column a {
+    font-size: clamp(8px, 1.7vw, 10px);
+    letter-spacing: 0.045em;
+    overflow-wrap: anywhere;
+  }
+}
+@media (max-width: 420px) {
+  .site-footer__main {
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr);
+    gap: 12px;
+  }
+  .site-footer__brand-links {
+    width: 100%;
+    gap: 10px;
+  }
+  .site-footer__brand-link[href="https://vvoxaa.com/"] img {
+    width: min(100%, 95px);
+  }
+  .site-footer__brand-link[href="https://voxahouse.com/"] img {
+    width: min(100%, 120px);
+  }
+  .site-footer__navigation {
+    gap: 10px;
+  }
+  .site-footer__navigation-column {
+    gap: 13px;
+  }
+  .site-footer__navigation-column a {
+    font-size: 8px;
+    letter-spacing: 0.015em;
+  }
+}
