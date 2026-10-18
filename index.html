@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=about-carousel-163" />
+    <link rel="stylesheet" href="./styles.css?v=about-carousel-164" />
   </head>
   <body>
     <main class="page">
@@ -2549,7 +2549,13 @@
         const slides = Array.from(section.querySelectorAll("[data-about-slide]"));
         const dots = Array.from(section.querySelectorAll("[data-about-dot]"));
         const tagline = section.querySelector("[data-about-tagline]");
-        const labels = ["ABOUT BDRT", "WHAT WE DO", "OUR STORY", "THE VISION", "THE BDRT PERSPECTIVE"];
+        const labels = [
+          [],
+          ["WHAT", "WE DO"],
+          ["OUR", "STORY"],
+          ["THE", "VISION"],
+          ["THE BDRT", "PERSPECTIVE"]
+        ];
         let active = 0;
         let animating = false;
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -2576,7 +2582,13 @@
             } else {
               tagline.setAttribute("aria-hidden", "false");
               window.setTimeout(() => {
-                tagline.textContent = labels[next];
+                const lines = labels[next] || [];
+                tagline.replaceChildren(...lines.map((line) => {
+                  const lineElement = document.createElement("span");
+                  lineElement.textContent = line;
+                  return lineElement;
+                }));
+                tagline.setAttribute("aria-label", lines.join(" "));
                 tagline.classList.add("is-visible");
               }, reducedMotion.matches ? 0 : 160);
             }
