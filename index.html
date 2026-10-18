@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=about-carousel-162" />
+    <link rel="stylesheet" href="./styles.css?v=about-carousel-163" />
   </head>
   <body>
     <main class="page">
@@ -1950,7 +1950,6 @@
         let animationFrame = 0;
         let unlockTimer = 0;
         let animating = false;
-        let aboutEntryFadeTimer = 0;
         let transitionDirection = 1;
         let transitionStartIndex = 0;
         let transitionTargetIndex = 0;
@@ -2031,18 +2030,6 @@
           activeCopy.style.animation = "";
         };
 
-        const replayAboutIdentityEntrance = (panel) => {
-          if (!panel || panel.id !== "about" || reduceMotion.matches) return;
-
-          window.clearTimeout(aboutEntryFadeTimer);
-          panel.classList.remove("about-entry-fade");
-          void panel.offsetWidth;
-          panel.classList.add("about-entry-fade");
-          aboutEntryFadeTimer = window.setTimeout(() => {
-            panel.classList.remove("about-entry-fade");
-          }, 900);
-        };
-
         const moveToSection = (requestedIndex) => {
           const targetIndex = Math.max(0, Math.min(panels.length - 1, requestedIndex));
           if (animating || targetIndex === activePanelIndex) return false;
@@ -2113,11 +2100,6 @@
             animating = false;
             renderPanels(activePanelIndex);
             updateHeaderTheme(activePanelIndex);
-
-            // Fade the BDRT wordmark only after the panel has finished moving into place.
-            if (panels[targetIndex]?.id === "about") {
-              window.requestAnimationFrame(() => replayAboutIdentityEntrance(panels[targetIndex]));
-            }
 
             unlockTimer = window.setTimeout(() => {
               animating = false;
