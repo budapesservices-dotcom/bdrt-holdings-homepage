@@ -2286,7 +2286,7 @@
           }
 
           const internalScroller = event.target instanceof Element
-            ? event.target.closest(".contact-section")
+            ? event.target.closest(".about-section, .contact-section")
             : null;
           if (internalScroller) {
             const canScrollInsidePanel = event.deltaY < 0
@@ -2313,7 +2313,7 @@
           startY = touch.clientY;
           capturedVerticalSwipe = false;
           touchScrollPanel = event.target instanceof Element
-            ? event.target.closest(".portal-page, .contact-section, .mobile-menu__panel")
+            ? event.target.closest(".portal-page, .about-section, .contact-section, .mobile-menu__panel")
             : null;
         }, { passive: true });
 
