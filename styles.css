@@ -13961,3 +13961,106 @@ input[type="reset"]:active {
 .contact-section__back-link:focus-visible > span:first-child {
   transform: translateX(-2px) !important;
 }
+
+
+/* Light footer theme: warm cream background with dark editorial typography and darkened brand marks. */
+.site-footer-section {
+  background: var(--cream, #F4F1EA) !important;
+  background-color: #F4F1EA !important;
+  color: var(--obsidian, #0F0F11) !important;
+}
+
+.site-footer-section::before {
+  color: rgba(15, 15, 17, 0.045) !important;
+  opacity: 1 !important;
+}
+
+.site-footer {
+  background: transparent !important;
+  color: #0F0F11 !important;
+}
+
+.site-footer__main {
+  border-bottom-color: rgba(15, 15, 17, 0.17) !important;
+}
+
+.site-footer__brand,
+.site-footer__brand-main,
+.site-footer__brand-link {
+  color: #0F0F11 !important;
+}
+
+.site-footer__brand-sub,
+.site-footer__eyebrow,
+.site-footer__brand-visit span {
+  color: #756252 !important;
+}
+
+.site-footer__signature,
+.site-footer__eyebrow span,
+.site-footer__brand-index,
+.site-footer__brand-visit,
+.site-footer__copyright,
+.site-footer__note {
+  color: rgba(15, 15, 17, 0.58) !important;
+}
+
+.site-footer__statement {
+  color: rgba(15, 15, 17, 0.94) !important;
+}
+
+.site-footer__brand-link {
+  border-left-color: rgba(15, 15, 17, 0.17) !important;
+  background: transparent !important;
+}
+
+.site-footer__brand-link:focus-visible,
+.site-footer__brand:focus-visible {
+  outline-color: #756252 !important;
+}
+
+.site-footer__brand-link .site-footer__logo-frame img {
+  /* The bundled VOXA logos are white SVGs, so make them dark for the light footer. */
+  filter: brightness(0) saturate(100%) !important;
+  opacity: 0.92;
+}
+
+.site-footer__brand-link:hover .site-footer__logo-frame img {
+  filter: brightness(0) saturate(100%) !important;
+  opacity: 0.68 !important;
+}
+
+.site-footer__navigation-column a,
+.site-footer__navigation a {
+  color: rgba(15, 15, 17, 0.77) !important;
+}
+
+.site-footer__navigation-column a:hover,
+.site-footer__navigation-column a:focus-visible,
+.site-footer__navigation a:hover,
+.site-footer__navigation a:focus-visible {
+  color: #756252 !important;
+}
+
+.site-footer__navigation-column a::after,
+.site-footer__navigation a::after {
+  background: #756252 !important;
+}
+
+.site-footer__utility-links a {
+  color: #756252 !important;
+}
+
+.site-footer__utility-links {
+  border-color: rgba(15, 15, 17, 0.16) !important;
+}
+
+.site-footer__bottom {
+  border-top-color: rgba(15, 15, 17, 0.15) !important;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .site-footer__brand-link .site-footer__logo-frame img {
+    transition: none !important;
+  }
+}
