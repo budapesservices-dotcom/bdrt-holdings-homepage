@@ -11422,3 +11422,14 @@ input[type="reset"]:active {
   line-height: 0.88;
   row-gap: 0.08em;
 }
+
+
+/* Clear two-line editorial lockup: more air vertically and a wider word gap. */
+.about-section .about-section__identity-label {
+  line-height: 0.96;
+  row-gap: 0.22em;
+}
+.about-section .about-section__identity-label span {
+  line-height: inherit;
+  word-spacing: 0.28em;
+}
