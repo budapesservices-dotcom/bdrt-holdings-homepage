@@ -9488,3 +9488,69 @@ body.portal-closing .portal-sheet::before {
   }
 }
 
+/* Mobile nav controls: one close affordance only, with legible champagne X on every header theme. */
+@media (max-width: 760px) {
+  .mobile-menu__close {
+    display: none !important;
+  }
+
+  .mobile-menu-open .site-header .mobile-menu-toggle,
+  body.mobile-menu-open.header-over-light .site-header .mobile-menu-toggle {
+    color: var(--champagne) !important;
+    text-shadow: none !important;
+  }
+
+  .mobile-menu-open .site-header .mobile-menu-toggle__line,
+  body.mobile-menu-open.header-over-light .site-header .mobile-menu-toggle__line {
+    background: var(--champagne) !important;
+  }
+
+  .mobile-menu-open .site-header .mobile-menu-toggle:active,
+  .mobile-menu-open .site-header .mobile-menu-toggle:focus,
+  .mobile-menu-open .site-header .mobile-menu-toggle:focus-visible {
+    color: var(--champagne) !important;
+    background: transparent !important;
+    outline-color: rgba(212, 197, 185, 0.45);
+  }
+}
+
+/* Remove native blue tap/long-press highlighting from interactive controls without disabling text selection in form fields. */
+html,
+body,
+a,
+button,
+[role="button"],
+[role="link"],
+summary,
+label,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  -webkit-tap-highlight-color: transparent !important;
+}
+
+a,
+button,
+[role="button"],
+[role="link"],
+summary,
+input[type="button"],
+input[type="submit"],
+input[type="reset"] {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+  touch-action: manipulation;
+}
+
+a:active,
+button:active,
+[role="button"]:active,
+[role="link"]:active,
+input[type="button"]:active,
+input[type="submit"]:active,
+input[type="reset"]:active {
+  -webkit-tap-highlight-color: transparent !important;
+  outline-color: transparent;
+}
+
