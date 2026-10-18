@@ -7766,17 +7766,6 @@ body.portal-closing .portal-sheet::before {
     transition: border-color 220ms ease, background 220ms ease, color 220ms ease;
   }
 
-  .mobile-login__arrow {
-    font-size: 11px;
-    font-weight: 400;
-    line-height: 0.8;
-    transition: transform 240ms ease;
-  }
-
-  .mobile-login:active .mobile-login__arrow {
-    transform: translate(2px, -2px);
-  }
-
   body.header-over-light .site-header .mobile-menu-toggle,
   body.header-over-light .site-header .mobile-login {
     color: var(--obsidian);
@@ -9399,3 +9388,104 @@ body.portal-closing .portal-sheet::before {
     font-size: 5.4px;
   }
 }
+
+/* Mobile oval actions: mirror Discover's left-to-right liquid fill and keep it after tapping. */
+@media (max-width: 760px) {
+  .site-header .mobile-login {
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    gap: 0;
+    background: rgba(15, 15, 17, 0.23);
+    transition: color 380ms ease, border-color 380ms ease, background 380ms ease;
+  }
+
+  .site-header .mobile-login::before {
+    position: absolute;
+    z-index: -1;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--cream);
+    content: "";
+    transform: scaleX(0);
+    transform-origin: left center;
+    transition: transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  .site-header .mobile-login > span {
+    position: relative;
+    z-index: 1;
+  }
+
+  .site-header .mobile-login:hover,
+  .site-header .mobile-login:focus-visible,
+  .site-header .mobile-login.is-mobile-activated {
+    border-color: var(--cream);
+    background: transparent;
+    color: var(--obsidian);
+  }
+
+  .site-header .mobile-login:hover::before,
+  .site-header .mobile-login:focus-visible::before,
+  .site-header .mobile-login.is-mobile-activated::before {
+    transform: scaleX(1);
+  }
+
+  body.header-over-light .site-header .mobile-login.is-mobile-activated {
+    border-color: var(--obsidian);
+    color: var(--obsidian);
+  }
+
+  body.header-over-light .site-header .mobile-login.is-mobile-activated::before {
+    background: var(--cream);
+  }
+
+  .businesses-section__discover.is-mobile-activated,
+  .contact-form__submit.is-mobile-activated,
+  .portal-experience__close.is-mobile-activated,
+  .portal-login-card--donor .portal-login-card__submit.is-mobile-activated {
+    border-color: var(--cream);
+    background: transparent;
+    color: var(--obsidian);
+  }
+
+  .businesses-section__discover.is-mobile-activated::before,
+  .contact-form__submit.is-mobile-activated::before,
+  .portal-experience__close.is-mobile-activated::before,
+  .portal-login-card--donor .portal-login-card__submit.is-mobile-activated::before {
+    transform: scaleX(1);
+  }
+
+  .businesses-section__discover.is-mobile-activated .businesses-section__discover-arrow {
+    transform: translate(2px, -2px);
+  }
+
+  .contact-form__submit.is-mobile-activated .contact-form__submit-arrow {
+    transform: translate(3px, -3px);
+  }
+
+  .portal-experience__close.is-mobile-activated .portal-experience__close-icon {
+    transform: translate(-2px, -2px);
+  }
+
+  .portal-login-card--donor .portal-login-card__submit.is-mobile-activated span {
+    transform: translate(2px, -2px);
+  }
+
+  .portal-login-card--client .portal-login-card__submit.is-mobile-activated,
+  .portal-login-card--client .portal-login-card__signup.is-mobile-activated {
+    border-color: #B9CBD9;
+    background: transparent;
+    color: #101A24;
+  }
+
+  .portal-login-card--client .portal-login-card__submit.is-mobile-activated::before,
+  .portal-login-card--client .portal-login-card__signup.is-mobile-activated::before {
+    transform: scaleX(1);
+  }
+
+  .portal-login-card--client .portal-login-card__submit.is-mobile-activated span {
+    transform: translate(2px, -2px);
+  }
+}
+
