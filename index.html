@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=mobile-footer-logos-fit-140" />
+    <link rel="stylesheet" href="./styles.css?v=mobile-oval-liquid-tap-stay-141" />
   </head>
   <body>
     <main class="page">
@@ -26,7 +26,7 @@
         </button>
 
         <a class="mobile-login" href="#client-login" aria-label="Client login">
-          <span>LOGIN</span><span class="mobile-login__arrow" aria-hidden="true">↗</span>
+          <span>LOGIN</span>
         </a>
 
         <nav class="site-nav site-nav--left" aria-label="Main navigation">
@@ -2271,6 +2271,25 @@
           } else if (["ArrowUp", "PageUp"].includes(event.key)) {
             if (moveOne(-1)) event.preventDefault();
           }
+        });
+
+        /* Mobile oval controls keep the Discover-style fill after the first tap. */
+        const mobileOvalControlSelector = [
+          ".site-header .mobile-login",
+          ".businesses-section__discover",
+          ".contact-form__submit",
+          ".portal-experience__close",
+          ".portal-login-card--client .portal-login-card__submit",
+          ".portal-login-card--client .portal-login-card__signup",
+          ".portal-login-card--donor .portal-login-card__submit"
+        ].join(", ");
+
+        document.addEventListener("click", (event) => {
+          if (!window.matchMedia("(max-width: 760px)").matches) return;
+          const source = event.target;
+          const control = source instanceof Element ? source.closest(mobileOvalControlSelector) : null;
+          if (!control) return;
+          control.classList.add("is-mobile-activated");
         });
 
         if (portalTargets.has(window.location.hash)) {
