@@ -12112,3 +12112,53 @@ input[type="reset"]:active {
     overflow-wrap: anywhere;
   }
 }
+
+
+/* Footer spacing and VOXA House scale adjustment. */
+@media (min-width: 761px) {
+  .site-footer {
+    padding-right: clamp(24px, 3.8vw, 58px);
+  }
+
+  .site-footer__navigation {
+    grid-template-columns: max-content max-content;
+    justify-content: end;
+    gap: clamp(24px, 2.7vw, 38px);
+    margin-left: auto;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 220px);
+    height: auto;
+    max-height: none;
+  }
+}
+
+@media (min-width: 521px) and (max-width: 760px) {
+  .site-footer__navigation {
+    grid-template-columns: max-content max-content;
+    justify-content: end;
+    gap: clamp(22px, 3vw, 32px);
+    margin-left: auto;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 165px);
+    height: auto;
+    max-height: none;
+  }
+}
+
+@media (max-width: 520px) {
+  .site-footer__navigation {
+    grid-template-columns: max-content max-content;
+    justify-content: center;
+    gap: clamp(25px, 9vw, 42px);
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 155px);
+    height: auto;
+    max-height: none;
+  }
+}
