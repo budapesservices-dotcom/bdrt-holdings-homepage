@@ -11280,3 +11280,18 @@ input[type="reset"]:active {
   .about-section__identity:not(.is-mark-active) .about-section__identity-label { font-size: clamp(40px, 10vw, 64px); }
 }
 @media (prefers-reduced-motion: reduce) { .about-section__identity-mark { transition: none; } }
+
+
+/* Replay the About cover fade when the panel is actually revealed, not only on initial page load. */
+@keyframes about-identity-in {
+  from { opacity: 0; transform: translateY(12px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.about-section.about-entry-fade .about-section__identity-mark,
+.about-section.about-entry-fade .about-section__identity-label {
+  animation: about-identity-in 680ms cubic-bezier(.22,.61,.36,1) both;
+}
+@media (prefers-reduced-motion: reduce) {
+  .about-section.about-entry-fade .about-section__identity-mark,
+  .about-section.about-entry-fade .about-section__identity-label { animation: none; }
+}
