@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=mobile-section3-logos-raised-132" />
+    <link rel="stylesheet" href="./styles.css?v=mobile-gallery-native-swipe-133" />
   </head>
   <body>
     <main class="page">
@@ -1360,7 +1360,9 @@
           portfolioGalleryViewport.addEventListener("wheel", stopGalleryMomentum, { passive: true });
 
           portfolioGalleryViewport.addEventListener("pointerdown", (event) => {
-            if (!event.isPrimary || (event.pointerType === "mouse" && event.button !== 0)) return;
+            // Let touchscreens use the browser's native horizontal scroller and momentum.
+            // Keep the custom grab-to-scroll gesture for mouse and pen input.
+            if (!event.isPrimary || event.pointerType === "touch" || (event.pointerType === "mouse" && event.button !== 0)) return;
             stopGalleryMomentum();
             const now = performance.now();
             galleryPointer = {
