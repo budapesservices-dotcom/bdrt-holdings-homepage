@@ -8775,3 +8775,68 @@ body.portal-closing .portal-sheet::before {
     transform: translateY(-16px);
   }
 }
+
+/* Mobile portal continuity: match the open portal arch and wordmark to the normal navbar proportions. */
+@media (max-width: 760px) {
+  :root {
+    --portal-arch-height: 96px;
+    --portal-arch-width: 112px;
+    --portal-arch-radius: 56px;
+  }
+
+  .portal-sheet__surface {
+    width: 112px;
+    height: 96px;
+  }
+
+  .portal-sheet::before {
+    clip-path: polygon(
+      0 0, 100% 0,
+      100% calc(100% - 96px),
+      calc(50% + 56px) calc(100% - 96px),
+      calc(50% + 56px) calc(100% - 70px),
+      calc(50% + 54px) calc(100% - 60px),
+      calc(50% + 52px) calc(100% - 49px),
+      calc(50% + 50px) calc(100% - 39px),
+      calc(50% + 45px) calc(100% - 31px),
+      calc(50% + 39px) calc(100% - 22px),
+      calc(50% + 32px) calc(100% - 16px),
+      calc(50% + 25px) calc(100% - 10px),
+      calc(50% + 18px) calc(100% - 6px),
+      calc(50% + 9px) calc(100% - 3px),
+      50% calc(100% - 2px),
+      calc(50% - 9px) calc(100% - 3px),
+      calc(50% - 18px) calc(100% - 6px),
+      calc(50% - 25px) calc(100% - 10px),
+      calc(50% - 32px) calc(100% - 16px),
+      calc(50% - 39px) calc(100% - 22px),
+      calc(50% - 45px) calc(100% - 31px),
+      calc(50% - 50px) calc(100% - 39px),
+      calc(50% - 52px) calc(100% - 49px),
+      calc(50% - 54px) calc(100% - 60px),
+      calc(50% - 56px) calc(100% - 70px),
+      calc(50% - 56px) calc(100% - 96px),
+      0 calc(100% - 96px)
+    );
+  }
+
+  .portal-sheet__wordmark {
+    bottom: 28px;
+    padding: 0 12px 6px;
+  }
+
+  .portal-experience.is-open .portal-sheet__wordmark {
+    bottom: 28px;
+  }
+
+  .portal-sheet__wordmark .wordmark__main {
+    font-size: 24px;
+  }
+
+  .portal-sheet__wordmark .wordmark__sub {
+    margin-top: 4px;
+    padding-left: 0.72em;
+    font-size: 7.2px;
+    letter-spacing: 0.72em;
+  }
+}
