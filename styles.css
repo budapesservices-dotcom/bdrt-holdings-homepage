@@ -14404,3 +14404,81 @@ input[type="reset"]:active {
     transition: none;
   }
 }
+
+
+/* Hero actions: match the Discover outline-pill and left-to-right liquid fill. */
+.hero__action {
+  position: relative;
+  isolation: isolate;
+  overflow: hidden;
+  min-width: 142px;
+  min-height: 43px;
+  padding: 0 25px;
+  border: 1px solid var(--cream, #F4F1EA);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--cream, #F4F1EA);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.19em;
+  line-height: 1;
+  text-decoration: none;
+  transition: color 380ms ease, border-color 380ms ease;
+}
+
+.hero__action::before {
+  position: absolute;
+  z-index: -1;
+  inset: 0;
+  border-radius: inherit;
+  background: var(--cream, #F4F1EA);
+  content: "";
+  transform: scaleX(0);
+  transform-origin: left center;
+  transition: transform 540ms cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero__action:hover,
+.hero__action:focus-visible {
+  border-color: var(--cream, #F4F1EA);
+  background: transparent;
+  color: var(--obsidian, #0F0F11);
+}
+
+.hero__action:hover::before,
+.hero__action:focus-visible::before {
+  transform: scaleX(1);
+}
+
+.hero__action:focus-visible {
+  outline: 1px solid var(--champagne, #D4C5B9);
+  outline-offset: 5px;
+}
+
+@media (max-width: 760px) {
+  .hero__action {
+    min-width: 142px;
+    min-height: 43px;
+    padding: 0 22px;
+    font-size: 9px;
+    letter-spacing: 0.17em;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero__action {
+    min-width: 132px;
+    min-height: 41px;
+    padding: 0 17px;
+    font-size: 8px;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__action,
+  .hero__action::before {
+    transition: none !important;
+  }
+}
