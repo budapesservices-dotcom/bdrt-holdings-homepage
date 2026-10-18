@@ -12492,3 +12492,167 @@ input[type="reset"]:active {
     margin-bottom: 8px !important;
   }
 }
+
+
+/* Final responsive footer arrangement: two vertical menu columns on desktop, two horizontal menu rows on phones. */
+/* Desktop: two side-by-side vertical link groups. */
+@media (min-width: 761px) {
+  .site-footer__navigation {
+    display: grid !important;
+    grid-template-columns: repeat(2, minmax(0, max-content)) !important;
+    align-items: start !important;
+    justify-content: end !important;
+    column-gap: clamp(24px, 2.7vw, 38px) !important;
+    row-gap: 0 !important;
+  }
+
+  .site-footer__navigation-column {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    gap: clamp(15px, 2.2vh, 22px) !important;
+  }
+}
+
+/* Mobile/tablet identity: keep BDRT at the left and move the descriptor to the upper-right corner. */
+@media (max-width: 760px) {
+  .site-footer__identity {
+    position: relative !important;
+    display: block !important;
+    min-width: 0 !important;
+    min-height: 44px !important;
+    padding: 0 !important;
+  }
+
+  .site-footer__brand {
+    position: relative !important;
+    z-index: 1;
+    display: flex !important;
+    width: max-content;
+    max-width: 42%;
+    flex-direction: column !important;
+    align-items: flex-start !important;
+    justify-self: start !important;
+    gap: 3px !important;
+    margin: 0 !important;
+  }
+
+  .site-footer__statement {
+    position: absolute !important;
+    top: 0 !important;
+    right: 0 !important;
+    z-index: 1;
+    width: min(58%, 190px) !important;
+    max-width: none !important;
+    margin: 0 !important;
+    font-size: clamp(9px, 1.85vw, 11px) !important;
+    line-height: 1.15 !important;
+    text-align: right !important;
+    text-wrap: pretty;
+  }
+
+  .site-footer__signature {
+    display: none !important;
+  }
+
+  /* Keep VOXA and VOXA House in a true vertical stack. */
+  .site-footer__brand-links {
+    display: flex !important;
+    flex-direction: column !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 7px !important;
+  }
+
+  .site-footer__brand-link,
+  .site-footer__brand-link[href="https://voxahouse.com/"] {
+    flex: 0 0 auto !important;
+    min-height: 0 !important;
+    padding: 0 !important;
+    border: 0 !important;
+  }
+}
+
+/* Phone footer: two horizontal rows of links, while each menu group stays vertical on desktop. */
+@media (max-width: 520px) {
+  .site-footer__main {
+    grid-template-columns: minmax(0, 1fr) !important;
+    grid-template-rows: auto auto auto !important;
+    align-items: start !important;
+    justify-items: stretch !important;
+    gap: clamp(7px, 1.8vh, 12px) !important;
+    padding-bottom: 8px !important;
+  }
+
+  .site-footer__identity {
+    grid-column: 1 !important;
+    grid-row: 1 !important;
+    width: 100% !important;
+    min-height: 36px !important;
+  }
+
+  .site-footer__brand-links {
+    grid-column: 1 !important;
+    grid-row: 2 !important;
+    width: min(100%, 170px) !important;
+    gap: 5px !important;
+    margin: 0 auto !important;
+  }
+
+  .site-footer__brand-link[href="https://vvoxaa.com/"] .site-footer__logo-frame img {
+    width: min(100%, 118px) !important;
+    height: auto !important;
+    max-height: 27px !important;
+    object-fit: contain;
+  }
+
+  .site-footer__brand-link[href="https://voxahouse.com/"] .site-footer__logo-frame img {
+    width: min(100%, 150px) !important;
+    height: auto !important;
+    max-height: 30px !important;
+    object-fit: contain;
+  }
+
+  .site-footer__navigation {
+    grid-column: 1 !important;
+    grid-row: 3 !important;
+    display: grid !important;
+    width: 100% !important;
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 7px !important;
+    justify-content: stretch !important;
+    margin: 0 !important;
+  }
+
+  .site-footer__navigation-column {
+    display: flex !important;
+    width: 100% !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 7px !important;
+    min-width: 0 !important;
+  }
+
+  .site-footer__navigation-column a {
+    flex: 0 0 auto;
+    max-width: none !important;
+    font-size: clamp(6.6px, 2.05vw, 8px) !important;
+    letter-spacing: 0.015em !important;
+    line-height: 1.25 !important;
+    white-space: nowrap !important;
+    overflow-wrap: normal !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .site-footer__statement {
+    width: 57% !important;
+    font-size: 8.8px !important;
+  }
+
+  .site-footer__navigation-column a {
+    font-size: 6.3px !important;
+    letter-spacing: 0 !important;
+  }
+}
