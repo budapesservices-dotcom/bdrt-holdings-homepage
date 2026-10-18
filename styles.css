@@ -11656,60 +11656,60 @@ input[type="reset"]:active {
 
 /* Improve legibility across the Portfolio ecosystem strip and its closing CTA. */
 .portfolio-ecosystem__eyebrow {
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.14em;
   line-height: 1.4;
 }
 .portfolio-ecosystem__masthead > span {
-  font-size: 8px;
+  font-size: 9px;
   letter-spacing: 0.09em;
   line-height: 1.4;
 }
 .portfolio-ecosystem__name {
-  font-size: clamp(9px, 0.72vw, 10px);
+  font-size: clamp(10px, 0.8vw, 11.5px);
   line-height: 1.25;
   letter-spacing: 0;
   overflow-wrap: normal;
   word-break: normal;
 }
 .portfolio-ecosystem__description {
-  font-size: clamp(8px, 0.58vw, 8.5px) !important;
+  font-size: clamp(9px, 0.68vw, 10px) !important;
   line-height: 1.38;
   letter-spacing: 0;
 }
 .portfolio-footer__message .portfolio-gallery__eyebrow {
-  font-size: 9px;
-  letter-spacing: 0.17em;
+  font-size: 10px;
+  letter-spacing: 0.15em;
 }
 .portfolio-footer__cta {
-  font-size: 9px;
+  font-size: 10px;
   letter-spacing: 0.1em;
 }
 @media (max-width: 1080px) and (min-width: 761px) {
-  .portfolio-ecosystem__eyebrow { font-size: 8.5px; }
-  .portfolio-ecosystem__masthead > span { font-size: 7.5px; }
-  .portfolio-ecosystem__name { font-size: 9px; }
-  .portfolio-ecosystem__description { font-size: 8px !important; }
+  .portfolio-ecosystem__eyebrow { font-size: 9px; }
+  .portfolio-ecosystem__masthead > span { font-size: 8px; }
+  .portfolio-ecosystem__name { font-size: 10px; }
+  .portfolio-ecosystem__description { font-size: 9px !important; }
 }
 @media (max-width: 760px) {
   .portfolio-ecosystem__eyebrow {
+    font-size: 9px;
+    letter-spacing: 0.12em;
+  }
+  .portfolio-ecosystem__masthead > span { font-size: 8px; }
+  .portfolio-ecosystem__name { font-size: 9.5px; }
+  .portfolio-ecosystem__description { font-size: 8.5px !important; }
+  .portfolio-footer__message .portfolio-gallery__eyebrow {
     font-size: 8px;
     letter-spacing: 0.12em;
   }
-  .portfolio-ecosystem__masthead > span { font-size: 7px; }
-  .portfolio-ecosystem__name { font-size: 9px; }
-  .portfolio-ecosystem__description { font-size: 8px !important; }
-  .portfolio-footer__message .portfolio-gallery__eyebrow {
-    font-size: 7.5px;
-    letter-spacing: 0.12em;
-  }
   .portfolio-footer__cta {
-    font-size: 7.5px;
+    font-size: 8.5px;
     letter-spacing: 0.07em;
   }
 }
 @media (max-width: 380px) {
-  .portfolio-ecosystem__name { font-size: 8.5px; }
-  .portfolio-ecosystem__description { font-size: 7.5px !important; }
-  .portfolio-footer__message .portfolio-gallery__eyebrow { font-size: 7px; }
+  .portfolio-ecosystem__name { font-size: 9px; }
+  .portfolio-ecosystem__description { font-size: 8px !important; }
+  .portfolio-footer__message .portfolio-gallery__eyebrow { font-size: 7.5px; }
 }
