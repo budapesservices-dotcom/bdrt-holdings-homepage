@@ -12240,3 +12240,56 @@ input[type="reset"]:active {
     touch-action: manipulation;
   }
 }
+
+
+/* Mobile Section 2: make the panel itself a real vertical scroll viewport. */
+@media (max-width: 760px) {
+  .about-section.section-panel {
+    height: 100vh !important;
+    height: 100svh !important;
+    height: 100dvh !important;
+    max-height: 100dvh;
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-y: contain;
+    touch-action: pan-y;
+    scroll-behavior: auto !important;
+    scroll-snap-type: none !important;
+    overflow-anchor: none;
+  }
+
+  .about-section.section-panel .about-section__inner {
+    display: flex !important;
+    width: 100%;
+    height: auto !important;
+    min-height: max-content !important;
+    flex-direction: column-reverse;
+    align-items: stretch;
+    justify-content: flex-start;
+    gap: clamp(24px, 4vh, 34px);
+    padding-bottom: 20px;
+    overflow: visible;
+  }
+
+  .about-section.section-panel .about-section__identity {
+    flex: 0 0 auto;
+  }
+
+  .about-section.section-panel .about-section__story {
+    flex: 0 0 auto !important;
+    width: 100%;
+    min-height: max-content;
+    margin-top: 0;
+    padding-bottom: 8px;
+  }
+
+  .about-section.section-panel .about-carousel__copy.is-active {
+    height: auto;
+    overflow: visible;
+  }
+
+  .about-section.section-panel .about-carousel__controls {
+    bottom: max(12px, calc(env(safe-area-inset-bottom) + 10px));
+  }
+}
