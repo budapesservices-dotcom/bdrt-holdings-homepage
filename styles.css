@@ -8472,3 +8472,47 @@ body.portal-closing .portal-sheet::before {
     display: none;
   }
 }
+
+
+/* Cleaner editorial mobile menu: no numbered prefixes or divider rules. */
+@media (max-width: 760px) {
+  .mobile-menu__number {
+    display: none !important;
+  }
+
+  .mobile-menu__masthead {
+    border-bottom: 0;
+  }
+
+  .mobile-menu__nav {
+    border-top: 0;
+  }
+
+  .mobile-menu__nav a {
+    grid-template-columns: minmax(0, 1fr) 18px;
+    column-gap: 14px;
+    min-height: 54px;
+    border-bottom: 0;
+    padding: 10px 0;
+  }
+
+  .mobile-menu__nav a:hover,
+  .mobile-menu__nav a:focus-visible {
+    border-bottom-color: transparent;
+  }
+
+  .mobile-menu__footer {
+    border-top: 0;
+  }
+
+  .mobile-menu__intro {
+    padding-bottom: clamp(26px, 4.5vh, 40px);
+  }
+}
+
+@media (max-width: 760px) and (max-height: 720px) {
+  .mobile-menu__nav a {
+    min-height: 47px;
+    padding: 7px 0;
+  }
+}
