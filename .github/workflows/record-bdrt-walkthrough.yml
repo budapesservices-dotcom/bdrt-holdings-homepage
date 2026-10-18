@@ -1,0 +1,88 @@
+name: Record BDRT walkthrough videos
+
+on:
+  workflow_dispatch:
+    inputs:
+      mode:
+        description: Which walkthroughs to record
+        required: true
+        type: choice
+        options:
+          - both
+          - desktop
+          - mobile
+        default: both
+  push:
+    branches:
+      - main
+    paths:
+      - ".github/workflows/record-bdrt-walkthrough.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  record:
+    name: Record browser walkthroughs
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      RECORD_MODE: \${{ github.event.inputs.mode || 'both' }}
+    steps:
+      - name: Check out BDRT website
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install video tools and Playwright
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y ffmpeg
+          npm init -y
+          npm install --no-save playwright
+          npx playwright install --with-deps chromium
+
+      - name: Start local website
+        run: |
+          nohup python3 -m http.server 4173 --bind 127.0.0.1 > /tmp/bdrt-static-server.log 2>&1 &
+          for attempt in $(seq 1 30); do
+            if curl --fail --silent http://127.0.0.1:4173/ > /dev/null; then
+              echo "BDRT local preview is ready."
+              exit 0
+            fi
+            sleep 1
+          done
+          cat /tmp/bdrt-static-server.log
+          exit 1
+
+      - name: Record desktop and mobile videos
+        run: node scripts/record-bdrt-walkthrough.cjs
+
+      - name: Convert recordings to MP4
+        run: |
+          shopt -s nullglob
+          files=(recordings/*.webm)
+          if [ \${#files[@]} -eq 0 ]; then
+            echo "No WebM recordings were produced."
+            exit 1
+          fi
+          for file in "\${files[@]}"; do
+            output="\${file%.webm}.mp4"
+            ffmpeg -hide_banner -loglevel error -y -i "$file" \
+              -c:v libx264 -preset medium -crf 19 -pix_fmt yuv420p \
+              -movflags +faststart -an "$output"
+            echo "Created $output"
+          done
+
+      - name: Upload downloadable videos
+        uses: actions/upload-artifact@v4
+        with:
+          name: bdrt-walkthrough-videos
+          path: |
+            recordings/*.mp4
+            recordings/*.webm
+          if-no-files-found: error
+          retention-days: 7
