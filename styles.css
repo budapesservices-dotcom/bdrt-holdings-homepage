@@ -11415,3 +11415,10 @@ input[type="reset"]:active {
     font-size: 40px;
   }
 }
+
+
+/* Slightly loosen the vertical spacing between stacked About taglines. */
+.about-section .about-section__identity-label {
+  line-height: 0.88;
+  row-gap: 0.08em;
+}
