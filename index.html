@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=about-carousel-160" />
+    <link rel="stylesheet" href="./styles.css?v=about-carousel-161" />
   </head>
   <body>
     <main class="page">
@@ -2020,24 +2020,27 @@
           }
         }, { passive: true });
 
-        const replayAboutEntrance = (panel) => {
+        const replayAboutCopyEntrance = (panel) => {
+          if (!panel || panel.id !== "about" || reduceMotion.matches) return;
+
+          const activeCopy = panel.querySelector(".about-carousel__copy.is-active");
+          if (!activeCopy) return;
+
+          activeCopy.style.animation = "none";
+          void activeCopy.offsetWidth;
+          activeCopy.style.animation = "";
+        };
+
+        const replayAboutIdentityEntrance = (panel) => {
           if (!panel || panel.id !== "about" || reduceMotion.matches) return;
 
           window.clearTimeout(aboutEntryFadeTimer);
           panel.classList.remove("about-entry-fade");
-
-          const activeCopy = panel.querySelector(".about-carousel__copy.is-active");
-          if (activeCopy) {
-            activeCopy.style.animation = "none";
-            void activeCopy.offsetWidth;
-            activeCopy.style.animation = "";
-          }
-
           void panel.offsetWidth;
           panel.classList.add("about-entry-fade");
           aboutEntryFadeTimer = window.setTimeout(() => {
             panel.classList.remove("about-entry-fade");
-          }, 760);
+          }, 900);
         };
 
         const moveToSection = (requestedIndex) => {
@@ -2075,9 +2078,9 @@
             transitionDirection < 0 ? startIndex : -1
           );
 
-          // On a backward transition, About is revealed behind the panel that moves away.
+          // Restart the editorial copy as About is revealed, but keep the large wordmark still.
           if (transitionDirection < 0 && panels[targetIndex]?.id === "about") {
-            replayAboutEntrance(panels[targetIndex]);
+            replayAboutCopyEntrance(panels[targetIndex]);
           }
 
           // Commit the incoming panel's offscreen position before starting its entrance.
@@ -2110,6 +2113,12 @@
             animating = false;
             renderPanels(activePanelIndex);
             updateHeaderTheme(activePanelIndex);
+
+            // Fade the BDRT wordmark only after the panel has finished moving into place.
+            if (panels[targetIndex]?.id === "about") {
+              window.requestAnimationFrame(() => replayAboutIdentityEntrance(panels[targetIndex]));
+            }
+
             unlockTimer = window.setTimeout(() => {
               animating = false;
             }, 60);
@@ -2119,7 +2128,7 @@
             // Release the entering state on the next frame, then animate scroll in sync.
             animationFrame = window.requestAnimationFrame((now) => {
               enteringPanel.classList.remove("is-entering");
-              if (enteringPanel.id === "about") replayAboutEntrance(enteringPanel);
+              if (enteringPanel.id === "about") replayAboutCopyEntrance(enteringPanel);
               startedAt = now;
               animationFrame = window.requestAnimationFrame(animate);
             });
