@@ -12398,3 +12398,20 @@ input[type="reset"]:active {
     letter-spacing: -0.12em;
   }
 }
+
+
+/* Mobile Section 2: lift the large carousel titles to reduce excess whitespace above the copy. */
+@media (max-width: 760px) {
+  .about-section .about-section__identity:not(.is-mark-active) .about-section__identity-label {
+    top: -16px;
+    bottom: 16px;
+    padding-top: 0;
+  }
+}
+
+@media (max-width: 380px) {
+  .about-section .about-section__identity:not(.is-mark-active) .about-section__identity-label {
+    top: -12px;
+    bottom: 12px;
+  }
+}
