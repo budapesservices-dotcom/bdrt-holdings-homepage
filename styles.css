@@ -8073,8 +8073,7 @@ body.portal-closing .portal-sheet::before {
   .mobile-menu__arrow,
   .mobile-menu__close,
   .mobile-menu-toggle__line,
-  .mobile-login,
-  .mobile-login__arrow {
+  .mobile-login {
     transition-duration: 0.01ms !important;
     transition-delay: 0ms !important;
     animation-duration: 0.01ms !important;
