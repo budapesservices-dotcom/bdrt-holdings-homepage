@@ -13118,3 +13118,421 @@ input[type="reset"]:active {
     padding-left: 8px !important;
   }
 }
+
+
+/* Contact spread: one full-screen editorial page, then a separate full-screen inquiry page. */
+/* The Contact panel itself is the horizontal viewport. Each child occupies one full screen. */
+.contact-section.section-panel {
+  display: block !important;
+  inset: 0 !important;
+  width: 100% !important;
+  height: 100vh !important;
+  height: 100svh !important;
+  height: 100dvh !important;
+  padding: 0 !important;
+  overflow-x: auto !important;
+  overflow-y: hidden !important;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  scroll-padding: 0;
+  touch-action: pan-x pan-y;
+  cursor: grab;
+}
+
+.contact-section.section-panel::-webkit-scrollbar {
+  display: none !important;
+  width: 0 !important;
+  height: 0 !important;
+}
+
+.contact-section.section-panel.is-contact-dragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+  user-select: none;
+}
+
+.contact-section.section-panel .contact-section__layout {
+  display: grid !important;
+  position: relative;
+  z-index: 1;
+  width: 200% !important;
+  max-width: none !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  grid-template-areas: "editorial inquiry" !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  overflow: visible !important;
+}
+
+.contact-section.section-panel .contact-section__layout::after {
+  display: none !important;
+}
+
+.contact-section.section-panel .contact-section__editorial {
+  grid-area: editorial !important;
+  display: flex !important;
+  width: 100% !important;
+  height: 100% !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  padding: clamp(112px, 13vh, 140px) clamp(32px, 7.5vw, 112px) clamp(28px, 4.5vh, 46px) !important;
+  overflow: hidden !important;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  cursor: auto;
+}
+
+.contact-section.section-panel .contact-section__headline {
+  max-width: 760px;
+  margin-top: clamp(18px, 3vh, 30px) !important;
+  font-size: clamp(58px, 7.2vw, 100px) !important;
+  line-height: 0.88 !important;
+  text-wrap: balance;
+}
+
+.contact-section.section-panel .contact-section__intro {
+  max-width: 560px !important;
+  margin-top: clamp(14px, 2.3vh, 22px) !important;
+  font-size: clamp(13px, 1.1vw, 16px) !important;
+  line-height: 1.62 !important;
+}
+
+.contact-section.section-panel .contact-section__visual {
+  width: min(72%, 620px) !important;
+  height: clamp(126px, 21vh, 205px) !important;
+  margin-top: clamp(15px, 2.5vh, 26px) !important;
+}
+
+.contact-section.section-panel .contact-section__signature {
+  margin-top: clamp(10px, 1.6vh, 16px) !important;
+  font-size: 7px;
+}
+
+.contact-section__page-link,
+.contact-section__back-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  border: 0;
+  background: transparent;
+  color: var(--cream);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  cursor: pointer;
+  transition: color 180ms ease, border-color 180ms ease, opacity 180ms ease;
+}
+
+.contact-section__page-link {
+  width: fit-content;
+  min-height: 40px;
+  justify-content: space-between;
+  gap: 28px;
+  margin-top: clamp(15px, 2.3vh, 24px);
+  padding: 0 17px;
+  border: 1px solid rgba(244, 241, 234, 0.62);
+  border-radius: 999px;
+}
+
+.contact-section__page-link > span:last-child,
+.contact-section__back-link > span:first-child {
+  color: var(--champagne);
+  font-size: 14px;
+  transition: transform 180ms ease;
+}
+
+.contact-section__page-link:hover,
+.contact-section__page-link:focus-visible {
+  border-color: var(--champagne);
+  color: var(--champagne);
+}
+
+.contact-section__page-link:hover > span:last-child,
+.contact-section__page-link:focus-visible > span:last-child {
+  transform: translate(2px, -2px);
+}
+
+.contact-section__page-link:focus-visible,
+.contact-section__back-link:focus-visible {
+  outline: 1px solid var(--champagne);
+  outline-offset: 4px;
+}
+
+.contact-section.section-panel .contact-section__form-panel {
+  grid-area: inquiry !important;
+  display: flex !important;
+  position: relative !important;
+  top: auto !important;
+  right: auto !important;
+  bottom: auto !important;
+  left: auto !important;
+  align-self: stretch !important;
+  width: 100% !important;
+  height: 100% !important;
+  max-height: none !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  flex-direction: column !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: clamp(112px, 13vh, 140px) clamp(32px, 7.5vw, 112px) clamp(28px, 4.5vh, 46px) !important;
+  border: 0 !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-snap-align: start;
+  scroll-snap-stop: always;
+  cursor: auto;
+}
+
+.contact-section.section-panel .contact-section__form-panel::-webkit-scrollbar {
+  display: none;
+  width: 0;
+  height: 0;
+}
+
+.contact-section.section-panel .contact-section__form-masthead {
+  margin-bottom: clamp(15px, 2.3vh, 24px) !important;
+  padding-bottom: 11px !important;
+}
+
+.contact-section__back-link {
+  flex: 0 0 auto;
+  padding: 4px 0;
+  color: rgba(244, 241, 234, 0.64);
+  font-size: 7px;
+  letter-spacing: 0.11em;
+}
+
+.contact-section__back-link:hover,
+.contact-section__back-link:focus-visible {
+  color: var(--cream);
+}
+
+.contact-section__back-link:hover > span:first-child,
+.contact-section__back-link:focus-visible > span:first-child {
+  transform: translate(-2px, -2px);
+}
+
+/* Remove the old stacked form rules; this is its own spread page on all widths. */
+@media (max-width: 760px) {
+  .contact-section.section-panel .contact-section__editorial {
+    padding: max(116px, calc(env(safe-area-inset-top) + 108px)) 24px 28px !important;
+  }
+
+  .contact-section.section-panel .contact-section__headline {
+    margin-top: 18px !important;
+    font-size: clamp(48px, 11.5vw, 72px) !important;
+    line-height: 0.9 !important;
+  }
+
+  .contact-section.section-panel .contact-section__intro {
+    max-width: 540px !important;
+    margin-top: 14px !important;
+    font-size: 13px !important;
+    line-height: 1.6 !important;
+  }
+
+  .contact-section.section-panel .contact-section__visual {
+    width: 88% !important;
+    height: clamp(145px, 39vw, 220px) !important;
+    margin-top: 17px !important;
+  }
+
+  .contact-section.section-panel .contact-section__signature {
+    margin-top: 10px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-panel {
+    padding: max(116px, calc(env(safe-area-inset-top) + 108px)) 24px 24px !important;
+    justify-content: flex-start !important;
+    overflow-y: auto !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-masthead {
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin-bottom: 17px !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend {
+    display: flex !important;
+    flex-direction: row !important;
+    align-items: baseline !important;
+    justify-content: space-between !important;
+    gap: 10px !important;
+    font-size: clamp(21px, 5.5vw, 25px) !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend span {
+    margin: 0 !important;
+    font-size: 7px !important;
+    white-space: normal !important;
+    text-align: right;
+  }
+
+  .contact-section.section-panel .contact-form__interest-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    gap: 9px !important;
+  }
+
+  .contact-section.section-panel .contact-interest {
+    min-height: 60px !important;
+    gap: 8px !important;
+    padding: 10px !important;
+  }
+
+  .contact-section.section-panel .contact-interest__name {
+    font-size: clamp(14px, 3.8vw, 19px) !important;
+  }
+
+  .contact-section.section-panel .contact-interest__type {
+    font-size: 6px !important;
+    letter-spacing: 0.09em !important;
+    line-height: 1.4 !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    margin-top: 18px !important;
+    gap: 14px 18px !important;
+  }
+
+  .contact-section.section-panel .contact-field--full {
+    grid-column: 1 / -1 !important;
+  }
+
+  .contact-section.section-panel .contact-field {
+    gap: 5px !important;
+  }
+
+  .contact-section.section-panel .contact-field__label {
+    font-size: 9px !important;
+  }
+
+  .contact-section.section-panel .contact-field input {
+    height: 32px !important;
+    padding: 7px 0 !important;
+    font-size: 12px !important;
+  }
+
+  .contact-section.section-panel .contact-field textarea {
+    min-height: 48px !important;
+    max-height: 82px !important;
+    padding: 7px 0 !important;
+    font-size: 12px !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit-row {
+    flex-direction: row !important;
+    align-items: center !important;
+    gap: 12px !important;
+    margin-top: 17px !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit {
+    width: auto !important;
+    min-width: 170px !important;
+    min-height: 41px !important;
+    padding: 0 17px !important;
+    font-size: 8px !important;
+  }
+
+  .contact-section.section-panel .contact-form__privacy {
+    max-width: 150px !important;
+    font-size: 7px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .contact-section.section-panel .contact-section__editorial {
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-panel {
+    padding-right: 20px !important;
+    padding-left: 20px !important;
+  }
+
+  .contact-section.section-panel .contact-section__headline {
+    font-size: clamp(45px, 11vw, 56px) !important;
+  }
+
+  .contact-section.section-panel .contact-section__visual {
+    width: 94% !important;
+    height: clamp(128px, 36vw, 168px) !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields {
+    gap: 11px 14px !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit-row {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 9px !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit {
+    width: min(100%, 240px) !important;
+  }
+
+  .contact-section.section-panel .contact-form__privacy {
+    max-width: none !important;
+  }
+
+  .contact-section__back-link {
+    font-size: 6.5px;
+  }
+}
+
+@media (max-width: 360px) {
+  .contact-section.section-panel .contact-section__editorial {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-panel {
+    padding-left: 16px !important;
+    padding-right: 16px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-masthead {
+    gap: 8px !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend {
+    font-size: 19px !important;
+  }
+
+  .contact-section.section-panel .contact-interest {
+    padding: 8px !important;
+  }
+
+  .contact-section.section-panel .contact-interest__name {
+    font-size: 13px !important;
+  }
+
+  .contact-section__back-link {
+    font-size: 6px;
+  }
+}
+
+/* The contact panel starts at the editorial page every time it is entered through site navigation. */
