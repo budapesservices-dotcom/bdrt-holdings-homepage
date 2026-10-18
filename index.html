@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portal-arch-crossfade-hero-explore-146" />
+    <link rel="stylesheet" href="./styles.css?v=history-vision-148" />
   </head>
   <body>
     <main class="page">
@@ -55,7 +55,7 @@
           <div class="mobile-menu__masthead" aria-hidden="true"></div>
 
           <div class="mobile-menu__intro">
-            <p class="mobile-menu__kicker">EXPLORE BDRT <span>／</span> 01—07</p>
+            <p class="mobile-menu__kicker">EXPLORE BDRT <span>／</span> 01—08</p>
             <h2 id="mobile-menu-title">A considered view.</h2>
           </div>
 
@@ -65,8 +65,9 @@
             <a href="#businesses"><span class="mobile-menu__number">03</span><span class="mobile-menu__label">Businesses</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
             <a href="#our-brands"><span class="mobile-menu__number">04</span><span class="mobile-menu__label">Our Brands</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
             <a href="#portfolio"><span class="mobile-menu__number">05</span><span class="mobile-menu__label">Portfolio</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
-            <a href="#contact"><span class="mobile-menu__number">06</span><span class="mobile-menu__label">Contact</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
-            <a href="#donor-portal"><span class="mobile-menu__number">07</span><span class="mobile-menu__label">Donor Portal</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+            <a href="#history-vision"><span class="mobile-menu__number">06</span><span class="mobile-menu__label">History &amp; Vision</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+            <a href="#contact"><span class="mobile-menu__number">07</span><span class="mobile-menu__label">Contact</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+            <a href="#donor-portal"><span class="mobile-menu__number">08</span><span class="mobile-menu__label">Donor Portal</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
           </nav>
 
           <div class="mobile-menu__footer">
@@ -645,12 +646,58 @@
           </footer>
         </section>
 
-                <section class="contact-section section-panel" id="contact" data-theme="dark" aria-label="Contact BDRT Holdings">
+        <section class="history-vision-section section-panel" id="history-vision" data-theme="dark" aria-label="BDRT Holdings history and vision">
+          <div class="history-vision__inner">
+            <div class="history-vision__story">
+              <p class="history-vision__eyebrow">OUR HISTORY &amp; VISION</p>
+              <h2 class="history-vision__headline">Built on a shared foundation.<em>Designed to evolve.</em></h2>
+              <p class="history-vision__intro">BDRT’s story is one of connecting complementary capabilities through a broader commercial vision. Across strategy, creative brands, project development, and community initiatives, the portfolio continues to take shape around lasting relationships.</p>
+              <div class="history-vision__vision">
+                <span class="history-vision__vision-label">THE VISION</span>
+                <p>Grow the portfolio thoughtfully, develop new ventures, and build lasting value through meaningful partnerships.</p>
+              </div>
+              <a class="history-vision__link" href="#contact">DISCUSS WHAT’S NEXT <span aria-hidden="true">↗</span></a>
+            </div>
+
+            <div class="history-vision__chapters" aria-label="BDRT's foundation, current focus, and vision">
+              <div class="history-vision__chapters-masthead">
+                <span>THE BDRT PERSPECTIVE</span>
+                <span>FOUNDATION / NOW / NEXT</span>
+              </div>
+              <div class="history-vision__chapter">
+                <span class="history-vision__chapter-index">01</span>
+                <div>
+                  <p class="history-vision__chapter-label">THE FOUNDATION</p>
+                  <h3>Connected thinking.</h3>
+                  <p class="history-vision__chapter-copy">Bringing complementary capabilities and strategic relationships into one wider ecosystem.</p>
+                </div>
+              </div>
+              <div class="history-vision__chapter">
+                <span class="history-vision__chapter-index">02</span>
+                <div>
+                  <p class="history-vision__chapter-label">THE PRESENT</p>
+                  <h3>A broader portfolio.</h3>
+                  <p class="history-vision__chapter-copy">Commercial strategy, creative brands, project development, and community-focused initiatives.</p>
+                </div>
+              </div>
+              <div class="history-vision__chapter">
+                <span class="history-vision__chapter-index">03</span>
+                <div>
+                  <p class="history-vision__chapter-label">THE VISION</p>
+                  <h3>Room to grow.</h3>
+                  <p class="history-vision__chapter-copy">Making room for new ventures, deeper partnerships, and long-term value.</p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="contact-section section-panel" id="contact" data-theme="dark" aria-label="Contact BDRT Holdings">
           <div class="contact-section__layout">
             <div class="contact-section__editorial">
               <div class="contact-section__masthead">
                 <p class="contact-section__eyebrow">GET IN TOUCH</p>
-                <span class="contact-section__folio">BDRT HOLDINGS <i aria-hidden="true">/</i> 06</span>
+                <span class="contact-section__folio">BDRT HOLDINGS <i aria-hidden="true">/</i> 07</span>
               </div>
 
               <h2 class="contact-section__headline">Let's Build <em>Together.</em></h2>
@@ -2160,14 +2207,14 @@
             return;
           }
 
-          const contactScroller = event.target instanceof Element
-            ? event.target.closest(".contact-section")
+          const internalScroller = event.target instanceof Element
+            ? event.target.closest(".contact-section, .history-vision-section")
             : null;
-          if (contactScroller) {
-            const canScrollInsideContact = event.deltaY < 0
-              ? contactScroller.scrollTop > 0
-              : contactScroller.scrollTop + contactScroller.clientHeight < contactScroller.scrollHeight - 1;
-            if (canScrollInsideContact) return;
+          if (internalScroller) {
+            const canScrollInsidePanel = event.deltaY < 0
+              ? internalScroller.scrollTop > 0
+              : internalScroller.scrollTop + internalScroller.clientHeight < internalScroller.scrollHeight - 1;
+            if (canScrollInsidePanel) return;
           }
 
           if (animating) {
@@ -2188,7 +2235,7 @@
           startY = touch.clientY;
           capturedVerticalSwipe = false;
           touchScrollPanel = event.target instanceof Element
-            ? event.target.closest(".portal-page, .contact-section, .mobile-menu__panel")
+            ? event.target.closest(".portal-page, .contact-section, .history-vision-section, .mobile-menu__panel")
             : null;
         }, { passive: true });
 
