@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=mobile-luxury-menu-minimal-top-124" />
+    <link rel="stylesheet" href="./styles.css?v=mobile-portals-priority-125" />
   </head>
   <body>
     <main class="page">
@@ -1998,6 +1998,8 @@
           const portalKey = targetId.slice(1);
           const targetPage = portalPages.find((page) => page.dataset.portalPage === portalKey);
           if (!portalExperience || !targetPage) return false;
+
+          if (mobileMenu?.classList.contains("is-open")) closeMobileMenu(false);
 
           if (!portalExperience.classList.contains("is-open") && document.activeElement instanceof HTMLElement) {
             portalReturnFocus = document.activeElement;
