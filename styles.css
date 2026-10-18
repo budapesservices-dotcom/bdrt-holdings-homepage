@@ -11637,3 +11637,18 @@ input[type="reset"]:active {
     text-justify: inter-word;
   }
 }
+
+
+/* Size each editorial paragraph to its own line lengths instead of compressing word spacing. */
+@media (min-width: 1000px) {
+  .about-section .about-carousel__copy .about-section__text--editorial {
+    max-width: 480px;
+    word-spacing: normal;
+  }
+  .about-section .about-carousel__copy .about-section__text--editorial .about-editorial-line {
+    word-spacing: normal;
+  }
+  .about-section .about-carousel__copy[data-about-slide="3"] .about-section__text--editorial {
+    max-width: 365px;
+  }
+}
