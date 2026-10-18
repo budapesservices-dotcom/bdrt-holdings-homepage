@@ -12318,3 +12318,27 @@ input[type="reset"]:active {
     padding-bottom: 0;
   }
 }
+
+
+/* Mobile arrow controls: a touch tap must not leave the desktop hover fill stuck on. */
+@media (max-width: 760px) {
+  .about-section.section-panel .about-carousel__arrow:hover:not(:focus-visible),
+  .about-section.section-panel .about-carousel__arrow:focus:not(:focus-visible) {
+    border-color: rgba(15, 15, 17, 0.32);
+    background: transparent;
+    color: var(--obsidian);
+  }
+
+  .about-section.section-panel .about-carousel__arrow:active {
+    border-color: rgba(15, 15, 17, 0.55);
+    background: rgba(15, 15, 17, 0.06);
+    color: var(--obsidian);
+  }
+}
+
+/* Keep a little scroll range after the in-flow controls so shorter slides remain position-stable. */
+@media (max-width: 760px) {
+  .about-section.section-panel .about-section__inner {
+    padding-bottom: max(100px, calc(env(safe-area-inset-bottom) + 88px));
+  }
+}
