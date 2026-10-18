@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-type-184" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-type-185" />
   </head>
   <body>
     <main class="page">
@@ -2581,20 +2581,18 @@
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
         const controls = section.querySelector(".about-carousel__controls");
         const readViewportSnapshot = () => ({
-          pageY: window.scrollY,
-          panelTop: section.scrollTop
+          panelTop: section.scrollTop,
+          controlsTop: controls?.getBoundingClientRect().top ?? null
         });
         const restoreViewportSnapshot = (snapshot) => {
-          if (!snapshot) return;
+          if (!snapshot || !controls || snapshot.controlsTop === null) return;
           window.requestAnimationFrame(() => {
-            const maxPanelTop = Math.max(0, section.scrollHeight - section.clientHeight);
-            section.scrollTop = Math.min(snapshot.panelTop, maxPanelTop);
-            if (Math.abs(window.scrollY - snapshot.pageY) > 1) {
-              const root = document.documentElement;
-              const previousBehavior = root.style.scrollBehavior;
-              root.style.scrollBehavior = "auto";
-              window.scrollTo(0, snapshot.pageY);
-              root.style.scrollBehavior = previousBehavior;
+            // Keep the control row at the same visual position when the new slide has a
+            // different height. Never force window.scrollY back to an old value.
+            const currentTop = controls.getBoundingClientRect().top;
+            const visualDelta = currentTop - snapshot.controlsTop;
+            if (Math.abs(visualDelta) > 1) {
+              section.scrollTop += visualDelta;
             }
           });
         };
@@ -2660,18 +2658,18 @@
         };
         section.querySelector("[data-about-prev]")?.addEventListener("click", (event) => {
           event.preventDefault();
-          event.currentTarget.focus({ preventScroll: true });
           show((active - 1 + slides.length) % slides.length, takeViewportSnapshot());
+          if (event.detail > 0) event.currentTarget.blur();
         });
         section.querySelector("[data-about-next]")?.addEventListener("click", (event) => {
           event.preventDefault();
-          event.currentTarget.focus({ preventScroll: true });
           show((active + 1) % slides.length, takeViewportSnapshot());
+          if (event.detail > 0) event.currentTarget.blur();
         });
         dots.forEach((dot) => dot.addEventListener("click", (event) => {
           event.preventDefault();
-          event.currentTarget.focus({ preventScroll: true });
           show(Number(dot.dataset.aboutDot), takeViewportSnapshot());
+          if (event.detail > 0) event.currentTarget.blur();
         }));
         if (tagline) requestAnimationFrame(() => tagline.classList.add("is-visible"));
       })();
