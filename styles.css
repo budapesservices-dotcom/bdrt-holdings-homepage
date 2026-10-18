@@ -7619,7 +7619,7 @@ body.portal-closing .portal-sheet::before {
   }
 
   .site-header .wordmark-frame {
-    top: calc(-12px - var(--header-top));
+    top: calc(-19px - var(--header-top));
     width: 112px;
     height: 96px;
   }
