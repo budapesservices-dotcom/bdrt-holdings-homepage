@@ -14119,3 +14119,193 @@ input[type="reset"]:active {
     transition-delay: 0ms !important;
   }
 }
+
+
+/* BDRT hero positioning: editorial identity and copy, no CTA button. */
+.hero::after {
+  background:
+    linear-gradient(90deg,
+      rgba(15, 15, 17, 0.48) 0%,
+      rgba(15, 15, 17, 0.32) 34%,
+      rgba(15, 15, 17, 0.12) 68%,
+      rgba(15, 15, 17, 0.06) 100%),
+    linear-gradient(0deg,
+      rgba(15, 15, 17, 0.46) 0%,
+      rgba(15, 15, 17, 0.16) 42%,
+      rgba(15, 15, 17, 0) 82%) !important;
+}
+
+.hero__positioning {
+  position: absolute;
+  z-index: 2;
+  left: clamp(28px, 7.2vw, 112px);
+  bottom: clamp(84px, 12.5vh, 148px);
+  width: min(780px, 57vw);
+  color: var(--cream, #F4F1EA);
+  pointer-events: none;
+}
+
+.hero__positioning-eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 clamp(13px, 1.8vh, 20px);
+  color: var(--champagne, #D4C5B9);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 9px;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.hero__positioning-eyebrow::after {
+  display: block;
+  width: 34px;
+  height: 1px;
+  background: rgba(212, 197, 185, 0.7);
+  content: "";
+}
+
+.hero__positioning-title {
+  max-width: 100%;
+  margin: 0;
+  color: var(--cream, #F4F1EA);
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(46px, 5.2vw, 78px);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+  line-height: 0.94;
+  text-wrap: balance;
+}
+
+.hero__positioning-title em {
+  display: block;
+  margin-top: 0.04em;
+  color: var(--champagne, #D4C5B9);
+  font-style: normal;
+  font-weight: 400;
+}
+
+.hero__positioning-description {
+  max-width: 48ch;
+  margin: clamp(15px, 2.1vh, 23px) 0 0;
+  color: rgba(244, 241, 234, 0.88);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(12px, 0.94vw, 15px);
+  font-weight: 400;
+  letter-spacing: 0.005em;
+  line-height: 1.58;
+  text-wrap: pretty;
+}
+
+@media (max-width: 1100px) and (min-width: 761px) {
+  .hero__positioning {
+    left: clamp(26px, 5vw, 68px);
+    bottom: clamp(78px, 10vh, 118px);
+    width: min(690px, 62vw);
+  }
+
+  .hero__positioning-title {
+    font-size: clamp(44px, 5.4vw, 64px);
+  }
+
+  .hero__positioning-description {
+    max-width: 43ch;
+  }
+}
+
+@media (max-width: 760px) {
+  .hero::after {
+    background:
+      linear-gradient(0deg,
+        rgba(15, 15, 17, 0.72) 0%,
+        rgba(15, 15, 17, 0.48) 32%,
+        rgba(15, 15, 17, 0.12) 72%,
+        rgba(15, 15, 17, 0.08) 100%),
+      linear-gradient(90deg,
+        rgba(15, 15, 17, 0.2) 0%,
+        rgba(15, 15, 17, 0.02) 100%) !important;
+  }
+
+  .hero__positioning {
+    left: 22px;
+    right: 22px;
+    bottom: max(76px, calc(env(safe-area-inset-bottom) + 66px));
+    width: auto;
+    max-width: 560px;
+  }
+
+  .hero__positioning-eyebrow {
+    gap: 9px;
+    margin-bottom: 12px;
+    font-size: 8px;
+    letter-spacing: 0.2em;
+  }
+
+  .hero__positioning-eyebrow::after {
+    width: 25px;
+  }
+
+  .hero__positioning-title {
+    max-width: 100%;
+    font-size: clamp(38px, 10.3vw, 58px);
+    letter-spacing: -0.055em;
+    line-height: 0.94;
+  }
+
+  .hero__positioning-description {
+    max-width: 38ch;
+    margin-top: 13px;
+    font-size: 12px;
+    line-height: 1.48;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero__positioning {
+    left: 18px;
+    right: 18px;
+    bottom: max(68px, calc(env(safe-area-inset-bottom) + 58px));
+  }
+
+  .hero__positioning-title {
+    font-size: clamp(34px, 9.7vw, 41px);
+  }
+
+  .hero__positioning-description {
+    margin-top: 10px;
+    font-size: 11px;
+    line-height: 1.45;
+  }
+}
+
+@media (max-height: 620px) and (max-width: 760px) {
+  .hero__positioning {
+    bottom: max(58px, calc(env(safe-area-inset-bottom) + 48px));
+  }
+
+  .hero__positioning-eyebrow {
+    margin-bottom: 8px;
+  }
+
+  .hero__positioning-title {
+    font-size: clamp(32px, 8vw, 44px);
+  }
+
+  .hero__positioning-description {
+    max-width: 44ch;
+    margin-top: 8px;
+    font-size: 11px;
+    line-height: 1.4;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__positioning,
+  .hero__positioning-title,
+  .hero__positioning-description {
+    animation: none !important;
+    transition: none !important;
+  }
+}
