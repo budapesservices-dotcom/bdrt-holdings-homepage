@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=about-carousel-157" />
+    <link rel="stylesheet" href="./styles.css?v=about-carousel-158" />
   </head>
   <body>
     <main class="page">
@@ -221,6 +221,15 @@
           <div class="about-section__inner">
             <div class="about-section__story">
               <div class="about-carousel__copy is-active" data-about-slide="0" aria-hidden="false">
+                <p class="about-section__eyebrow">A DIVERSIFIED COMMERCIAL HOLDING COMPANY</p>
+                <h2 class="about-section__headline">A connected portfolio of businesses, brands &amp; ventures.</h2>
+                <p class="about-section__text">BDRT Holdings brings together businesses, brands, and ventures across commercial strategy, advertising, project development, talent, and community-focused initiatives. By connecting complementary capabilities and strategic relationships, we help build long-term value across an evolving portfolio.</p>
+                <div class="about-section__links" aria-label="Our brands">
+                  <a href="https://vvoxaa.com/" target="_blank" rel="noopener noreferrer">VVOXAA.COM <span aria-hidden="true">↗</span></a>
+                  <a href="https://voxahouse.com/" target="_blank" rel="noopener noreferrer">VOXAHOUSE.COM <span aria-hidden="true">↗</span></a>
+                </div>
+              </div>
+              <div class="about-carousel__copy" data-about-slide="1" aria-hidden="true" inert>
                 <p class="about-section__eyebrow">WHAT WE DO <span aria-hidden="true">／</span> VOXA ECOSYSTEM</p>
                 <div class="about-carousel__services">
                   <article><span>01</span><div><h2>Brand Partnerships</h2><p>Strategic collaborations connecting aligned brands, audiences, and commercial opportunities.</p></div></article>
@@ -232,18 +241,18 @@
                 </div>
                 <div class="about-section__links"><a href="#contact">DISCUSS A PARTNERSHIP <span aria-hidden="true">↗</span></a></div>
               </div>
-              <div class="about-carousel__copy" data-about-slide="1" aria-hidden="true" inert>
+              <div class="about-carousel__copy" data-about-slide="2" aria-hidden="true" inert>
                 <p class="about-section__eyebrow">OUR STORY</p>
                 <h2 class="about-section__headline">Built on a shared foundation.<em>Designed to evolve.</em></h2>
                 <p class="about-section__text">BDRT Holdings is shaped by an entrepreneurial idea: meaningful growth happens when people, capabilities, and opportunity work together. That mindset connects a portfolio spanning talent, creative services, project development, and community-focused initiatives, with each business contributing a distinct strength to a wider commercial vision.</p>
                 <div class="about-section__links"><a href="#our-brands">EXPLORE OUR BRANDS <span aria-hidden="true">↗</span></a></div>
               </div>
-              <div class="about-carousel__copy" data-about-slide="2" aria-hidden="true" inert>
+              <div class="about-carousel__copy" data-about-slide="3" aria-hidden="true" inert>
                 <p class="about-section__eyebrow">THE VISION</p>
                 <p class="about-section__text">Build on the strengths of the portfolio, deepen strategic partnerships, and explore new ventures with the potential to create lasting commercial and community value.</p>
                 <div class="about-section__links"><a href="#contact">DISCUSS WHAT’S NEXT <span aria-hidden="true">↗</span></a></div>
               </div>
-              <div class="about-carousel__copy" data-about-slide="3" aria-hidden="true" inert>
+              <div class="about-carousel__copy" data-about-slide="4" aria-hidden="true" inert>
                 <p class="about-section__eyebrow">THE BDRT PERSPECTIVE</p>
                 <div class="about-carousel__chapters">
                   <article><span>01</span><div><p>THE FOUNDING IDEA</p><h2>Start with possibility.</h2><p>A belief that the right people, ideas, and relationships can turn commercial ambition into something lasting.</p></div></article>
@@ -253,17 +262,23 @@
                 <div class="about-section__links"><a href="#contact">CONNECT WITH BDRT <span aria-hidden="true">↗</span></a></div>
               </div>
             </div>
-            <div class="about-section__identity" aria-live="polite" aria-atomic="true">
-              <span class="about-section__identity-label" data-about-tagline>WHAT WE DO</span>
+            <div class="about-section__identity is-mark-active" aria-live="polite" aria-atomic="true">
+              <div class="about-section__identity-mark" data-about-mark aria-hidden="false">
+                <div class="about-section__monogram" aria-hidden="true">BDRT</div>
+                <div class="about-section__signature">HOLDINGS</div>
+                <span class="about-section__identity-note">STRATEGY · DEVELOPMENT · VENTURES</span>
+              </div>
+              <span class="about-section__identity-label" data-about-tagline aria-hidden="true"></span>
             </div>
           </div>
           <div class="about-carousel__controls" aria-label="About section slides">
             <button class="about-carousel__arrow" type="button" data-about-prev aria-label="Previous content"><span aria-hidden="true">←</span></button>
             <div class="about-carousel__dots" role="group" aria-label="Choose content">
-              <button type="button" data-about-dot="0" class="is-active" aria-label="Show What We Do" aria-current="true"></button>
-              <button type="button" data-about-dot="1" aria-label="Show Our Story" aria-current="false"></button>
-              <button type="button" data-about-dot="2" aria-label="Show The Vision" aria-current="false"></button>
-              <button type="button" data-about-dot="3" aria-label="Show The BDRT Perspective" aria-current="false"></button>
+              <button type="button" data-about-dot="0" class="is-active" aria-label="Show About BDRT" aria-current="true"></button>
+              <button type="button" data-about-dot="1" aria-label="Show What We Do" aria-current="false"></button>
+              <button type="button" data-about-dot="2" aria-label="Show Our Story" aria-current="false"></button>
+              <button type="button" data-about-dot="3" aria-label="Show The Vision" aria-current="false"></button>
+              <button type="button" data-about-dot="4" aria-label="Show The BDRT Perspective" aria-current="false"></button>
             </div>
             <button class="about-carousel__arrow" type="button" data-about-next aria-label="Next content"><span aria-hidden="true">→</span></button>
           </div>
@@ -2516,7 +2531,7 @@
         const slides = Array.from(section.querySelectorAll("[data-about-slide]"));
         const dots = Array.from(section.querySelectorAll("[data-about-dot]"));
         const tagline = section.querySelector("[data-about-tagline]");
-        const labels = ["WHAT WE DO", "OUR STORY", "THE VISION", "THE BDRT PERSPECTIVE"];
+        const labels = ["ABOUT BDRT", "WHAT WE DO", "OUR STORY", "THE VISION", "THE BDRT PERSPECTIVE"];
         let active = 0;
         let animating = false;
         const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
@@ -2531,12 +2546,22 @@
           target.inert = false;
           target.setAttribute("aria-hidden", "false");
           target.classList.add("is-active");
+          const identity = section.querySelector(".about-section__identity");
+          const mark = section.querySelector("[data-about-mark]");
+          if (identity) identity.classList.toggle("is-mark-active", next === 0);
+          if (mark) mark.setAttribute("aria-hidden", next === 0 ? "false" : "true");
           if (tagline) {
             tagline.classList.remove("is-visible");
-            window.setTimeout(() => {
-              tagline.textContent = labels[next];
-              tagline.classList.add("is-visible");
-            }, reducedMotion.matches ? 0 : 160);
+            if (next === 0) {
+              tagline.textContent = "";
+              tagline.setAttribute("aria-hidden", "true");
+            } else {
+              tagline.setAttribute("aria-hidden", "false");
+              window.setTimeout(() => {
+                tagline.textContent = labels[next];
+                tagline.classList.add("is-visible");
+              }, reducedMotion.matches ? 0 : 160);
+            }
           }
           dots.forEach((dot, index) => {
             const selected = index === next;
