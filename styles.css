@@ -11448,3 +11448,23 @@ input[type="reset"]:active {
 .about-section .about-section__identity-label span {
   word-spacing: 0.28em;
 }
+
+
+/* Match the right-hand About lockup more closely to the weight and compact rhythm of the BDRT wordmark. */
+.about-section .about-section__identity-label {
+  font-weight: 900;
+  -webkit-text-stroke: 0.55px currentColor;
+  line-height: 0.78;
+  row-gap: 0.02em;
+}
+.about-section .about-section__identity-label span {
+  font-weight: 900;
+  -webkit-text-stroke: 0.55px currentColor;
+  line-height: inherit;
+}
+@media (max-width: 760px) {
+  .about-section .about-section__identity-label,
+  .about-section .about-section__identity-label span {
+    -webkit-text-stroke-width: 0.35px;
+  }
+}
