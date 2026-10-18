@@ -27,7 +27,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     env:
-      RECORD_MODE: ${ github.event.inputs.mode || 'both' }}
+      RECORD_MODE: ${{ github.event.inputs.mode || 'both' }}
     steps:
       - name: Check out BDRT website
         uses: actions/checkout@v4
@@ -65,12 +65,12 @@ jobs:
         run: |
           shopt -s nullglob
           files=(recordings/*.webm)
-          if [ $#files[@]} -eq 0 ]; then
+          if [ ${#files[@]} -eq 0 ]; then
             echo "No WebM recordings were produced."
             exit 1
           fi
-          for file in "$files[@]}"; do
-            output="$file%.webm}.mp4"
+          for file in "${files[@]}"; do
+            output="${file%.webm}.mp4"
             ffmpeg -hide_banner -loglevel error -y -i "$file" \
               -c:v libx264 -preset medium -crf 19 -pix_fmt yuv420p \
               -movflags +faststart -an "$output"
