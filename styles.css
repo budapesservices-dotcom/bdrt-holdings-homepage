@@ -12731,3 +12731,390 @@ input[type="reset"]:active {
     text-align: left !important;
   }
 }
+
+
+/* Contact relayout: pin the inquiry form to the right in the same full-screen magazine spread at every viewport. */
+/* One viewport, two explicit areas. Do not let the mobile one-column rule move the form below. */
+.contact-section.section-panel {
+  display: block !important;
+  overflow: hidden !important;
+  padding: clamp(104px, 12vh, 126px) clamp(18px, 5.1vw, 82px) clamp(20px, 2.7vh, 30px) !important;
+  box-sizing: border-box !important;
+}
+
+.contact-section.section-panel .contact-section__layout {
+  display: grid !important;
+  width: min(100%, 1460px) !important;
+  height: 100% !important;
+  min-height: 0 !important;
+  grid-template-columns: minmax(0, 0.92fr) minmax(0, 1.08fr) !important;
+  grid-template-rows: minmax(0, 1fr) !important;
+  grid-template-areas: "editorial inquiry" !important;
+  align-items: stretch !important;
+  gap: 0 !important;
+  overflow: hidden !important;
+}
+
+.contact-section.section-panel .contact-section__layout::after {
+  display: block !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  left: 46% !important;
+  background: rgba(244, 241, 234, 0.16) !important;
+}
+
+.contact-section.section-panel .contact-section__editorial {
+  grid-area: editorial !important;
+  align-self: stretch !important;
+  justify-content: center !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  padding: 0 clamp(16px, 3vw, 46px) 0 0 !important;
+  overflow: hidden !important;
+}
+
+.contact-section.section-panel .contact-section__form-panel {
+  grid-area: inquiry !important;
+  position: sticky !important;
+  top: 0 !important;
+  align-self: stretch !important;
+  min-width: 0 !important;
+  min-height: 0 !important;
+  height: 100% !important;
+  max-height: 100% !important;
+  justify-content: center !important;
+  padding: 0 0 0 clamp(16px, 3vw, 46px) !important;
+  border: 0 !important;
+  border-left: 1px solid rgba(244, 241, 234, 0.16) !important;
+  overflow-x: hidden !important;
+  overflow-y: auto !important;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+
+.contact-section.section-panel .contact-section__form-panel::-webkit-scrollbar {
+  display: none;
+  width: 0;
+}
+
+/* Keep the writing and form balanced on medium screens while preserving the right-hand form. */
+@media (min-width: 521px) and (max-width: 900px) {
+  .contact-section.section-panel {
+    padding-right: 22px !important;
+    padding-left: 22px !important;
+  }
+
+  .contact-section.section-panel .contact-section__layout {
+    grid-template-columns: minmax(0, 0.82fr) minmax(0, 1.18fr) !important;
+  }
+
+  .contact-section.section-panel .contact-section__layout::after {
+    left: 41% !important;
+  }
+
+  .contact-section.section-panel .contact-section__editorial {
+    padding-right: 14px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-panel {
+    padding-left: 14px !important;
+  }
+
+  .contact-section.section-panel .contact-section__headline {
+    font-size: clamp(33px, 5vw, 46px) !important;
+    line-height: 0.92 !important;
+  }
+
+  .contact-section.section-panel .contact-section__intro {
+    font-size: 10px !important;
+    line-height: 1.5 !important;
+  }
+
+  .contact-section.section-panel .contact-section__visual {
+    width: 100% !important;
+    height: clamp(76px, 13vh, 112px) !important;
+    margin-top: 10px !important;
+  }
+
+  .contact-section.section-panel .contact-section__signature {
+    margin-top: 8px !important;
+    font-size: 6px !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+    font-size: 19px !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend span {
+    font-size: 6px !important;
+  }
+
+  .contact-section.section-panel .contact-interest {
+    min-height: 48px !important;
+    gap: 7px !important;
+    padding: 8px !important;
+  }
+
+  .contact-section.section-panel .contact-interest__check {
+    width: 17px !important;
+    height: 17px !important;
+    flex-basis: 17px !important;
+  }
+
+  .contact-section.section-panel .contact-interest__name {
+    font-size: 14px !important;
+  }
+
+  .contact-section.section-panel .contact-interest__type {
+    font-size: 5.5px !important;
+    letter-spacing: 0.08em !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields {
+    margin-top: 12px !important;
+    gap: 9px 12px !important;
+  }
+
+  .contact-section.section-panel .contact-field__label {
+    font-size: 8px !important;
+  }
+
+  .contact-section.section-panel .contact-field input {
+    height: 28px !important;
+    font-size: 11px !important;
+  }
+
+  .contact-section.section-panel .contact-field textarea {
+    min-height: 34px !important;
+    max-height: 52px !important;
+    font-size: 11px !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit-row {
+    gap: 8px !important;
+    margin-top: 12px !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit {
+    min-width: 144px !important;
+    min-height: 36px !important;
+    padding-right: 12px !important;
+    padding-left: 14px !important;
+    font-size: 7px !important;
+  }
+
+  .contact-section.section-panel .contact-form__privacy {
+    font-size: 6px !important;
+  }
+}
+
+/* Narrow mobile screens still keep the inquiry form on the right; the left becomes a compact editorial rail. */
+@media (max-width: 520px) {
+  .contact-section.section-panel {
+    padding: max(116px, calc(env(safe-area-inset-top) + 108px)) 12px 16px !important;
+  }
+
+  .contact-section.section-panel .contact-section__layout {
+    height: 100% !important;
+    grid-template-columns: minmax(0, 0.76fr) minmax(0, 1.24fr) !important;
+    grid-template-rows: minmax(0, 1fr) !important;
+    grid-template-areas: "editorial inquiry" !important;
+    align-items: stretch !important;
+    overflow: hidden !important;
+  }
+
+  .contact-section.section-panel .contact-section__layout::after {
+    left: 38% !important;
+  }
+
+  .contact-section.section-panel .contact-section__editorial {
+    justify-content: flex-start !important;
+    padding: 6px 10px 0 0 !important;
+    overflow: hidden !important;
+  }
+
+  .contact-section.section-panel .contact-section__masthead {
+    display: block !important;
+    margin: 0 0 16px !important;
+  }
+
+  .contact-section.section-panel .contact-section__eyebrow {
+    margin: 0 !important;
+    font-size: 6px !important;
+    letter-spacing: 0.09em !important;
+  }
+
+  .contact-section.section-panel .contact-section__folio {
+    display: none !important;
+  }
+
+  .contact-section.section-panel .contact-section__headline {
+    margin: 0 !important;
+    font-size: clamp(25px, 7.5vw, 35px) !important;
+    line-height: 0.9 !important;
+    letter-spacing: -0.065em !important;
+    overflow-wrap: normal !important;
+    word-break: normal !important;
+  }
+
+  .contact-section.section-panel .contact-section__headline em {
+    display: block;
+  }
+
+  .contact-section.section-panel .contact-section__intro {
+    margin-top: 12px !important;
+    font-size: clamp(8px, 2.45vw, 10px) !important;
+    line-height: 1.45 !important;
+    overflow-wrap: anywhere !important;
+  }
+
+  .contact-section.section-panel .contact-section__visual,
+  .contact-section.section-panel .contact-section__signature {
+    display: none !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-panel {
+    justify-content: flex-start !important;
+    padding: 0 0 0 10px !important;
+    border-left: 1px solid rgba(244, 241, 234, 0.16) !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-masthead {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+    margin: 0 0 12px !important;
+    padding: 0 0 8px !important;
+    font-size: 6px !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend {
+    display: block !important;
+    margin-bottom: 7px !important;
+    font-size: 16px !important;
+    line-height: 1.05 !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend span {
+    display: block !important;
+    margin-top: 4px !important;
+    font-size: 5px !important;
+    line-height: 1.4 !important;
+    white-space: normal !important;
+  }
+
+  .contact-section.section-panel .contact-form__interest-grid {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 5px !important;
+  }
+
+  .contact-section.section-panel .contact-interest {
+    min-height: 38px !important;
+    gap: 7px !important;
+    padding: 6px !important;
+  }
+
+  .contact-section.section-panel .contact-interest__check {
+    width: 14px !important;
+    height: 14px !important;
+    flex-basis: 14px !important;
+  }
+
+  .contact-section.section-panel .contact-interest__name {
+    font-size: 12px !important;
+    line-height: 1 !important;
+  }
+
+  .contact-section.section-panel .contact-interest__type {
+    font-size: 5px !important;
+    letter-spacing: 0.05em !important;
+    line-height: 1.25 !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields {
+    grid-template-columns: minmax(0, 1fr) !important;
+    gap: 8px !important;
+    margin-top: 12px !important;
+  }
+
+  .contact-section.section-panel .contact-field--full {
+    grid-column: 1 !important;
+  }
+
+  .contact-section.section-panel .contact-field {
+    gap: 3px !important;
+  }
+
+  .contact-section.section-panel .contact-field__label {
+    font-size: 6px !important;
+    letter-spacing: 0.07em !important;
+  }
+
+  .contact-section.section-panel .contact-field input {
+    height: 25px !important;
+    padding: 4px 0 !important;
+    font-size: 10px !important;
+  }
+
+  .contact-section.section-panel .contact-field textarea {
+    min-height: 34px !important;
+    max-height: 54px !important;
+    padding: 4px 0 !important;
+    font-size: 10px !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit-row {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 7px !important;
+    margin-top: 11px !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit {
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 34px !important;
+    justify-content: space-between !important;
+    padding: 0 10px !important;
+    font-size: 6.5px !important;
+    letter-spacing: 0.1em !important;
+  }
+
+  .contact-section.section-panel .contact-form__privacy {
+    max-width: none !important;
+    font-size: 5px !important;
+    line-height: 1.35 !important;
+  }
+
+  .contact-section.section-panel .contact-form__notice,
+  .contact-section.section-panel .contact-form__fallback {
+    font-size: 7px !important;
+  }
+}
+
+@media (max-width: 360px) {
+  .contact-section.section-panel {
+    padding-right: 9px !important;
+    padding-left: 9px !important;
+  }
+
+  .contact-section.section-panel .contact-section__layout {
+    grid-template-columns: minmax(0, 0.72fr) minmax(0, 1.28fr) !important;
+  }
+
+  .contact-section.section-panel .contact-section__headline {
+    font-size: 24px !important;
+  }
+
+  .contact-section.section-panel .contact-section__intro {
+    font-size: 7.6px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-panel {
+    padding-left: 8px !important;
+  }
+}
