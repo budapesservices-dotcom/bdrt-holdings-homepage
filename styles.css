@@ -9543,6 +9543,12 @@ input[type="reset"] {
   touch-action: manipulation;
 }
 
+label {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  user-select: none;
+}
+
 a:active,
 button:active,
 [role="button"]:active,
@@ -9551,6 +9557,5 @@ input[type="button"]:active,
 input[type="submit"]:active,
 input[type="reset"]:active {
   -webkit-tap-highlight-color: transparent !important;
-  outline-color: transparent;
 }
 
