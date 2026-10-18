@@ -10488,3 +10488,295 @@ input[type="reset"]:active {
     transition: none;
   }
 }
+
+
+/* Portfolio provenance and business breadth: distinguish brand imagery, stock references, and the wider BDRT portfolio. */
+.portfolio-shot__caption-category {
+  display: block;
+  margin-bottom: 1px;
+  color: rgba(212, 197, 185, 0.96);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 6px;
+  font-weight: 700;
+  letter-spacing: 0.13em;
+  line-height: 1.4;
+  text-transform: uppercase;
+}
+
+.portfolio-gallery__flight-caption .portfolio-shot__caption-category {
+  font-size: clamp(6px, 0.55vw, 8px);
+  letter-spacing: 0.13em;
+}
+
+.portfolio-ecosystem {
+  display: grid;
+  flex: 0 0 auto;
+  grid-template-columns: minmax(126px, 0.33fr) minmax(0, 1.67fr);
+  align-items: center;
+  gap: clamp(12px, 2vw, 28px);
+  margin: 0 clamp(24px, 5.2vw, 80px);
+  padding-top: 9px;
+  border-top: 1px solid rgba(15, 15, 17, 0.16);
+}
+
+.portfolio-ecosystem__masthead {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.portfolio-ecosystem__eyebrow {
+  margin: 0;
+  color: var(--deep-bronze);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  line-height: 1.45;
+}
+
+.portfolio-ecosystem__masthead > span {
+  color: rgba(15, 15, 17, 0.52);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 6px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.45;
+}
+
+.portfolio-ecosystem__list {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  align-items: stretch;
+  gap: 0;
+}
+
+.portfolio-ecosystem__item {
+  display: grid;
+  min-width: 0;
+  grid-template-columns: 34px minmax(0, 1fr);
+  grid-template-rows: auto auto;
+  align-content: center;
+  align-items: center;
+  gap: 3px 8px;
+  padding: 1px clamp(7px, 1vw, 14px);
+  border-left: 1px solid rgba(15, 15, 17, 0.14);
+  color: var(--obsidian);
+  text-decoration: none;
+  transition: opacity 180ms ease;
+}
+
+.portfolio-ecosystem__item:hover,
+.portfolio-ecosystem__item:focus-visible {
+  opacity: 0.68;
+}
+
+.portfolio-ecosystem__item:focus-visible {
+  outline: 1px solid var(--deep-bronze);
+  outline-offset: 3px;
+}
+
+.portfolio-ecosystem__logo {
+  display: flex;
+  width: 34px;
+  height: 30px;
+  grid-column: 1;
+  grid-row: 1 / span 2;
+  align-items: center;
+  justify-content: center;
+}
+
+.portfolio-ecosystem__logo img {
+  display: block;
+  width: 100%;
+  max-width: 34px;
+  height: 100%;
+  max-height: 29px;
+  object-fit: contain;
+  object-position: center;
+  filter: brightness(0);
+}
+
+.portfolio-ecosystem__name {
+  display: block;
+  min-width: 0;
+  color: var(--obsidian);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(7px, 0.62vw, 9px);
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  line-height: 1.2;
+  overflow-wrap: anywhere;
+}
+
+.portfolio-ecosystem__description {
+  display: block;
+  min-width: 0;
+  color: rgba(15, 15, 17, 0.58);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(6px, 0.5vw, 7px);
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+}
+
+@media (max-height: 760px) and (min-width: 761px) {
+  .portfolio-ecosystem {
+    padding-top: 7px;
+    gap: 12px;
+  }
+
+  .portfolio-ecosystem__masthead {
+    gap: 2px;
+  }
+
+  .portfolio-ecosystem__item {
+    gap: 2px 7px;
+  }
+
+  .portfolio-ecosystem__logo {
+    height: 25px;
+  }
+
+  .portfolio-ecosystem__logo img {
+    max-height: 24px;
+  }
+
+  .portfolio-ecosystem__description {
+    font-size: 6px;
+  }
+}
+
+@media (max-width: 1080px) and (min-width: 761px) {
+  .portfolio-ecosystem {
+    grid-template-columns: minmax(100px, 0.28fr) minmax(0, 1.72fr);
+    gap: 10px;
+  }
+
+  .portfolio-ecosystem__item {
+    grid-template-columns: 28px minmax(0, 1fr);
+    padding-right: 6px;
+    padding-left: 7px;
+    gap: 3px 6px;
+  }
+
+  .portfolio-ecosystem__logo {
+    width: 28px;
+  }
+
+  .portfolio-ecosystem__logo img {
+    max-width: 28px;
+  }
+
+  .portfolio-ecosystem__name {
+    font-size: 7px;
+  }
+}
+
+@media (max-width: 760px) {
+  .portfolio-ecosystem {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 9px;
+    margin-right: 18px;
+    margin-left: 18px;
+    padding-top: 9px;
+  }
+
+  .portfolio-ecosystem__masthead {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 6px 12px;
+  }
+
+  .portfolio-ecosystem__eyebrow {
+    font-size: 7px;
+    letter-spacing: 0.15em;
+  }
+
+  .portfolio-ecosystem__masthead > span {
+    font-size: 6px;
+  }
+
+  .portfolio-ecosystem__list {
+    display: grid;
+    width: 100%;
+    grid-auto-columns: minmax(145px, 44%);
+    grid-auto-flow: column;
+    grid-template-columns: none;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding-bottom: 4px;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+    touch-action: pan-x;
+  }
+
+  .portfolio-ecosystem__list::-webkit-scrollbar {
+    display: none;
+    width: 0;
+    height: 0;
+  }
+
+  .portfolio-ecosystem__item {
+    min-height: 43px;
+    grid-template-columns: 33px minmax(0, 1fr);
+    padding: 2px 9px;
+    gap: 3px 8px;
+  }
+
+  .portfolio-ecosystem__logo {
+    width: 33px;
+    height: 28px;
+  }
+
+  .portfolio-ecosystem__logo img {
+    max-width: 33px;
+    max-height: 27px;
+  }
+
+  .portfolio-ecosystem__name {
+    font-size: 8px;
+  }
+
+  .portfolio-ecosystem__description {
+    font-size: 7px;
+    line-height: 1.3;
+  }
+}
+
+@media (max-width: 380px) {
+  .portfolio-ecosystem__list {
+    grid-auto-columns: minmax(136px, 48%);
+  }
+
+  .portfolio-ecosystem__item {
+    grid-template-columns: 28px minmax(0, 1fr);
+    padding-right: 7px;
+    padding-left: 7px;
+    gap: 3px 7px;
+  }
+
+  .portfolio-ecosystem__logo,
+  .portfolio-ecosystem__logo img {
+    width: 28px;
+    max-width: 28px;
+  }
+
+  .portfolio-ecosystem__name {
+    font-size: 7px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .portfolio-ecosystem__item {
+    transition: none;
+  }
+}
