@@ -8664,12 +8664,12 @@ body.portal-closing .portal-sheet::before {
 /* Lower Section 2 copy on mobile while keeping the BDRT mark anchored above it. */
 @media (max-width: 640px) {
   .about-section__story {
-    transform: translateY(12px);
+    transform: translateY(24px);
   }
 }
 
 @media (max-width: 640px) and (max-height: 740px) {
   .about-section__story {
-    transform: translateY(6px);
+    transform: translateY(12px);
   }
 }
