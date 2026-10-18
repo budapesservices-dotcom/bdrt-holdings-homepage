@@ -11252,3 +11252,9 @@ input[type="reset"]:active {
   .about-carousel__copy.is-active { animation: none; opacity: 1; transform: none; }
   .about-section__identity-label, .about-carousel__arrow, .about-carousel__dots button { transition: none; }
 }
+
+
+/* Keep About in the fixed magazine panel stack; a generic .about-section rule must not turn it into normal document flow. */
+.about-section.section-panel {
+  position: fixed;
+}
