@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings homepage with a looping video hero." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=mobile-navbar-arch-raised-further-119" />
+    <link rel="stylesheet" href="./styles.css?v=mobile-luxury-drawer-login-120" />
   </head>
   <body>
     <main class="page">
@@ -15,6 +15,19 @@
           <path class="wordmark-frame__stroke" d="M1 0 V31 C1 76 29.654 113 65 113 C100.346 113 129 76 129 31 V0" />
           <path class="wordmark-frame__fill" d="M1 0 H129 V31 C129 76 100.346 113 65 113 C29.654 113 1 76 1 31 Z" />
         </svg>
+
+        <button class="mobile-menu-toggle" type="button" aria-controls="mobile-menu" aria-expanded="false" aria-label="Open navigation menu">
+          <span class="mobile-menu-toggle__lines" aria-hidden="true">
+            <span class="mobile-menu-toggle__line"></span>
+            <span class="mobile-menu-toggle__line"></span>
+            <span class="mobile-menu-toggle__line"></span>
+          </span>
+          <span class="mobile-menu-toggle__label">MENU</span>
+        </button>
+
+        <a class="mobile-login" href="#client-login" aria-label="Client login">
+          <span>LOGIN</span><span class="mobile-login__arrow" aria-hidden="true">↗</span>
+        </a>
 
         <nav class="site-nav site-nav--left" aria-label="Main navigation">
           <a href="#home" aria-current="page">HOME</a>
@@ -36,6 +49,40 @@
         </nav>
       </header>
 
+      <div class="mobile-menu" id="mobile-menu" aria-hidden="true" inert>
+        <button class="mobile-menu__backdrop" type="button" data-mobile-menu-close tabindex="-1" aria-label="Close navigation menu"></button>
+        <section class="mobile-menu__panel" role="dialog" aria-modal="true" aria-labelledby="mobile-menu-title">
+          <div class="mobile-menu__masthead">
+            <div class="mobile-menu__identity">
+              <span class="mobile-menu__eyebrow">BDRT HOLDINGS <i>／</i> NAVIGATION</span>
+              <span class="mobile-menu__edition">EST. 2026 <i>·</i> PRIVATE BY DESIGN</span>
+            </div>
+            <button class="mobile-menu__close" type="button" data-mobile-menu-close aria-label="Close navigation menu">
+              <span aria-hidden="true"></span><span aria-hidden="true"></span>
+            </button>
+          </div>
+
+          <div class="mobile-menu__intro">
+            <p class="mobile-menu__kicker">EXPLORE BDRT <span>／</span> 01—07</p>
+            <h2 id="mobile-menu-title">A considered view.</h2>
+          </div>
+
+          <nav class="mobile-menu__nav" aria-label="Mobile navigation">
+            <a href="#home"><span class="mobile-menu__number">01</span><span class="mobile-menu__label">Home</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+            <a href="#about"><span class="mobile-menu__number">02</span><span class="mobile-menu__label">About</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+            <a href="#businesses"><span class="mobile-menu__number">03</span><span class="mobile-menu__label">Businesses</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+            <a href="#our-brands"><span class="mobile-menu__number">04</span><span class="mobile-menu__label">Our Brands</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+            <a href="#portfolio"><span class="mobile-menu__number">05</span><span class="mobile-menu__label">Portfolio</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+            <a href="#contact"><span class="mobile-menu__number">06</span><span class="mobile-menu__label">Contact</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+            <a href="#donor-portal"><span class="mobile-menu__number">07</span><span class="mobile-menu__label">Donor Portal</span><span class="mobile-menu__arrow" aria-hidden="true">↗</span></a>
+          </nav>
+
+          <div class="mobile-menu__footer">
+            <span>BDRT HOLDINGS</span>
+            <span>STRATEGY <i>／</i> TALENT <i>／</i> VENTURES</span>
+          </div>
+        </section>
+      </div>
 
       <div class="portal-experience" id="portal-experience" aria-hidden="true" inert>
         <div class="portal-sheet" id="portal-sheet">
@@ -2012,6 +2059,63 @@
           closePortalExperience();
         });
 
+        const mobileMenu = document.getElementById("mobile-menu");
+        const mobileMenuToggle = document.querySelector(".mobile-menu-toggle");
+        let mobileMenuReturnFocus = null;
+        let mobileMenuCloseTimer = 0;
+
+        const closeMobileMenu = (restoreFocus = true) => {
+          if (!mobileMenu || !mobileMenu.classList.contains("is-open")) return;
+          mobileMenu.classList.remove("is-open");
+          document.body.classList.remove("mobile-menu-open");
+          mobileMenuToggle?.setAttribute("aria-expanded", "false");
+          mobileMenuToggle?.setAttribute("aria-label", "Open navigation menu");
+
+          window.clearTimeout(mobileMenuCloseTimer);
+          mobileMenuCloseTimer = window.setTimeout(() => {
+            if (!mobileMenu.classList.contains("is-open")) {
+              mobileMenu.setAttribute("aria-hidden", "true");
+              mobileMenu.inert = true;
+            }
+          }, window.matchMedia("(prefers-reduced-motion: reduce)").matches ? 0 : 620);
+
+          if (restoreFocus && mobileMenuReturnFocus instanceof HTMLElement) {
+            mobileMenuReturnFocus.focus({ preventScroll: true });
+          }
+          mobileMenuReturnFocus = null;
+        };
+
+        const openMobileMenu = () => {
+          if (!mobileMenu || window.matchMedia("(min-width: 761px)").matches) return;
+          window.clearTimeout(mobileMenuCloseTimer);
+          mobileMenuReturnFocus = document.activeElement instanceof HTMLElement
+            ? document.activeElement
+            : mobileMenuToggle;
+          mobileMenu.inert = false;
+          mobileMenu.setAttribute("aria-hidden", "false");
+          mobileMenu.classList.add("is-open");
+          document.body.classList.add("mobile-menu-open");
+          mobileMenuToggle?.setAttribute("aria-expanded", "true");
+          mobileMenuToggle?.setAttribute("aria-label", "Close navigation menu");
+          mobileMenu.querySelector(".mobile-menu__close")?.focus({ preventScroll: true });
+        };
+
+        mobileMenuToggle?.addEventListener("click", () => {
+          if (mobileMenu?.classList.contains("is-open")) {
+            closeMobileMenu();
+          } else {
+            openMobileMenu();
+          }
+        });
+
+        mobileMenu?.querySelectorAll("[data-mobile-menu-close]").forEach((button) => {
+          button.addEventListener("click", () => closeMobileMenu());
+        });
+
+        mobileMenu?.querySelectorAll('.mobile-menu__nav a[href^="#"]').forEach((link) => {
+          link.addEventListener("click", () => closeMobileMenu(false));
+        });
+
         document.querySelectorAll('a[href^="#"]').forEach((link) => {
           link.addEventListener("click", (event) => {
             const targetId = link.getAttribute("href");
@@ -2028,6 +2132,15 @@
         });
 
         window.addEventListener("wheel", (event) => {
+          if (document.body.classList.contains("mobile-menu-open")) {
+            const menuScroller = event.target instanceof Element ? event.target.closest(".mobile-menu__panel") : null;
+            const canScrollMenu = menuScroller && (event.deltaY < 0
+              ? menuScroller.scrollTop > 0
+              : menuScroller.scrollTop + menuScroller.clientHeight < menuScroller.scrollHeight - 1);
+            if (canScrollMenu) return;
+            event.preventDefault();
+            return;
+          }
           if (event.ctrlKey || Math.abs(event.deltaY) < 2.5) return;
 
           if (document.body.classList.contains("portal-open")) {
@@ -2069,7 +2182,7 @@
           startY = touch.clientY;
           capturedVerticalSwipe = false;
           touchScrollPanel = event.target instanceof Element
-            ? event.target.closest(".portal-page, .contact-section")
+            ? event.target.closest(".portal-page, .contact-section, .mobile-menu__panel")
             : null;
         }, { passive: true });
 
@@ -2083,6 +2196,11 @@
               ? touchScrollPanel.scrollTop + touchScrollPanel.clientHeight < touchScrollPanel.scrollHeight - 1
               : touchScrollPanel.scrollTop > 0;
             if (canScrollInsidePanel) return;
+          }
+
+          if (document.body.classList.contains("mobile-menu-open")) {
+            event.preventDefault();
+            return;
           }
 
           if (document.body.classList.contains("portal-open")) {
@@ -2110,6 +2228,28 @@
         }, { passive: true });
 
         window.addEventListener("keydown", (event) => {
+          if (event.key === "Escape" && mobileMenu?.classList.contains("is-open")) {
+            closeMobileMenu();
+            event.preventDefault();
+            return;
+          }
+
+          if (mobileMenu?.classList.contains("is-open")) {
+            if (event.key === "Tab") {
+              const focusable = Array.from(mobileMenu.querySelectorAll(".mobile-menu__panel a[href], .mobile-menu__panel button:not([disabled])"));
+              const first = focusable[0];
+              const last = focusable[focusable.length - 1];
+              if (event.shiftKey && document.activeElement === first) {
+                last?.focus();
+                event.preventDefault();
+              } else if (!event.shiftKey && document.activeElement === last) {
+                first?.focus();
+                event.preventDefault();
+              }
+            }
+            return;
+          }
+
           if (event.key === "Escape" && document.body.classList.contains("portal-open")) {
             closePortalExperience();
             event.preventDefault();
