@@ -12378,3 +12378,23 @@ input[type="reset"]:active {
     letter-spacing: 0.1em;
   }
 }
+
+
+/* Mobile fix: fit the long PERSPECTIVE line without shrinking other oversized slide titles. */
+@media (max-width: 760px) {
+  .about-section .about-section__identity-label[aria-label="THE BDRT PERSPECTIVE"] span:last-child {
+    width: 100%;
+    max-width: 100%;
+    font-size: clamp(42px, 11.5vw, 58px) !important;
+    letter-spacing: -0.12em;
+    line-height: 0.86;
+    white-space: nowrap;
+  }
+}
+
+@media (max-width: 380px) {
+  .about-section .about-section__identity-label[aria-label="THE BDRT PERSPECTIVE"] span:last-child {
+    font-size: 40px !important;
+    letter-spacing: -0.12em;
+  }
+}
