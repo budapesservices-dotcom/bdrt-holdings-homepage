@@ -8706,3 +8706,46 @@ body.portal-closing .portal-sheet::before {
     box-shadow: 0 0 7px rgba(15, 15, 17, 0.18);
   }
 }
+
+
+/* Stronger mobile correction for Sections 3–4: move the rail visibly lower and give the timer its own clear inset. */
+@media (max-width: 640px) {
+  .businesses-section__logo-rail {
+    bottom: calc(-7vh - 32px);
+    height: 140px;
+  }
+
+  .business-logo.is-selected {
+    z-index: 5;
+  }
+
+  .business-logo__duration {
+    z-index: 8;
+    overflow: visible;
+  }
+
+  .business-logo__duration::before {
+    top: 8px;
+    right: 9px;
+    left: 9px;
+    z-index: 9;
+    height: 3px;
+    border-radius: 999px;
+    background: var(--obsidian);
+    box-shadow: 0 0 6px rgba(15, 15, 17, 0.16);
+  }
+}
+
+@media (max-width: 360px) {
+  .businesses-section__logo-rail {
+    bottom: calc(-7vh - 28px);
+    height: 136px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .business-logo.is-selected.is-timing .business-logo__duration::before {
+    transform: scaleX(1);
+    opacity: 1;
+  }
+}
