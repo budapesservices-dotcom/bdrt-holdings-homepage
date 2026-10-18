@@ -9683,3 +9683,427 @@ input[type="reset"]:active {
   }
 }
 
+
+
+/* History & vision: a concise editorial bridge from selected work to the next chapter. */
+.history-vision-section {
+  isolation: isolate;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  padding: clamp(100px, 12vh, 126px) clamp(24px, 5.1vw, 82px) clamp(28px, 4vh, 42px);
+  background:
+    radial-gradient(ellipse at 84% 22%, rgba(70, 91, 75, 0.22), transparent 43%),
+    #151b17;
+  color: var(--cream);
+}
+
+.history-vision-section::before {
+  position: absolute;
+  z-index: 0;
+  top: -0.22em;
+  right: -0.045em;
+  color: rgba(244, 241, 234, 0.025);
+  content: "06";
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(370px, 48vw, 780px);
+  font-weight: 500;
+  letter-spacing: -0.1em;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+}
+
+.history-vision__inner {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  width: min(100%, 1420px);
+  height: 100%;
+  min-height: 0;
+  margin: 0 auto;
+  grid-template-columns: minmax(0, 1.06fr) minmax(0, 0.94fr);
+  align-items: center;
+  gap: clamp(34px, 6.7vw, 104px);
+}
+
+.history-vision__story {
+  display: flex;
+  min-width: 0;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+}
+
+.history-vision__eyebrow,
+.history-vision__chapters-masthead,
+.history-vision__vision-label,
+.history-vision__chapter-index,
+.history-vision__chapter-label,
+.history-vision__link {
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 8px;
+  font-weight: 700;
+  letter-spacing: 0.17em;
+  line-height: 1.45;
+  text-transform: uppercase;
+}
+
+.history-vision__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 11px;
+  margin: 0 0 clamp(14px, 2vh, 21px);
+  color: var(--champagne);
+}
+
+.history-vision__eyebrow::before {
+  display: inline-block;
+  width: 23px;
+  height: 1px;
+  background: var(--champagne);
+  content: "";
+}
+
+.history-vision__headline {
+  max-width: 760px;
+  margin: 0;
+  color: var(--cream);
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(48px, 5.2vw, 78px);
+  font-weight: 500;
+  letter-spacing: -0.065em;
+  line-height: 0.92;
+  text-wrap: balance;
+}
+
+.history-vision__headline em {
+  display: block;
+  margin-top: 0.08em;
+  color: var(--champagne);
+  font-weight: 400;
+  letter-spacing: -0.055em;
+}
+
+.history-vision__intro {
+  max-width: 590px;
+  margin: clamp(18px, 2.5vh, 28px) 0 0;
+  color: rgba(244, 241, 234, 0.74);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(12px, 0.95vw, 14px);
+  font-weight: 400;
+  letter-spacing: -0.005em;
+  line-height: 1.7;
+  text-wrap: pretty;
+}
+
+.history-vision__vision {
+  display: grid;
+  width: 100%;
+  max-width: 590px;
+  grid-template-columns: minmax(84px, 0.3fr) minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  margin-top: clamp(18px, 2.8vh, 30px);
+  padding-top: clamp(14px, 2vh, 20px);
+  border-top: 1px solid rgba(244, 241, 234, 0.2);
+}
+
+.history-vision__vision-label {
+  padding-top: 3px;
+  color: var(--champagne);
+}
+
+.history-vision__vision p {
+  margin: 0;
+  color: rgba(244, 241, 234, 0.92);
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(17px, 1.55vw, 22px);
+  font-weight: 400;
+  letter-spacing: -0.025em;
+  line-height: 1.3;
+  text-wrap: pretty;
+}
+
+.history-vision__link {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: clamp(18px, 2.6vh, 28px);
+  padding: 10px 0;
+  border-bottom: 1px solid rgba(212, 197, 185, 0.54);
+  color: var(--cream);
+  text-decoration: none;
+  transition: color 180ms ease, border-color 180ms ease;
+}
+
+.history-vision__link span {
+  color: var(--champagne);
+  font-size: 14px;
+  font-weight: 400;
+  transition: transform 180ms ease;
+}
+
+.history-vision__link:hover,
+.history-vision__link:focus-visible {
+  border-color: var(--champagne);
+  color: var(--champagne);
+}
+
+.history-vision__link:hover span,
+.history-vision__link:focus-visible span {
+  transform: translate(2px, -2px);
+}
+
+.history-vision__link:focus-visible {
+  outline: 1px solid var(--champagne);
+  outline-offset: 5px;
+}
+
+.history-vision__chapters {
+  min-width: 0;
+  border-top: 1px solid rgba(244, 241, 234, 0.25);
+}
+
+.history-vision__chapters-masthead {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 0 0 17px;
+  color: rgba(244, 241, 234, 0.48);
+  font-size: 7px;
+  letter-spacing: 0.13em;
+}
+
+.history-vision__chapter {
+  display: grid;
+  grid-template-columns: 35px minmax(0, 1fr);
+  gap: 16px;
+  padding: clamp(15px, 2.2vh, 23px) 0;
+  border-top: 1px solid rgba(244, 241, 234, 0.16);
+}
+
+.history-vision__chapter-index {
+  padding-top: 3px;
+  color: var(--champagne);
+  font-size: 9px;
+  letter-spacing: 0.08em;
+}
+
+.history-vision__chapter-label {
+  margin: 0 0 6px;
+  color: rgba(244, 241, 234, 0.48);
+  font-size: 7px;
+  letter-spacing: 0.15em;
+}
+
+.history-vision__chapter h3 {
+  margin: 0;
+  color: var(--cream);
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(21px, 2vw, 27px);
+  font-weight: 400;
+  letter-spacing: -0.035em;
+  line-height: 1.08;
+}
+
+.history-vision__chapter-copy {
+  max-width: 430px;
+  margin: 7px 0 0;
+  color: rgba(244, 241, 234, 0.65);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: 11px;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1.55;
+  text-wrap: pretty;
+}
+
+.history-vision__chapter:last-child {
+  padding-bottom: 0;
+}
+
+.contact-section::before {
+  content: "07";
+}
+
+@media (max-width: 1080px) and (min-width: 761px) {
+  .history-vision__inner {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 0.9fr);
+    gap: 34px;
+  }
+
+  .history-vision__headline {
+    font-size: clamp(45px, 5vw, 62px);
+  }
+
+  .history-vision__vision {
+    grid-template-columns: minmax(76px, 0.34fr) minmax(0, 1fr);
+    gap: 10px;
+  }
+
+  .history-vision__chapters-masthead {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
+}
+
+@media (max-height: 760px) and (min-width: 761px) {
+  .history-vision-section {
+    padding-top: 92px;
+    padding-bottom: 20px;
+  }
+
+  .history-vision__headline {
+    font-size: clamp(45px, 4.7vw, 64px);
+  }
+
+  .history-vision__intro {
+    margin-top: 15px;
+    font-size: 12px;
+    line-height: 1.55;
+  }
+
+  .history-vision__vision {
+    margin-top: 16px;
+    padding-top: 12px;
+  }
+
+  .history-vision__link {
+    margin-top: 14px;
+  }
+
+  .history-vision__chapter {
+    padding-top: 13px;
+    padding-bottom: 13px;
+  }
+
+  .history-vision__chapter h3 {
+    font-size: 22px;
+  }
+
+  .history-vision__chapter-copy {
+    margin-top: 5px;
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 760px) {
+  .history-vision-section {
+    display: block;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior-y: contain;
+    padding: max(110px, calc(env(safe-area-inset-top) + 98px)) 22px 34px;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+  }
+
+  .history-vision-section::-webkit-scrollbar {
+    display: none;
+    width: 0;
+  }
+
+  .history-vision-section::before {
+    top: -0.08em;
+    right: -0.1em;
+    font-size: clamp(280px, 78vw, 460px);
+  }
+
+  .history-vision__inner {
+    display: grid;
+    width: 100%;
+    height: auto;
+    min-height: 0;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 32px;
+  }
+
+  .history-vision__eyebrow {
+    margin-bottom: 16px;
+    font-size: 8px;
+  }
+
+  .history-vision__headline {
+    font-size: clamp(45px, 10.8vw, 62px);
+    line-height: 0.94;
+  }
+
+  .history-vision__intro {
+    margin-top: 18px;
+    font-size: 13px;
+    line-height: 1.65;
+  }
+
+  .history-vision__vision {
+    grid-template-columns: 1fr;
+    gap: 7px;
+    margin-top: 19px;
+    padding-top: 14px;
+  }
+
+  .history-vision__vision-label {
+    font-size: 7px;
+  }
+
+  .history-vision__vision p {
+    font-size: 20px;
+  }
+
+  .history-vision__link {
+    margin-top: 17px;
+    font-size: 8px;
+  }
+
+  .history-vision__chapters-masthead {
+    padding-bottom: 13px;
+    font-size: 7px;
+  }
+
+  .history-vision__chapter {
+    grid-template-columns: 29px minmax(0, 1fr);
+    gap: 12px;
+    padding: 17px 0;
+  }
+
+  .history-vision__chapter h3 {
+    font-size: 24px;
+  }
+
+  .history-vision__chapter-copy {
+    margin-top: 6px;
+    font-size: 11px;
+    line-height: 1.55;
+  }
+}
+
+@media (max-width: 420px) {
+  .history-vision-section {
+    padding-right: 18px;
+    padding-left: 18px;
+  }
+
+  .history-vision__headline {
+    font-size: clamp(43px, 11vw, 54px);
+  }
+
+  .history-vision__inner {
+    gap: 28px;
+  }
+
+  .history-vision__chapters-masthead {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .history-vision__link,
+  .history-vision__link span {
+    transition: none;
+  }
+}
