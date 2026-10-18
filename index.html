@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=about-carousel-158" />
+    <link rel="stylesheet" href="./styles.css?v=about-carousel-159" />
   </head>
   <body>
     <main class="page">
@@ -1950,6 +1950,7 @@
         let animationFrame = 0;
         let unlockTimer = 0;
         let animating = false;
+        let aboutEntryFadeTimer = 0;
         let transitionDirection = 1;
         let transitionStartIndex = 0;
         let transitionTargetIndex = 0;
@@ -2019,6 +2020,26 @@
           }
         }, { passive: true });
 
+        const replayAboutEntrance = (panel) => {
+          if (!panel || panel.id !== "about" || reduceMotion.matches) return;
+
+          window.clearTimeout(aboutEntryFadeTimer);
+          panel.classList.remove("about-entry-fade");
+
+          const activeCopy = panel.querySelector(".about-carousel__copy.is-active");
+          if (activeCopy) {
+            activeCopy.style.animation = "none";
+            void activeCopy.offsetWidth;
+            activeCopy.style.animation = "";
+          }
+
+          void panel.offsetWidth;
+          panel.classList.add("about-entry-fade");
+          aboutEntryFadeTimer = window.setTimeout(() => {
+            panel.classList.remove("about-entry-fade");
+          }, 760);
+        };
+
         const moveToSection = (requestedIndex) => {
           const targetIndex = Math.max(0, Math.min(panels.length - 1, requestedIndex));
           if (animating || targetIndex === activePanelIndex) return false;
@@ -2053,6 +2074,11 @@
             transitionDirection,
             transitionDirection < 0 ? startIndex : -1
           );
+
+          // On a backward transition, About is revealed behind the panel that moves away.
+          if (transitionDirection < 0 && panels[targetIndex]?.id === "about") {
+            replayAboutEntrance(panels[targetIndex]);
+          }
 
           // Commit the incoming panel's offscreen position before starting its entrance.
           const enteringPanel = transitionDirection > 0 ? panels[targetIndex] : null;
@@ -2093,6 +2119,7 @@
             // Release the entering state on the next frame, then animate scroll in sync.
             animationFrame = window.requestAnimationFrame((now) => {
               enteringPanel.classList.remove("is-entering");
+              if (enteringPanel.id === "about") replayAboutEntrance(enteringPanel);
               startedAt = now;
               animationFrame = window.requestAnimationFrame(animate);
             });
