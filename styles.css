@@ -8689,3 +8689,20 @@ body.portal-closing .portal-sheet::before {
     transform: none !important;
   }
 }
+
+
+/* Mobile Sections 3–4: lower the active white logo blocks and keep the duration bar inside the rail's clipping edge. */
+@media (max-width: 640px) {
+  .businesses-section__logo-rail {
+    bottom: calc(-7vh - 20px);
+  }
+
+  .business-logo__duration::before {
+    z-index: 4;
+    top: 0;
+    height: 2px;
+    border-radius: 14px 14px 0 0;
+    background: var(--obsidian);
+    box-shadow: 0 0 7px rgba(15, 15, 17, 0.18);
+  }
+}
