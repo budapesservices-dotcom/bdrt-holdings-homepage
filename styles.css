@@ -8749,3 +8749,14 @@ body.portal-closing .portal-sheet::before {
     opacity: 1;
   }
 }
+
+
+/* Mobile gallery: allow native horizontal touch panning for reliable swipe + momentum. */
+@media (max-width: 760px) {
+  .portfolio-gallery__viewport {
+    touch-action: pan-x pan-y;
+    overscroll-behavior-x: contain;
+    scroll-behavior: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+}
