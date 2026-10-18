@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-type-182" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-type-183" />
   </head>
   <body>
     <main class="page">
@@ -2368,10 +2368,19 @@
           const dy = touch.clientY - startY;
 
           if (touchScrollPanel && Math.abs(dy) > 8) {
+            const maxInnerScroll = Math.max(0, touchScrollPanel.scrollHeight - touchScrollPanel.clientHeight);
             const canScrollInsidePanel = dy < 0
-              ? touchScrollPanel.scrollTop + touchScrollPanel.clientHeight < touchScrollPanel.scrollHeight - 1
-              : touchScrollPanel.scrollTop > 0;
-            if (canScrollInsidePanel) return;
+              ? touchScrollPanel.scrollTop < maxInnerScroll - 1
+              : touchScrollPanel.scrollTop > 1;
+            const isMobileAboutPanel = touchScrollPanel.matches(".about-section")
+              && window.matchMedia("(max-width: 760px)").matches;
+
+            // Section 2 must use its own vertical scroll on phones whenever content remains.
+            // Only hand the gesture to the magazine-page transition at the panel's scroll boundary.
+            if (canScrollInsidePanel && (isMobileAboutPanel || touchScrollPanel)) {
+              capturedVerticalSwipe = false;
+              return;
+            }
           }
 
           if (document.body.classList.contains("mobile-menu-open")) {
