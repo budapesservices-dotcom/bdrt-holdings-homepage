@@ -8528,3 +8528,24 @@ body.portal-closing .portal-sheet::before {
     border-bottom: 0;
   }
 }
+
+
+/* Give Client Login and Donor Portal exclusive visual priority over the mobile menu. */
+@media (max-width: 760px) {
+  body.portal-open .mobile-menu,
+  body.portal-closing .mobile-menu {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+    transition: none !important;
+  }
+
+  body.portal-open .site-header .mobile-menu-toggle,
+  body.portal-open .site-header .mobile-login,
+  body.portal-closing .site-header .mobile-menu-toggle,
+  body.portal-closing .site-header .mobile-login {
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
+  }
+}
