@@ -11129,3 +11129,47 @@ input[type="reset"]:active {
     transition: none;
   }
 }
+
+
+/* Hero positioning: identify BDRT as the parent company without competing with the VOXA-led visual. */
+.hero__positioning {
+  position: absolute;
+  z-index: 2;
+  bottom: clamp(74px, 9.2vh, 104px);
+  left: clamp(24px, 5.1vw, 82px);
+  width: min(390px, calc(100% - 48px));
+  margin: 0;
+  color: rgba(244, 241, 234, 0.79);
+  font-family: Arial, Helvetica, sans-serif;
+  font-size: clamp(9px, 0.78vw, 11px);
+  font-weight: 500;
+  letter-spacing: 0.045em;
+  line-height: 1.55;
+  text-wrap: pretty;
+  text-shadow: 0 1px 16px rgba(0, 0, 0, 0.2);
+  pointer-events: none;
+}
+
+@media (max-width: 760px) {
+  .hero__positioning {
+    bottom: max(70px, calc(env(safe-area-inset-bottom) + 62px));
+    left: 18px;
+    width: min(285px, calc(100% - 36px));
+    font-size: 10px;
+    letter-spacing: 0.025em;
+    line-height: 1.45;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero__positioning {
+    width: min(255px, calc(100% - 36px));
+    font-size: 9px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero__positioning {
+    text-shadow: none;
+  }
+}
