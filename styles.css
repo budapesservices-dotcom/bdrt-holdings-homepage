@@ -7593,14 +7593,14 @@ body.portal-closing .portal-sheet::before {
 @media (max-width: 640px) {
   .businesses-section--companies .business-logo img,
   .businesses-section--companies .business-logo__fallback:not([hidden]) {
-    transform: translateY(-12px);
+    transform: translateY(-30px);
   }
 }
 
 @media (max-width: 360px) {
   .businesses-section--companies .business-logo img,
   .businesses-section--companies .business-logo__fallback:not([hidden]) {
-    transform: translateY(-8px);
+    transform: translateY(-24px);
   }
 }
 
