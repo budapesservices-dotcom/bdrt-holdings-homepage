@@ -8760,3 +8760,11 @@ body.portal-closing .portal-sheet::before {
     -webkit-overflow-scrolling: touch;
   }
 }
+
+
+/* Raise the photo grid in Section 5 on mobile without moving the gallery heading. */
+@media (max-width: 760px) {
+  .portfolio-gallery__viewport {
+    margin-top: -20px;
+  }
+}
