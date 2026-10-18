@@ -11282,38 +11282,7 @@ input[type="reset"]:active {
 @media (prefers-reduced-motion: reduce) { .about-section__identity-mark { transition: none; } }
 
 
-/* Replay the About cover fade when the panel is actually revealed, not only on initial page load. */
-/* Fade the BDRT mark without a second transform while the whole section is moving. */
-@keyframes about-identity-in {
-  from { opacity: 0; }
-  to { opacity: 1; }
-}
-.about-section.about-entry-fade .about-section__identity-mark,
-.about-section.about-entry-fade .about-section__identity-label {
-  animation: about-identity-in 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@media (prefers-reduced-motion: reduce) {
-  .about-section.about-entry-fade .about-section__identity-mark,
-  .about-section.about-entry-fade .about-section__identity-label { animation: none; }
-}
-
-
-/* Keep the wordmark completely still while its fixed section animates; fade it after arrival. */
-.about-section__identity-mark,
-.about-section__identity.is-mark-active .about-section__identity-mark,
-.about-section__identity:not(.is-mark-active) .about-section__identity-mark {
-  transform: none !important;
-  transition: none !important;
-}
-.about-section.about-entry-fade .about-section__identity-mark,
-.about-section.about-entry-fade .about-section__identity-label {
-  animation: about-identity-in 820ms cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@media (prefers-reduced-motion: reduce) {
-  .about-section.about-entry-fade .about-section__identity-mark,
-  .about-section.about-entry-fade .about-section__identity-label { animation: none; }
-}
-
+/* Use only the identity crossfade below; no second section-entry animation. */
 
 /* True two-way crossfade between the default BDRT wordmark and the carousel taglines. */
 .about-section .about-section__identity {
