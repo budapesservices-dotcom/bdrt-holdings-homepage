@@ -11612,3 +11612,28 @@ input[type="reset"]:active {
     text-align-last: left !important;
   }
 }
+
+
+/* Refine the editorial blocks: tighter leading, slightly stronger text, less word spread. */
+@media (min-width: 1000px) {
+  .about-section .about-carousel__copy .about-section__text--editorial {
+    max-width: 550px;
+    font-size: clamp(16px, 1.28vw, 18px);
+    font-weight: 500;
+    line-height: 1.48;
+    letter-spacing: -0.018em;
+    -webkit-text-stroke: 0.12px currentColor;
+    text-align: justify;
+    text-align-last: justify;
+    text-justify: inter-word;
+    word-spacing: -0.015em;
+  }
+  .about-section .about-carousel__copy .about-section__text--editorial .about-editorial-line {
+    line-height: inherit;
+    letter-spacing: inherit;
+    word-spacing: inherit;
+    text-align: justify;
+    text-align-last: justify;
+    text-justify: inter-word;
+  }
+}
