@@ -12162,3 +12162,46 @@ input[type="reset"]:active {
     max-height: none;
   }
 }
+
+
+/* Hero cue now carries the portfolio positioning line instead of the scroll prompt. */
+.hero__explore {
+  max-width: calc(100% - 40px);
+  font-size: clamp(10px, 0.8vw, 12px);
+  font-weight: 500;
+  letter-spacing: 0.09em;
+  line-height: 1.45;
+  text-align: center;
+}
+
+.hero__explore-label {
+  max-width: 100%;
+  white-space: normal;
+  text-wrap: balance;
+}
+
+@media (max-width: 760px) {
+  .hero__explore {
+    width: calc(100% - 36px);
+    max-width: 420px;
+    gap: 7px;
+    font-size: 10px;
+    letter-spacing: 0.035em;
+    line-height: 1.4;
+  }
+
+  .hero__explore-label {
+    width: 100%;
+  }
+
+  .hero__explore-line {
+    height: 18px;
+  }
+}
+
+@media (max-width: 380px) {
+  .hero__explore {
+    font-size: 9px;
+    letter-spacing: 0.02em;
+  }
+}
