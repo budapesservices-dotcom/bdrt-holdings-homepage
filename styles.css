@@ -8840,3 +8840,49 @@ body.portal-closing .portal-sheet::before {
     letter-spacing: 0.72em;
   }
 }
+
+/* Mobile portal close alignment: carry the arch upward to the exact navbar resting position. */
+@media (max-width: 760px) {
+  :root {
+    /* The normal navbar arch is 96px tall overall, but only ~68px extends below the viewport top. */
+    --portal-arch-height: 68px;
+    --portal-arch-width: 112px;
+    --portal-arch-radius: 56px;
+  }
+
+  .portal-sheet::before {
+    clip-path: polygon(
+      0 0, 100% 0,
+      100% calc(100% - 68px),
+      calc(50% + 56px) calc(100% - 68px),
+      calc(50% + 56px) calc(100% - 49px),
+      calc(50% + 54px) calc(100% - 42px),
+      calc(50% + 52px) calc(100% - 35px),
+      calc(50% + 50px) calc(100% - 28px),
+      calc(50% + 45px) calc(100% - 22px),
+      calc(50% + 39px) calc(100% - 16px),
+      calc(50% + 32px) calc(100% - 11px),
+      calc(50% + 25px) calc(100% - 7px),
+      calc(50% + 18px) calc(100% - 4px),
+      calc(50% + 9px) calc(100% - 2px),
+      50% calc(100% - 1px),
+      calc(50% - 9px) calc(100% - 2px),
+      calc(50% - 18px) calc(100% - 4px),
+      calc(50% - 25px) calc(100% - 7px),
+      calc(50% - 32px) calc(100% - 11px),
+      calc(50% - 39px) calc(100% - 16px),
+      calc(50% - 45px) calc(100% - 22px),
+      calc(50% - 50px) calc(100% - 28px),
+      calc(50% - 52px) calc(100% - 35px),
+      calc(50% - 54px) calc(100% - 42px),
+      calc(50% - 56px) calc(100% - 49px),
+      calc(50% - 56px) calc(100% - 68px),
+      0 calc(100% - 68px)
+    );
+  }
+
+  .portal-sheet__wordmark,
+  .portal-experience.is-open .portal-sheet__wordmark {
+    bottom: 21px;
+  }
+}
