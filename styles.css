@@ -10129,7 +10129,7 @@ input[type="reset"]:active {
   top: -0.2em;
   right: -0.05em;
   color: rgba(244, 241, 234, 0.018);
-  content: "04";
+  content: "05";
   font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
   font-size: clamp(360px, 46vw, 740px);
   font-weight: 500;
