@@ -12293,3 +12293,28 @@ input[type="reset"]:active {
     bottom: max(12px, calc(env(safe-area-inset-bottom) + 10px));
   }
 }
+
+
+/* Correct mobile Section 2 controls: place carousel navigation after the content, not over it. */
+@media (max-width: 760px) {
+  .about-section.section-panel .about-carousel__controls {
+    position: relative !important;
+    inset: auto !important;
+    z-index: 5;
+    width: 100%;
+    flex: 0 0 auto;
+    justify-content: center;
+    margin: clamp(22px, 4vh, 34px) 0 0;
+    padding: 8px 16px calc(env(safe-area-inset-bottom) + 20px);
+    background: transparent;
+    transform: none !important;
+  }
+
+  .about-section.section-panel {
+    padding-bottom: 0 !important;
+  }
+
+  .about-section.section-panel .about-section__inner {
+    padding-bottom: 0;
+  }
+}
