@@ -12415,3 +12415,80 @@ input[type="reset"]:active {
     bottom: 12px;
   }
 }
+
+
+/* Final mobile Section 2 spacing system: reduce the oversized title block and bring copy closer. */
+@media (max-width: 760px) {
+  .about-section.section-panel {
+    padding-top: max(82px, calc(env(safe-area-inset-top) + 72px)) !important;
+    padding-right: clamp(18px, 5vw, 22px) !important;
+    padding-left: clamp(18px, 5vw, 22px) !important;
+    padding-bottom: 0 !important;
+  }
+
+  .about-section.section-panel .about-section__inner {
+    gap: clamp(10px, 1.5vh, 14px) !important;
+    padding-top: 0 !important;
+    padding-bottom: max(30px, calc(env(safe-area-inset-bottom) + 24px)) !important;
+  }
+
+  /* The previous 160–220px minimum created most of the dead space between title and copy. */
+  .about-section.section-panel .about-section__identity {
+    height: auto !important;
+    min-height: clamp(112px, 17vh, 148px) !important;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .about-section.section-panel .about-section__identity:not(.is-mark-active) .about-section__identity-label {
+    top: 0 !important;
+    bottom: 0 !important;
+    padding-top: 0 !important;
+  }
+
+  .about-section.section-panel .about-section__story {
+    min-height: max-content;
+    margin-top: 0 !important;
+    padding-top: 0 !important;
+    padding-bottom: 0 !important;
+  }
+
+  .about-section.section-panel .about-carousel__copy .about-section__eyebrow {
+    margin-top: 0;
+    margin-bottom: 10px !important;
+  }
+
+  .about-section.section-panel .about-carousel__copy .about-section__headline {
+    margin-top: 0;
+    margin-bottom: 10px !important;
+  }
+
+  .about-section.section-panel .about-section__links {
+    margin-top: 12px !important;
+  }
+
+  .about-section.section-panel .about-carousel__controls {
+    margin-top: 14px !important;
+    padding-top: 6px !important;
+    padding-bottom: max(12px, calc(env(safe-area-inset-bottom) + 10px)) !important;
+  }
+}
+
+@media (max-width: 380px) {
+  .about-section.section-panel {
+    padding-top: max(76px, calc(env(safe-area-inset-top) + 66px)) !important;
+  }
+
+  .about-section.section-panel .about-section__inner {
+    gap: 8px !important;
+    padding-bottom: max(24px, calc(env(safe-area-inset-bottom) + 20px)) !important;
+  }
+
+  .about-section.section-panel .about-section__identity {
+    min-height: 104px !important;
+  }
+
+  .about-section.section-panel .about-carousel__copy .about-section__eyebrow {
+    margin-bottom: 8px !important;
+  }
+}
