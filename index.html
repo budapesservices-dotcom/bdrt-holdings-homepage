@@ -2050,6 +2050,12 @@
           const targetIndex = Math.max(0, Math.min(panels.length - 1, requestedIndex));
           if (animating || targetIndex === activePanelIndex) return false;
 
+          // Enter Contact on its editorial opener; the inquiry is the adjacent horizontal page.
+          if (panels[targetIndex]?.id === "contact") {
+            const contactRail = document.getElementById("contact");
+            if (contactRail) contactRail.scrollLeft = 0;
+          }
+
           const startIndex = activePanelIndex;
           const start = window.scrollY;
           const target = sectionTarget(targetIndex);
