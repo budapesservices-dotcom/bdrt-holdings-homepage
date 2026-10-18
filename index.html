@@ -6,7 +6,7 @@
     <meta name="theme-color" content="#0F0F11" />
     <meta name="description" content="BDRT Holdings connects businesses, brands, and ventures across commercial strategy, project development, creative partnerships, and community initiatives." />
     <title>BDRT Holdings</title>
-    <link rel="stylesheet" href="./styles.css?v=portfolio-type-192" />
+    <link rel="stylesheet" href="./styles.css?v=portfolio-type-193" />
   </head>
   <body>
     <main class="page">
@@ -813,12 +813,15 @@
                 <span>BUILT ON CREATIVE INSTINCT.</span>
                 <span>OPEN TO WHAT'S NEXT.</span>
               </div>
+              <button class="contact-section__page-link" type="button" data-contact-slide="form">
+                <span>START AN INQUIRY</span><span aria-hidden="true">↗</span>
+              </button>
             </div>
 
             <div class="contact-section__form-panel">
               <div class="contact-section__form-masthead">
                 <span>INQUIRY FORM</span>
-                <span>01 <i aria-hidden="true">—</i> START HERE</span>
+                <button class="contact-section__back-link" type="button" data-contact-slide="intro"><span aria-hidden="true">↖</span> BACK TO INTRO</button>
               </div>
 
               <form class="contact-form" id="contact-inquiry-form">
@@ -846,11 +849,11 @@
 
                 <div class="contact-form__fields">
                   <label class="contact-field">
-                    <span class="contact-field__label">Name <i aria-hidden="true">01</i></span>
+                    <span class="contact-field__label">Name</span>
                     <input type="text" name="name" autocomplete="name" placeholder="Your name" required />
                   </label>
                   <label class="contact-field">
-                    <span class="contact-field__label">Email <i aria-hidden="true">02</i></span>
+                    <span class="contact-field__label">Email</span>
                     <input type="email" name="email" autocomplete="email" placeholder="you@company.com" required />
                   </label>
                   <label class="contact-field contact-field--full">
@@ -858,7 +861,7 @@
                     <input type="text" name="company" autocomplete="organization" placeholder="Your company name" />
                   </label>
                   <label class="contact-field contact-field--full contact-field--message">
-                    <span class="contact-field__label">Message <i aria-hidden="true">03</i></span>
+                    <span class="contact-field__label">Message</span>
                     <textarea name="message" rows="2" placeholder="Tell us a little about your idea..." required></textarea>
                   </label>
                 </div>
@@ -2134,6 +2137,61 @@
         };
 
         const moveOne = (direction) => moveToSection(activePanelIndex + direction);
+
+        // Contact is a two-page horizontal spread: editorial first, inquiry form second.
+        const contactSection = document.getElementById("contact");
+        const contactEditorial = contactSection?.querySelector(".contact-section__editorial");
+        const contactFormPanel = contactSection?.querySelector(".contact-section__form-panel");
+        const contactReduceMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+        const moveContactPage = (page) => {
+          if (!contactSection) return;
+          const target = page === "form" ? contactFormPanel : contactEditorial;
+          if (!target) return;
+          const left = target.getBoundingClientRect().left
+            - contactSection.getBoundingClientRect().left
+            + contactSection.scrollLeft;
+          contactSection.scrollTo({
+            left: Math.max(0, left),
+            behavior: contactReduceMotion.matches ? "auto" : "smooth"
+          });
+        };
+
+        contactSection?.querySelectorAll("[data-contact-slide]").forEach((control) => {
+          control.addEventListener("click", () => moveContactPage(control.dataset.contactSlide));
+        });
+
+        // Desktop mouse dragging mirrors the gallery; touch devices retain native horizontal swipe.
+        let contactDrag = null;
+        contactSection?.addEventListener("pointerdown", (event) => {
+          if (event.pointerType !== "mouse" || event.button !== 0) return;
+          if (event.target instanceof Element && event.target.closest("button, a, input, textarea, select, label")) return;
+          contactDrag = {
+            pointerId: event.pointerId,
+            startX: event.clientX,
+            startScrollLeft: contactSection.scrollLeft,
+            moved: false
+          };
+        });
+        contactSection?.addEventListener("pointermove", (event) => {
+          if (!contactDrag || event.pointerId !== contactDrag.pointerId) return;
+          const dx = event.clientX - contactDrag.startX;
+          if (Math.abs(dx) > 6) {
+            contactDrag.moved = true;
+            contactSection.classList.add("is-contact-dragging");
+          }
+          if (contactDrag.moved) {
+            event.preventDefault();
+            contactSection.scrollLeft = contactDrag.startScrollLeft - dx;
+          }
+        }, { passive: false });
+        const finishContactDrag = (event) => {
+          if (!contactDrag || (event && event.pointerId !== contactDrag.pointerId)) return;
+          contactDrag = null;
+          contactSection?.classList.remove("is-contact-dragging");
+        };
+        contactSection?.addEventListener("pointerup", finishContactDrag);
+        contactSection?.addEventListener("pointercancel", finishContactDrag);
 
         const contactInquiryForm = document.getElementById("contact-inquiry-form");
         const contactFormNotice = document.getElementById("contact-form-notice");
