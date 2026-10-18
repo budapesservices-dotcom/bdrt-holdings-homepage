@@ -11368,3 +11368,50 @@ input[type="reset"]:active {
     transition: none !important;
   }
 }
+
+
+/* Editorial BDRT wordmark-style titles for the About carousel's right-hand panel. */
+.about-section .about-section__identity-label {
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
+  color: var(--obsidian);
+  font-family: "Bodoni MT", Didot, "Bodoni 72", "Times New Roman", Georgia, serif;
+  font-size: clamp(62px, 7.4vw, 116px);
+  font-weight: 700;
+  letter-spacing: -0.105em;
+  line-height: 0.78;
+  text-align: center;
+  text-wrap: nowrap;
+}
+.about-section .about-section__identity-label span {
+  display: block;
+  max-width: 100%;
+  white-space: nowrap;
+  font: inherit;
+  letter-spacing: inherit;
+}
+@media (max-width: 1080px) and (min-width: 761px) {
+  .about-section .about-section__identity-label {
+    font-size: clamp(64px, 7.6vw, 92px);
+  }
+}
+@media (max-width: 760px) {
+  .about-section .about-section__identity-label {
+    align-items: flex-start;
+    justify-content: flex-start;
+    gap: 0;
+    font-size: clamp(42px, 10vw, 58px);
+    line-height: 0.82;
+    text-align: left;
+  }
+  .about-section .about-section__identity-label span {
+    white-space: nowrap;
+  }
+}
+@media (max-width: 360px) {
+  .about-section .about-section__identity-label {
+    font-size: 40px;
+  }
+}
