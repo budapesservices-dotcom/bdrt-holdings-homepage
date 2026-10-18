@@ -11713,3 +11713,10 @@ input[type="reset"]:active {
   .portfolio-ecosystem__description { font-size: 8px !important; }
   .portfolio-footer__message .portfolio-gallery__eyebrow { font-size: 7.5px; }
 }
+
+
+/* Footer refinement: remove the divider and extra top spacing before portal links. */
+.site-footer__utility-links {
+  border-top: 0;
+  padding-top: 0;
+}
