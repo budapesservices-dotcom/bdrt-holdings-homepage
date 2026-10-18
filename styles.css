@@ -11433,3 +11433,9 @@ input[type="reset"]:active {
   line-height: inherit;
   word-spacing: 0.28em;
 }
+
+
+/* Slightly tighten horizontal word spacing while preserving the roomier stacked lines. */
+.about-section .about-section__identity-label span {
+  word-spacing: 0.14em;
+}
