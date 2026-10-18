@@ -11258,3 +11258,25 @@ input[type="reset"]:active {
 .about-section.section-panel {
   position: fixed;
 }
+
+
+/* Preserve the original Section 2 cover as carousel slide one, including its BDRT wordmark. */
+.about-section__identity-mark { display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 1; transform: translateY(0); transition: opacity 360ms ease, transform 360ms ease; }
+.about-section__identity-label { display: none; }
+.about-section__identity:not(.is-mark-active) .about-section__identity-mark { display: none; }
+.about-section__identity:not(.is-mark-active) .about-section__identity-label { display: block; }
+.about-section__identity.is-mark-active .about-section__identity-mark { opacity: 1; transform: translateY(0); }
+.about-section__identity:not(.is-mark-active) .about-section__identity-mark { opacity: 0; transform: translateY(8px); }
+.about-section__identity:not(.is-mark-active) .about-section__identity-label { min-width: 0; }
+.about-section__identity-mark .about-section__monogram { display: block; }
+.about-section__identity-mark .about-section__signature { display: block; }
+.about-section__identity-mark .about-section__identity-note { display: block; }
+@media (max-width: 760px) {
+  .about-section__identity-mark { width: 100%; align-items: flex-start; }
+  .about-section__identity-mark .about-section__monogram { font-size: clamp(90px, 22vw, 150px); }
+  .about-section__identity-mark .about-section__signature { margin-top: 12px; font-size: 9px; letter-spacing: .65em; }
+  .about-section__identity-mark .about-section__identity-note { margin-top: 12px; text-align: left; }
+  .about-section__identity:not(.is-mark-active) { align-items: flex-start; }
+  .about-section__identity:not(.is-mark-active) .about-section__identity-label { font-size: clamp(40px, 10vw, 64px); }
+}
+@media (prefers-reduced-motion: reduce) { .about-section__identity-mark { transition: none; } }
