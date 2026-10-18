@@ -13536,3 +13536,374 @@ input[type="reset"]:active {
 }
 
 /* The contact panel starts at the editorial page every time it is entered through site navigation. */
+
+
+/* Contact spread refinement: intentional editorial balance and a wider, more useful form canvas. */
+/* Page one: let typography and the image share the page instead of sitting in one narrow stack. */
+@media (min-width: 761px) {
+  .contact-section.section-panel .contact-section__editorial {
+    display: grid !important;
+    grid-template-columns: minmax(0, 1.08fr) minmax(300px, 0.92fr) !important;
+    grid-template-rows: auto auto auto auto auto !important;
+    grid-template-areas:
+      "masthead masthead"
+      "headline visual"
+      "intro visual"
+      "signature visual"
+      "cta visual" !important;
+    align-content: center !important;
+    align-items: start !important;
+    column-gap: clamp(26px, 4vw, 64px) !important;
+    row-gap: 0 !important;
+    padding: clamp(124px, 14vh, 154px) clamp(40px, 6.5vw, 100px) clamp(34px, 5vh, 54px) !important;
+  }
+
+  .contact-section.section-panel .contact-section__masthead {
+    grid-area: masthead;
+    width: 100%;
+    margin: 0 0 clamp(36px, 5vh, 58px) !important;
+  }
+
+  .contact-section.section-panel .contact-section__headline {
+    grid-area: headline;
+    align-self: end;
+    max-width: 11ch !important;
+    margin: 0 !important;
+    font-size: clamp(56px, 6.2vw, 88px) !important;
+    line-height: 0.9 !important;
+    letter-spacing: -0.07em !important;
+    text-wrap: balance;
+  }
+
+  .contact-section.section-panel .contact-section__headline em {
+    display: block;
+    color: var(--champagne);
+  }
+
+  .contact-section.section-panel .contact-section__intro {
+    grid-area: intro;
+    align-self: start;
+    max-width: 42ch !important;
+    margin: clamp(18px, 2.5vh, 28px) 0 0 !important;
+    font-size: clamp(13px, 1vw, 15px) !important;
+    line-height: 1.65 !important;
+  }
+
+  .contact-section.section-panel .contact-section__visual {
+    grid-area: visual;
+    align-self: stretch;
+    width: 100% !important;
+    height: auto !important;
+    min-height: clamp(320px, 44vh, 480px) !important;
+    max-height: calc(100dvh - 220px) !important;
+    margin: 0 !important;
+  }
+
+  .contact-section.section-panel .contact-section__visual img {
+    object-position: center 38%;
+  }
+
+  .contact-section.section-panel .contact-section__signature {
+    grid-area: signature;
+    align-self: end;
+    justify-content: flex-start !important;
+    flex-wrap: wrap;
+    gap: 8px 22px !important;
+    margin: clamp(24px, 4vh, 42px) 0 0 !important;
+    font-size: 7px !important;
+    line-height: 1.55 !important;
+  }
+
+  .contact-section.section-panel .contact-section__page-link {
+    grid-area: cta;
+    align-self: end;
+    margin-top: clamp(17px, 2.5vh, 25px) !important;
+  }
+
+  /* Page two: turn the form into a deliberate horizontal composition. */
+  .contact-section.section-panel .contact-section__form-panel {
+    justify-content: center !important;
+    padding: clamp(132px, 15vh, 164px) clamp(44px, 7.5vw, 116px) clamp(38px, 5.5vh, 58px) !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-masthead {
+    width: 100%;
+    margin: 0 0 clamp(22px, 3.6vh, 36px) !important;
+    padding-bottom: 13px !important;
+  }
+
+  .contact-section.section-panel .contact-form {
+    width: 100%;
+    max-width: 1040px;
+    margin: 0 auto;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend {
+    align-items: baseline !important;
+    margin-bottom: 14px !important;
+    font-size: clamp(25px, 2.35vw, 33px) !important;
+    line-height: 1.12 !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend span {
+    font-size: 7px !important;
+    letter-spacing: 0.13em !important;
+  }
+
+  .contact-section.section-panel .contact-form__interest-grid {
+    gap: clamp(12px, 1.6vw, 22px) !important;
+  }
+
+  .contact-section.section-panel .contact-interest {
+    min-height: 78px !important;
+    gap: 13px !important;
+    padding: 16px clamp(14px, 1.5vw, 22px) !important;
+  }
+
+  .contact-section.section-panel .contact-interest__check {
+    width: 21px !important;
+    height: 21px !important;
+    flex-basis: 21px !important;
+  }
+
+  .contact-section.section-panel .contact-interest__name {
+    font-size: clamp(17px, 1.7vw, 23px) !important;
+  }
+
+  .contact-section.section-panel .contact-interest__type {
+    font-size: 7px !important;
+    letter-spacing: 0.11em !important;
+    line-height: 1.45 !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+    grid-template-rows: auto auto !important;
+    gap: clamp(20px, 3vh, 30px) clamp(28px, 4vw, 58px) !important;
+    margin-top: clamp(24px, 3.5vh, 34px) !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields > .contact-field--full {
+    grid-column: auto !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields > .contact-field--message {
+    grid-column: 2 !important;
+    grid-row: 2 !important;
+  }
+
+  .contact-section.section-panel .contact-field {
+    gap: 8px !important;
+  }
+
+  .contact-section.section-panel .contact-field__label {
+    font-size: 9px !important;
+    letter-spacing: 0.12em !important;
+  }
+
+  .contact-section.section-panel .contact-field input {
+    height: 42px !important;
+    padding: 10px 0 !important;
+    font-size: 13px !important;
+  }
+
+  .contact-section.section-panel .contact-field textarea {
+    min-height: 92px !important;
+    max-height: 132px !important;
+    padding: 10px 0 !important;
+    font-size: 13px !important;
+    resize: vertical;
+  }
+
+  .contact-section.section-panel .contact-form__submit-row {
+    align-items: center !important;
+    gap: 20px !important;
+    margin-top: clamp(24px, 3.5vh, 34px) !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit {
+    min-width: 205px !important;
+    min-height: 48px !important;
+    padding: 0 22px !important;
+    font-size: 8px !important;
+  }
+
+  .contact-section.section-panel .contact-form__privacy {
+    max-width: 200px !important;
+    font-size: 7px !important;
+    line-height: 1.55 !important;
+  }
+}
+
+/* On shorter laptop screens, preserve the editorial structure without sacrificing the viewport. */
+@media (min-width: 761px) and (max-height: 760px) {
+  .contact-section.section-panel .contact-section__editorial {
+    padding-top: 112px !important;
+    padding-bottom: 24px !important;
+    grid-template-columns: minmax(0, 1fr) minmax(240px, 0.78fr) !important;
+  }
+
+  .contact-section.section-panel .contact-section__masthead {
+    margin-bottom: 24px !important;
+  }
+
+  .contact-section.section-panel .contact-section__headline {
+    font-size: clamp(48px, 5.3vw, 66px) !important;
+  }
+
+  .contact-section.section-panel .contact-section__intro {
+    margin-top: 14px !important;
+    font-size: 11px !important;
+    line-height: 1.48 !important;
+  }
+
+  .contact-section.section-panel .contact-section__visual {
+    min-height: 280px !important;
+    max-height: calc(100dvh - 176px) !important;
+  }
+
+  .contact-section.section-panel .contact-section__signature {
+    margin-top: 14px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-panel {
+    padding-top: 108px !important;
+    padding-bottom: 24px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-masthead {
+    margin-bottom: 18px !important;
+  }
+
+  .contact-section.section-panel .contact-form__interest-grid {
+    gap: 10px !important;
+  }
+
+  .contact-section.section-panel .contact-interest {
+    min-height: 62px !important;
+    padding-top: 10px !important;
+    padding-bottom: 10px !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields {
+    margin-top: 18px !important;
+    gap: 14px 28px !important;
+  }
+
+  .contact-section.section-panel .contact-field input {
+    height: 33px !important;
+  }
+
+  .contact-section.section-panel .contact-field textarea {
+    min-height: 68px !important;
+    max-height: 90px !important;
+  }
+
+  .contact-section.section-panel .contact-form__submit-row {
+    margin-top: 18px !important;
+  }
+}
+
+/* Mobile: keep the editorial page airy but orderly, and keep the form page easy to scan. */
+@media (max-width: 760px) {
+  .contact-section.section-panel .contact-section__editorial {
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: center !important;
+    gap: 0 !important;
+    padding: max(116px, calc(env(safe-area-inset-top) + 108px)) clamp(22px, 6vw, 34px) 28px !important;
+  }
+
+  .contact-section.section-panel .contact-section__masthead {
+    width: 100%;
+    margin-bottom: clamp(28px, 4vh, 38px) !important;
+  }
+
+  .contact-section.section-panel .contact-section__headline {
+    max-width: 12ch !important;
+    margin: 0 !important;
+    letter-spacing: -0.07em !important;
+  }
+
+  .contact-section.section-panel .contact-section__intro {
+    max-width: 44ch !important;
+    margin-top: 16px !important;
+  }
+
+  .contact-section.section-panel .contact-section__visual {
+    width: 90% !important;
+    height: clamp(150px, 27vh, 220px) !important;
+    margin: 20px 0 0 auto !important;
+  }
+
+  .contact-section.section-panel .contact-section__signature {
+    display: flex !important;
+    justify-content: space-between !important;
+    gap: 12px !important;
+    margin-top: 13px !important;
+    font-size: 6px !important;
+  }
+
+  .contact-section.section-panel .contact-section__page-link {
+    align-self: flex-start;
+    margin-top: 18px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-panel {
+    justify-content: flex-start !important;
+    padding: max(116px, calc(env(safe-area-inset-top) + 108px)) clamp(22px, 6vw, 34px) 26px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-masthead {
+    margin-bottom: 22px !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend {
+    margin-bottom: 12px !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields {
+    gap: 15px 20px !important;
+    margin-top: 20px !important;
+  }
+
+  .contact-section.section-panel .contact-field input {
+    height: 35px !important;
+  }
+
+  .contact-section.section-panel .contact-field textarea {
+    min-height: 65px !important;
+    max-height: 100px !important;
+  }
+}
+
+@media (max-width: 420px) {
+  .contact-section.section-panel .contact-section__masthead {
+    margin-bottom: 25px !important;
+  }
+
+  .contact-section.section-panel .contact-section__visual {
+    height: clamp(134px, 24vh, 170px) !important;
+    margin-top: 17px !important;
+  }
+
+  .contact-section.section-panel .contact-section__signature {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 4px !important;
+  }
+
+  .contact-section.section-panel .contact-section__form-masthead {
+    margin-bottom: 18px !important;
+  }
+
+  .contact-section.section-panel .contact-form__interests legend {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+    gap: 5px !important;
+  }
+
+  .contact-section.section-panel .contact-form__fields {
+    gap: 13px !important;
+  }
+}
